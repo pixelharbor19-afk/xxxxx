@@ -5,6 +5,7 @@ import { FIELD_MAP } from "@/lib/token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
 import { encryptUrl } from "@/lib/encryptor";
+import { getWorkingProxy, proxies } from "@/lib/resshin-extractor";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_APP!,
@@ -123,6 +124,15 @@ export async function GET(req: NextRequest) {
           // Full cache hit — serve without calling backend
           const sortedDownloads = cachedDl.downloads ?? [];
 
+          const workingProxy = await getWorkingProxy(proxies);
+          if (!workingProxy) {
+            logRequest(502, "No working proxy available");
+            return NextResponse.json(
+              { success: false, error: "No working proxy available" },
+              { status: 502 },
+            );
+          }
+
           if (sortedDownloads.length) {
             const PREFERRED_ORDER = ["720", "480", "1080", "360"];
 
@@ -134,9 +144,7 @@ export async function GET(req: NextRequest) {
               )
                 .filter(Boolean)
                 .map(async (q: any) => {
-                  const expiresAt = Date.now() + 5 * 60 * 60 * 1000;
-                  const payload = `${expiresAt}|${q.url}`;
-                  const encrypted = await encryptUrl(payload);
+                  const encrypted = await encryptUrl(q.url);
                   return {
                     resolution: q.resolution,
                     format: q.format,
@@ -144,7 +152,7 @@ export async function GET(req: NextRequest) {
                     type: (q.url ?? "").includes(".m3u8")
                       ? ("hls" as const)
                       : ("mp4" as const),
-                    link: `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   };
                 }),
             );
@@ -204,6 +212,7 @@ export async function GET(req: NextRequest) {
 
     const res = await fetch(
       `https://school-project-production-9d70.up.railway.app/resshin?${params.toString()}`,
+      //`http://localhost:3000/backend_/servers/resshin_?${params.toString()}`,
       { method: "GET" },
     );
 
