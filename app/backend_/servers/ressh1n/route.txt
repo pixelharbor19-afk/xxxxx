@@ -533,3 +533,332 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+
+//////////////////////////////////
+//RESSHIN
+function fromBase64Url(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  const bin = atob(str);
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+
+async function getCryptoKey(aesKey) {
+  const keyBytes = Uint8Array.from(
+    aesKey.match(/.{2}/g).map((b) => parseInt(b, 16)),
+  );
+  return crypto.subtle.importKey("raw", keyBytes, "AES-GCM", false, [
+    "encrypt",
+    "decrypt",
+  ]);
+}
+
+async function decryptUrl(data, cryptoKey) {
+  const bytes = fromBase64Url(data);
+  const iv = bytes.slice(0, 12);
+  const ciphertext = bytes.slice(12);
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    cryptoKey,
+    ciphertext,
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+function getCorsOrigin(req) {
+  const origin = req.headers.get("Origin");
+  if (origin) {
+    try {
+      const hostname = new URL(origin).hostname;
+      if (
+        hostname.includes("zxcstream") ||
+        hostname.includes("zxcprime") ||
+        hostname.includes("mnflix")
+      )
+        return origin;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+export default {
+  async fetch(request, env) {
+   const url = new URL(request.url);
+
+    // Health check (GET and HEAD)
+    if (url.pathname === "/" && !url.search) {
+      return new Response(
+        request.method === "HEAD" ? null : "OK",
+        {
+          status: 200,
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        },
+      );
+    }
+
+
+
+    const allowedOrigin = getCorsOrigin(request);
+
+    if (request.method === "OPTIONS") {
+      if (!allowedOrigin) return new Response("Forbidden", { status: 403 });
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": allowedOrigin,
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "Range, Content-Type",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+
+     const data = url.searchParams.get("data");
+    if (!data) {
+      return new Response("Missing data parameter", { status: 400 });
+    }
+
+    let target;
+    try {
+      const cryptoKey = await getCryptoKey(env.AES_KEY);
+      target = await decryptUrl(data, cryptoKey);
+    } catch {
+      return new Response("Invalid encrypted URL", { status: 403 });
+    }
+
+const upstream = new URL("https://proxy1.flikhub.net/api");
+
+const CLIENT_INFO = JSON.stringify({ package_name: "com.community.mbox.in.geobypass", version_name: "3.0.14.0422.03", version_code: 51042203, os: "android", os_version: "7.1.2", brand: "samsung", model: "SM-G955N", system_language: "en", net: "NETWORK_WIFI", region: "US", timezone: "Africa/Brazzaville", sp_code: "20801", "X-Play-Mode": "2", "X-Family-Mode": "0", });
+
+
+upstream.searchParams.set("url", target);
+upstream.searchParams.set("mb", "1");
+
+upstream.searchParams.set(
+  "proxyHeaders",
+  JSON.stringify({
+    Accept: "*/*",
+    "Accept-Encoding": "identity",
+    "User-Agent":
+      "com.community.mbox.in.geobypass/51042203 (Linux; Android 7.1.2)",
+    "X-Client-Info": CLIENT_INFO,
+    "X-Client-Status": "0",
+    "X-Family-Mode": "0",
+    "X-Play-Mode": "2",
+  }),
+);
+
+upstream.searchParams.set(
+  "internal_token",
+  "v1.1785977469657.internal.moviebox.1785955869657.869792d9ff91183171e3e76026d965306b7adcee1fa8b0f54e8dd78fa6616a89",
+);
+
+    const headers = new Headers({
+      Accept: "*/*",
+      "Accept-Encoding": "identity;q=1, *;q=0",
+      "Accept-Language": "en-US,en;q=0.5",
+      Origin: "https://player.cinezo.live",
+      Referer: "https://player.cinezo.live/",
+      "Sec-CH-UA": `"Not=A?Brand";v="99", "Brave";v="151", "Chromium";v="151"`,
+      "Sec-CH-UA-Mobile": "?0",
+      "Sec-CH-UA-Platform": `"Windows"`,
+      "Sec-Fetch-Dest": "video",
+      "Sec-Fetch-Mode": "no-cors",
+      "Sec-Fetch-Site": "cross-site",
+      "Sec-Fetch-Storage-Access": "inactive",
+      "Sec-GPC": "1",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    });
+
+    const range = request.headers.get("Range");
+    if (range) {
+      headers.set("Range", range);
+    }
+
+    const response = await fetch(upstream.toString(), {
+      headers,
+      redirect: "follow",
+    });
+
+    const out = new Headers(response.headers);
+
+    if (allowedOrigin) {
+      out.set("Access-Control-Allow-Origin", allowedOrigin);
+      out.set("Vary", "Origin");
+    } else {
+      out.delete("Access-Control-Allow-Origin");
+    }
+
+    out.set(
+      "Access-Control-Expose-Headers",
+      "Content-Length, Content-Range, Accept-Ranges",
+    );
+
+    return new Response(response.body, {
+      status: response.status,
+      headers: out,
+    });
+  },
+};
+
+//ICARUS
+function fromBase64Url(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  const bin = atob(str);
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+
+async function getCryptoKey(aesKey) {
+  const keyBytes = Uint8Array.from(
+    aesKey.match(/.{2}/g).map((b) => parseInt(b, 16)),
+  );
+  return crypto.subtle.importKey("raw", keyBytes, "AES-GCM", false, [
+    "encrypt",
+    "decrypt",
+  ]);
+}
+
+async function decryptUrl(data, cryptoKey) {
+  const bytes = fromBase64Url(data);
+  const iv = bytes.slice(0, 12);
+  const ciphertext = bytes.slice(12);
+  const decrypted = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    cryptoKey,
+    ciphertext,
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+function getCorsOrigin(req) {
+  const origin = req.headers.get("Origin");
+  if (origin) {
+    try {
+      const hostname = new URL(origin).hostname;
+      if (
+        hostname.includes("zxcstream") ||
+        hostname.includes("zxcprime") ||
+        hostname.includes("mnflix")
+      )
+        return origin;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+export default {
+  async fetch(request, env) {
+   const url = new URL(request.url);
+
+    // Health check (GET and HEAD)
+    if (url.pathname === "/" && !url.search) {
+      return new Response(
+        request.method === "HEAD" ? null : "OK",
+        {
+          status: 200,
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        },
+      );
+    }
+
+
+
+    const allowedOrigin = getCorsOrigin(request);
+
+    if (request.method === "OPTIONS") {
+      if (!allowedOrigin) return new Response("Forbidden", { status: 403 });
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": allowedOrigin,
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "Range, Content-Type",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+
+     const data = url.searchParams.get("data");
+    if (!data) {
+      return new Response("Missing data parameter", { status: 400 });
+    }
+
+    let target;
+    try {
+      const cryptoKey = await getCryptoKey(env.AES_KEY);
+      target = await decryptUrl(data, cryptoKey);
+    } catch {
+      return new Response("Invalid encrypted URL", { status: 403 });
+    }
+
+    const upstream = new URL("https://proxy2.flikhub.net/proxy");
+    upstream.searchParams.set("url", target);
+    upstream.searchParams.set(
+      "headers",
+      JSON.stringify({
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Origin: "https://123movienow.cc",
+        Referer: "https://123movienow.cc/",
+      }),
+    );
+
+    const headers = new Headers({
+      Accept: "*/*",
+      "Accept-Encoding": "identity;q=1, *;q=0",
+      "Accept-Language": "en-US,en;q=0.5",
+      Origin: "https://player.cinezo.live",
+      Referer: "https://player.cinezo.live/",
+      "Sec-CH-UA": `"Not=A?Brand";v="99", "Brave";v="151", "Chromium";v="151"`,
+      "Sec-CH-UA-Mobile": "?0",
+      "Sec-CH-UA-Platform": `"Windows"`,
+      "Sec-Fetch-Dest": "video",
+      "Sec-Fetch-Mode": "no-cors",
+      "Sec-Fetch-Site": "cross-site",
+      "Sec-Fetch-Storage-Access": "inactive",
+      "Sec-GPC": "1",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    });
+
+    const range = request.headers.get("Range");
+    if (range) {
+      headers.set("Range", range);
+    }
+
+    const response = await fetch(upstream.toString(), {
+      headers,
+      redirect: "follow",
+    });
+
+    const out = new Headers(response.headers);
+
+    if (allowedOrigin) {
+      out.set("Access-Control-Allow-Origin", allowedOrigin);
+      out.set("Vary", "Origin");
+    } else {
+      out.delete("Access-Control-Allow-Origin");
+    }
+
+    out.set(
+      "Access-Control-Expose-Headers",
+      "Content-Length, Content-Range, Accept-Ranges",
+    );
+
+    return new Response(response.body, {
+      status: response.status,
+      headers: out,
+    });
+  },
+};

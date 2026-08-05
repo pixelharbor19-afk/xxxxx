@@ -158,10 +158,8 @@ export const proxies = [
   // "https://icarus.test154-123.workers.dev/",
   // "https://icarus.test156-123.workers.dev/",
   // "https://icarus.test157-123.workers.dev/",
-  // "https://icarus.test153-224.workers.dev/",
-  // "https://icarus.test152-5d8.workers.dev/",
-  // "https://icarus.test151-009.workers.dev/",
-  // "https://icarus.test150-e8d.workers.dev/",
+
+
   // "https://proxy.zxcprime359-test1.workers.dev/",
   // "https://proxy.orbitprime27.workers.dev/",
   // "https://proxy.silverlantern64.workers.dev/",
@@ -169,10 +167,6 @@ export const proxies = [
   // "https://orange-tooth-0e36.zxcprime369.workers.dev/",
   // "https://silent-glitter-744f.zxcprime365.workers.dev/",
   // "https://nameless-feather-4fca.zxcprime364.workers.dev/",
-  // "https://proxy.test4-eb0.workers.dev/",
-  // "https://proxy.test3-ed1.workers.dev/",
-  // "https://proxy.test2-425.workers.dev/",
-  // "https://proxy.test1-845.workers.dev/",
   // "https://proxy.zxcprime.workers.dev/",
   // "https://proxy.zxcprime3.workers.dev/",
   // "https://proxy.zxcprime2.workers.dev/",
