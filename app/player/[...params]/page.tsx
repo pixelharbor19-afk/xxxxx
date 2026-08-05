@@ -41,6 +41,7 @@ import { useSandboxDetection } from "@/hooks/useSandboxDetection";
 import { useTrackEmbedder } from "@/hooks/useTrackEmbedder";
 import Link from "next/link";
 import useSubtitle from "@/hooks/subs";
+import Script from "next/script";
 function getRootDomain(url: string) {
   try {
     const hostname = new URL(url).hostname;
@@ -66,6 +67,19 @@ function getRootDomain(url: string) {
     return parts.slice(-2).join(".");
   } catch {
     return url;
+  }
+}
+
+declare global {
+  interface Window {
+    webstats?: (
+      event: string,
+      data: {
+        type: string;
+        ids: { tmdb: string };
+        title: string;
+      },
+    ) => void;
   }
 }
 export default function Player() {
@@ -195,7 +209,8 @@ export default function Player() {
   const status = metadata?.status || "";
   const backdropArray = metadata?.backdrop_paths || [];
   const [backdropIndex, setBackdropIndex] = useState(0);
-
+  const [loaded, setLoaded] = useState(false);
+  const webstatsTracked = useRef(false);
   useEffect(() => {
     if (!backdropArray.length) return;
     setBackdropIndex(Math.floor(Math.random() * backdropArray.length));
@@ -697,6 +712,19 @@ export default function Player() {
   //   isSandboxed,
   // );
   // console.log(restricted && restrictionActive && isSandboxed);
+
+  useEffect(() => {
+    if (webstatsTracked.current) return;
+    if (!loaded || !metadataLoad) return;
+
+    webstatsTracked.current = true;
+
+    window.webstats?.("content", {
+      type: media_type === "tv" ? "tv" : "movie",
+      ids: { tmdb: tmdbId },
+      title,
+    });
+  }, [loaded, metadataLoad, media_type, tmdbId]);
   if (isLoading) {
     return (
       <div className="bg-black  h-svh flex justify-center items-center">
@@ -932,6 +960,12 @@ export default function Player() {
         isVisible ? "" : "cursor-none",
       )}
     >
+      <Script
+        src="https://a.vidstats.top/js/p.js?s=81b8fdef-01aa-4a35-91b8-562982270e9d"
+        strategy="afterInteractive"
+        onLoad={() => setLoaded(true)}
+      />
+
       <AnimatePresence>
         {showFallbackBanner && (
           <motion.div
