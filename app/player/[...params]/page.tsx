@@ -713,18 +713,18 @@ export default function Player() {
   // );
   // console.log(restricted && restrictionActive && isSandboxed);
 
-  useEffect(() => {
-    if (webstatsTracked.current) return;
-    if (!loaded || !metadataLoad) return;
+  // useEffect(() => {
+  //   if (webstatsTracked.current) return;
+  //   if (!loaded || !metadataLoad) return;
 
-    webstatsTracked.current = true;
+  //   webstatsTracked.current = true;
 
-    window.webstats?.("content", {
-      type: media_type === "tv" ? "tv" : "movie",
-      ids: { tmdb: tmdbId },
-      title,
-    });
-  }, [loaded, metadataLoad, media_type, tmdbId]);
+  //   window.webstats?.("content", {
+  //     type: media_type === "tv" ? "tv" : "movie",
+  //     ids: { tmdb: tmdbId },
+  //     title,
+  //   });
+  // }, [loaded, metadataLoad, media_type, tmdbId]);
   if (isLoading) {
     return (
       <div className="bg-black  h-svh flex justify-center items-center">
@@ -960,11 +960,11 @@ export default function Player() {
         isVisible ? "" : "cursor-none",
       )}
     >
-      <Script
+      {/* <Script
         src="https://a.vidstats.top/js/p.js?s=81b8fdef-01aa-4a35-91b8-562982270e9d"
         strategy="afterInteractive"
         onLoad={() => setLoaded(true)}
-      />
+      /> */}
 
       <AnimatePresence>
         {showFallbackBanner && (
