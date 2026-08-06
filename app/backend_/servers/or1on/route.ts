@@ -331,6 +331,10 @@ const HOLLY_WORKERS = [
   "https://patient-smoke-9421.wubbalubbadubdub18.workers.dev/",
   "https://empty-meadow-7845.wubbalubbadubdub19.workers.dev/",
   "https://white-rice-8ff0.wubbalubbadubdub20.workers.dev/",
+  "https://lucky-bird-0b3f.tantado1.workers.dev/",
+  "https://rapid-resonance-41cd.tantado2.workers.dev/",
+  "https://shrill-star-8c65.tantado4.workers.dev/",
+  "https://spring-smoke-eeed.tantado3.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
