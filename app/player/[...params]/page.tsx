@@ -722,31 +722,30 @@ export default function Player() {
   // );
   // console.log(restricted && restrictionActive && isSandboxed);
 
-  // useEffect(() => {
-  //   if (webstatsTracked.current) return;
-  //   if (!loaded || !metadataLoad) return;
+  useEffect(() => {
+    if (webstatsTracked.current) return;
+    if (!loaded || !metadataLoad) return;
 
-  //   webstatsTracked.current = true;
+    webstatsTracked.current = true;
 
-  //   if (media_type === "tv") {
-  //     window.webstats?.("content", {
-  //       type: "tvshow",
-  //       ids: { tmdb: tmdbId },
-  //       title,
-  //       episode: {
-  //         season: Number(season),
-  //         number: Number(episode),
-  //         title: "",
-  //       },
-  //     });
-  //   } else {
-  //     window.webstats?.("content", {
-  //       type: "movie",
-  //       ids: { tmdb: tmdbId },
-  //       title,
-  //     });
-  //   }
-  // }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
+    if (media_type === "tv") {
+      window.webstats?.("content", {
+        type: "tvshow",
+        ids: { tmdb: tmdbId },
+        title,
+        episode: {
+          season: Number(season),
+          number: Number(episode),
+        },
+      });
+    } else {
+      window.webstats?.("content", {
+        type: "movie",
+        ids: { tmdb: tmdbId },
+        title,
+      });
+    }
+  }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
   if (isLoading) {
     return (
       <div className="bg-black  h-svh flex justify-center items-center">
@@ -982,11 +981,11 @@ export default function Player() {
         isVisible ? "" : "cursor-none",
       )}
     >
-      {/* <Script
+      <Script
         src="https://a.vidstats.top/js/p.js?s=81b8fdef-01aa-4a35-91b8-562982270e9d"
         strategy="afterInteractive"
         onLoad={() => setLoaded(true)}
-      /> */}
+      />
 
       <AnimatePresence>
         {showFallbackBanner && (
