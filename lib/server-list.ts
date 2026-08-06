@@ -7,13 +7,6 @@ export const RESSHIN_SERVER: ServerTypes = {
   desc: "Download & Multi Audio Support",
 };
 export const initialServers: ServerTypes[] = [
-  // {
-  //   name: "Resshin II",
-  //   server: "hdrezka",
-  //   status: "queue",
-  //   desc: "Download & Multi Audio Support",
-  // },
-
   {
     name: "Orion I",
     server: "or1on",
@@ -37,6 +30,12 @@ export const initialServers: ServerTypes[] = [
     server: "ressh1n",
     status: "queue",
     desc: "Download & Multi Audio Support",
+  },
+  {
+    name: "Daedalus",
+    server: "daedalus_",
+    status: "queue",
+    desc: "Alternative",
   },
   {
     name: "Athena V",
