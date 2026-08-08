@@ -112,7 +112,7 @@ export async function GET(req: NextRequest) {
       logRequest(titanRes.status, "titan upstream error");
       return NextResponse.json(
         { success: false, error: "Failed to fetch upstream" },
-        { status: titanRes.status },
+        { status: 404 },
       );
     }
 
