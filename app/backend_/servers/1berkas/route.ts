@@ -51,8 +51,10 @@ async function getHealthyWorker(): Promise<string | null> {
         continue;
       }
       if (res.ok) return worker;
-    } catch (err) {
-      console.error(worker, err);
+    } catch (err: any) {
+      console.error(
+        `[BERKAS PROXY] ${worker} → ${err?.name || err?.message || "failed"}`,
+      );
     }
   }
   return null;

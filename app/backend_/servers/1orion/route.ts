@@ -361,8 +361,10 @@ export async function getWorkingProxy(activeProxies: string[]) {
       if (res.ok) {
         return proxy;
       }
-    } catch (e: any) {
-      // console.log(`[PROXY] ✗ ${proxy} | ${e?.message}`);
+    } catch (err: any) {
+      console.error(
+        `[ORION PROXY] ${proxy} → ${err?.name || err?.message || "failed"}`,
+      );
     }
   }
   return null;
