@@ -9,7 +9,7 @@ export default function DevToolGuard() {
         disableMenu: true,
         tkName: "zxc", // your custom param name
         md5: "68934a3e9455fa72420237eb05902327", // md5 of the bypass value
-        url: "https://zxcstream.xyz",
+        url: "https://zxcstream.icu",
       }),
     );
   }, []);
