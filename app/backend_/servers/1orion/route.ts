@@ -343,6 +343,10 @@ const HOLLY_WORKERS = [
   "https://snowy-star-94e0.tukmol6.workers.dev/",
   "https://long-dawn-1507.tukmol7.workers.dev/",
   "https://dark-dream-899d.tukmol8.workers.dev/",
+  "https://nameless-tooth-ba9c.tukmol10.workers.dev/",
+  "https://solitary-bread-d752.tukmol9.workers.dev/",
+  "https://frosty-pine-d395.tukmol11.workers.dev/",
+  "https://winter-silence-9027.tukmol12.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
