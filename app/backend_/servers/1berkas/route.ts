@@ -42,21 +42,33 @@ async function getActiveProxies(proxies: string[]): Promise<string[]> {
 async function getHealthyWorker(): Promise<string | null> {
   const active = await getActiveProxies(PROXY_WORKERS);
   const candidates = shuffle(active);
+
   if (!candidates.length) return null;
-  for (const worker of candidates) {
+
+  const TIMEOUT = 7000;
+  const MAX_TRIES = 5;
+
+  for (let i = 0; i < Math.min(candidates.length, MAX_TRIES); i++) {
+    const worker = candidates[i];
+
     try {
-      const res = await fetchWithTimeout(worker, { method: "HEAD" }, 3000);
+      const res = await fetchWithTimeout(worker, { method: "HEAD" }, TIMEOUT);
+
       if (res.status === 429) {
         await blacklistProxy(worker);
         continue;
       }
-      if (res.ok) return worker;
+
+      if (res.status < 500) {
+        return worker;
+      }
     } catch (err: any) {
       console.error(
         `[BERKAS PROXY] ${worker} → ${err?.name || err?.message || "failed"}`,
       );
     }
   }
+
   return null;
 }
 // /workers/subdomain

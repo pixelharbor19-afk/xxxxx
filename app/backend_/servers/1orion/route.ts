@@ -335,6 +335,10 @@ const HOLLY_WORKERS = [
   "https://rapid-resonance-41cd.tantado2.workers.dev/",
   "https://shrill-star-8c65.tantado4.workers.dev/",
   "https://spring-smoke-eeed.tantado3.workers.dev/",
+  "https://round-boat-b15b.tukmol1.workers.dev/",
+  "https://wispy-tree-61f1.tukmol2.workers.dev/",
+  "https://quiet-fog-57a4.tukmol3.workers.dev/",
+  "https://square-frost-cb9f.tukmol4.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
@@ -347,18 +351,25 @@ function shuffle<T>(arr: T[]): T[] {
 }
 export async function getWorkingProxy(activeProxies: string[]) {
   const shuffledProxies = shuffle(activeProxies);
-  for (const proxy of shuffledProxies) {
+  const TIMEOUT = 7000;
+  const MAX_TRIES = 5;
+
+  for (let i = 0; i < Math.min(shuffledProxies.length, MAX_TRIES); i++) {
+    const proxy = shuffledProxies[i];
+
     try {
       const res = await fetchWithTimeout(
         proxy,
         { method: "HEAD", headers: { Range: "bytes=0-1" } },
-        3000,
+        TIMEOUT,
       );
+
       if (res.status === 429) {
         await blacklistProxy(proxy);
         continue;
       }
-      if (res.ok) {
+
+      if (res.status < 500) {
         return proxy;
       }
     } catch (err: any) {
@@ -367,6 +378,7 @@ export async function getWorkingProxy(activeProxies: string[]) {
       );
     }
   }
+
   return null;
 }
 const priority = (file: string) => {
