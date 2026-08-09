@@ -2,51 +2,51 @@ import { ServerTypes } from "@/types/player-types";
 
 export const RESSHIN_SERVER: ServerTypes = {
   name: "Resshin ",
-  server: "resshin_",
+  server: "resshin___",
   status: "queue",
   desc: "Download & Multi Audio Support",
 };
 export const initialServers: ServerTypes[] = [
   {
     name: "Orion I",
-    server: "or1on",
+    server: "orion___",
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
   {
     name: "Icarus II",
-    server: "icaruz",
+    server: "icarus___",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
     name: "Berkas III",
-    server: "berkas__",
+    server: "berkas___",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
     name: "Resshin IV",
-    server: "ressh1n",
+    server: "resshin___",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
     name: "Daedalus",
-    server: "daedalus_",
+    server: "daedalus___",
     status: "queue",
     desc: "Alternative",
   },
   {
     name: "Athena V",
-    server: "athena__",
+    server: "athena___",
     status: "queue",
     desc: "Main Server & Multi Audio Support",
   },
 
   {
     name: "Sentinel VI",
-    server: "sentinel__",
+    server: "sentinel___",
     status: "queue",
     desc: "K-Dramas, C-Dramas & Asian movies",
   },
