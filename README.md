@@ -1,3 +1,14 @@
+cluster mode next js
+
+cd ~/apps/player
+
+pm2 delete player
+
+pm2 start node_modules/next/dist/bin/next --name player -i 4 -- start
+
+pm2 save
+
+==========================
 🟢 Changed code only
 git pull
 npm install

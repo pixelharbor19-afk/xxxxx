@@ -397,14 +397,13 @@ const priority = (file: string) => {
   return 3;
 };
 export async function GET(req: NextRequest) {
+  const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
   const logRequest = (status: number, reason: string) => {
     const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
     const mediaType = req.nextUrl.searchParams.get("b");
     const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
     const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
-
-    const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
 
     const message = `[ORION] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
 
@@ -642,8 +641,10 @@ export async function GET(req: NextRequest) {
       subtitles: [],
       remaining: activeProxies.length,
     });
-  } catch (err) {
-    console.error("Holly route error:", err);
+  } catch (err: any) {
+    console.error(
+      `[ORION] 500 | Holly route error | ${err?.name || err?.message || err} | IP: ${ip}`,
+    );
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 },
