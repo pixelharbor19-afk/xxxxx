@@ -25,27 +25,27 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "4K Support & Fast",
   },
+  // {
+  //   name: "Resshin IV",
+  //   server: "1resshin",
+  //   status: "queue",
+  //   desc: "Download & Multi Audio Support",
+  // },
+  // {
+  //   name: "Daedalus",
+  //   server: "1daedalus",
+  //   status: "queue",
+  //   desc: "Alternative",
+  // },
   {
-    name: "Resshin IV",
-    server: "1resshin",
-    status: "queue",
-    desc: "Download & Multi Audio Support",
-  },
-  {
-    name: "Daedalus",
-    server: "1daedalus",
-    status: "queue",
-    desc: "Alternative",
-  },
-  {
-    name: "Athena V",
+    name: "Athena IV",
     server: "1athena",
     status: "queue",
     desc: "Main Server & Multi Audio Support",
   },
 
   {
-    name: "Sentinel VI",
+    name: "Sentinel V",
     server: "1sentinel",
     status: "queue",
     desc: "K-Dramas, C-Dramas & Asian movies",
