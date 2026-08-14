@@ -722,30 +722,30 @@ export default function Player() {
   // );
   // console.log(restricted && restrictionActive && isSandboxed);
 
-  useEffect(() => {
-    if (webstatsTracked.current) return;
-    if (!loaded || !metadataLoad) return;
+  // useEffect(() => {
+  //   if (webstatsTracked.current) return;
+  //   if (!loaded || !metadataLoad) return;
 
-    webstatsTracked.current = true;
+  //   webstatsTracked.current = true;
 
-    if (media_type === "tv") {
-      window.webstats?.("content", {
-        type: "tvshow",
-        ids: { tmdb: tmdbId },
-        title,
-        episode: {
-          season: Number(season),
-          number: Number(episode),
-        },
-      });
-    } else {
-      window.webstats?.("content", {
-        type: "movie",
-        ids: { tmdb: tmdbId },
-        title,
-      });
-    }
-  }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
+  //   if (media_type === "tv") {
+  //     window.webstats?.("content", {
+  //       type: "tvshow",
+  //       ids: { tmdb: tmdbId },
+  //       title,
+  //       episode: {
+  //         season: Number(season),
+  //         number: Number(episode),
+  //       },
+  //     });
+  //   } else {
+  //     window.webstats?.("content", {
+  //       type: "movie",
+  //       ids: { tmdb: tmdbId },
+  //       title,
+  //     });
+  //   }
+  // }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
   if (isLoading) {
     return (
       <div className="bg-black  h-svh flex justify-center items-center">
@@ -858,12 +858,20 @@ export default function Player() {
             </div>
 
             <p className="lg:text-2xl md:text-xl text-lg landscape:text-base -tracking-[0.04em] font-semibold mt-6 landscape:mt-1">
-              Access blocked
+              IP Address Blocked
             </p>
 
             <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-3">
-              You&apos;ve been blocked due to suspected malicious activity. If
-              you believe this was a mistake, join our Discord and appeal.
+              Your IP address has been blocked due to suspected malicious
+              activity.
+            </p>
+
+            <p className="text-yellow-500 font-semibold lg:text-base text-sm mt-2">
+              Using a VPN? Disconnect it or try a different VPN.
+            </p>
+
+            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-2">
+              If you believe this was a mistake, join our Discord and appeal.
             </p>
           </div>
           <Button
@@ -981,11 +989,11 @@ export default function Player() {
         isVisible ? "" : "cursor-none",
       )}
     >
-      <Script
+      {/* <Script
         src="https://a.vidstats.top/js/p.js?s=81b8fdef-01aa-4a35-91b8-562982270e9d"
         strategy="afterInteractive"
         onLoad={() => setLoaded(true)}
-      />
+      /> */}
 
       <AnimatePresence>
         {showFallbackBanner && (
