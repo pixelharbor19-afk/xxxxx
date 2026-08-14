@@ -1031,6 +1031,7 @@ export default function Player() {
           key={playerSrc}
           ref={videoRef}
           onCanPlayThrough={handleCanPlay}
+          playsInline
           onError={() => {
             if (source?.links && Number(isAuto) < source.links.length - 1) {
               useSettingsStore.getState().setValue("Source quality", {
