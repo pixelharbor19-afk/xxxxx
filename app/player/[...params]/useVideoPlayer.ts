@@ -204,6 +204,8 @@ export function useVideoPlayer({
       };
     } else {
       video.src = playerSrc;
+      video.load();
+      video.play().catch(() => {});
     }
   }, [playerSrc, srcType]);
 
