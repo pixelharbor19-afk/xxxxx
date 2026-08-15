@@ -590,3 +590,797 @@ app.listen({
 
 
 {"idx":0,"id":2,"tmdb_id":1184918,"media_type":"movie","season":"","episode":"","embeds":"[{\"quality\": \"streamsvr\", \"embed_url\": \"https://goodstream.cc/embed/ruIljEuUyY?e=UkRxU3hrL1RnSERVRkhvMGN3QlRPdUJHNHNXZUhwUnR1d3pVU2p0RlZ5eG81anV1VUdsM0tqNmJqTENKM2lkdwE\"}, {\"quality\": \"streamsvr (1080p)\", \"embed_url\": \"https://goodstream.cc/embed/4FKvEa4z98?e=UkRxU3hrL1RnSERVRkhvMGN3QlRPdUJHNHNXZUhwUnR1d3pVU2p0RlZ5eG81anV1VUdsM0tqNmJqTENKM2lkdwE\"}]","sources":"[{\"file\": \"https://goodstream.cc/streamsvr/ruIljEuUyY/1-27?e=UkRxU3hrL1RnSERVRkhvMGN3QlRPdUJHNHNXZUhwUnR1d3pVU2p0RlZ5eG81anV1VUdsM0tqNmJqTENKM2lkdwE\", \"type\": \"hls\", \"label\": \"LS-25\"}, {\"file\": \"https://goodstream.cc/pl/WUmU1cMmqA6Hc61/0-27?e=UkRxU3hrL1RnSERVRkhvMGN3QlRPdUJHNHNXZUhwUnR1d3pVU2p0RlZ5eG81anV1VUdsM0tqNmJqTENKM2lkdwE\", \"type\": \"hls\", \"label\": \"GS-25\"}]","created_at":"2026-07-13 10:05:30.911617+00"}
+
+
+require("dotenv").config();
+const Fastify = require("fastify");
+const crypto = require("crypto");
+
+const app = Fastify({
+  logger: false,
+  trustProxy: true,
+});
+
+const AES_KEY = Buffer.from(process.env.AES_KEY, "hex");
+
+function decryptData(data) {
+  const input = Buffer.from(data, "base64url");
+  const iv = input.subarray(0, 12);
+  const ciphertext = input.subarray(12, input.length - 16);
+  const authTag = input.subarray(input.length - 16);
+
+  const decipher = crypto.createDecipheriv("aes-256-gcm", AES_KEY, iv);
+  decipher.setAuthTag(authTag);
+
+  return Buffer.concat([
+    decipher.update(ciphertext),
+    decipher.final(),
+  ]).toString("utf8");
+}
+
+// Request logging (without timestamp)
+app.addHook("onResponse", async (request, reply) => {
+  const ip = request.headers["cf-connecting-ip"] || request.ip;
+
+  console.log(
+    `IP=${ip} ${request.method} ${request.url} STATUS=${reply.statusCode}`
+  );
+});
+
+const ALLOWED_ORIGINS = [
+  "https://zxcstream.xyz",
+  "https://www.zxcstream.xyz",
+  "https://player.zxcstream.xyz",
+  "https://zxcprime.xyz",
+  "https://www.zxcprime.xyz",
+  "https://player.zxcprime.xyz",
+  "http://localhost:3000"
+];
+
+const CLIENT_INFO = JSON.stringify({
+  package_name: "com.community.mbox.in.geobypass",
+  version_name: "3.0.14.0422.03",
+  version_code: 51042203,
+  os: "android",
+  os_version: "7.1.2",
+  brand: "samsung",
+  model: "SM-G955N",
+  system_language: "en",
+  net: "NETWORK_WIFI",
+  region: "US",
+  timezone: "Africa/Brazzaville",
+  sp_code: "20801",
+  "X-Play-Mode": "2",
+  "X-Family-Mode": "0",
+});
+
+const BASE_HEADERS = {
+  accept: "*/*",
+  "accept-encoding": "identity",
+  "user-agent":
+    "com.community.mbox.in.geobypass/51042203 (Linux; Android 7.1.2)",
+  "x-client-info": CLIENT_INFO,
+  "x-client-status": "0",
+  "x-family-mode": "0",
+  "x-play-mode": "2",
+};
+
+const FORWARD_HEADERS = [
+  "range",
+  "if-range",
+  "if-none-match",
+  "if-modified-since",
+  "authorization",
+];
+
+const RESPONSE_HEADERS = [
+  "content-type",
+  "content-length",
+  "content-range",
+  "accept-ranges",
+  "etag",
+  "last-modified",
+  "cache-control",
+  "expires",
+];
+
+// Health check
+app.route({
+  method: ["GET", "HEAD"],
+  url: "/",
+  handler: async (request, reply) => {
+    reply
+      .header("Cache-Control", "no-store")
+      .code(200);
+
+    if (request.method === "HEAD") {
+      return reply.send();
+    }
+
+    return reply.send("OK");
+  },
+});
+
+// CORS preflight
+app.options("/proxy", async (request, reply) => {
+  const origin = request.headers.origin || "";
+
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return reply.code(403).send();
+  }
+
+  reply
+    .header("Access-Control-Allow-Origin", origin)
+    .header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS")
+    .header(
+      "Access-Control-Allow-Headers",
+      "Range, Authorization, If-Range, If-None-Match, If-Modified-Since, Content-Type"
+    )
+    .header("Access-Control-Expose-Headers", "*")
+    .header("Access-Control-Max-Age", "86400")
+    .header("Vary", "Origin");
+
+  return reply.code(204).send();
+});
+
+app.route({
+  method: ["GET", "HEAD"],
+  url: "/proxy",
+  handler: async (request, reply) => {
+    const { data } = request.query;
+
+if (!data) {
+  reply.header("Cache-Control", "no-store").code(200);
+
+  if (request.method === "HEAD") {
+    return reply.send();
+  }
+
+  return reply.send("OK");
+}
+let url;
+
+   try {
+  url = decryptData(data).trim();
+
+  if (!url) {
+    return reply.code(400).send({
+      success: false,
+      error: "Invalid data",
+    });
+  }
+} catch {
+  return reply.code(400).send({
+    success: false,
+    error: "Invalid data",
+  });
+}
+    const origin = request.headers.origin || "";
+    const referer = request.headers.referer || "";
+
+    const allowed =
+      ALLOWED_ORIGINS.includes(origin) ||
+      ALLOWED_ORIGINS.some((o) => referer.startsWith(o + "/"));
+
+    if (!allowed) {
+      return reply.code(403).send({
+        success: false,
+        error: "Forbidden",
+      });
+    }
+
+    try {
+      const headers = { ...BASE_HEADERS };
+
+      for (const name of FORWARD_HEADERS) {
+        const value = request.headers[name];
+        if (value) {
+          headers[name] = value;
+        }
+      }
+
+      const upstream = await fetch(url, {
+        method: request.method,
+        headers,
+        redirect: "follow",
+      });
+
+      reply.code(upstream.status);
+
+      for (const name of RESPONSE_HEADERS) {
+        const value = upstream.headers.get(name);
+        if (value) {
+          reply.header(name, value);
+        }
+      }
+
+      if (origin) {
+        reply.header("Access-Control-Allow-Origin", origin);
+        reply.header("Vary", "Origin");
+      }
+
+      reply.header("Access-Control-Expose-Headers", "*");
+
+      return reply.send(upstream.body);
+    } catch (err) {
+      console.error(err);
+
+      return reply.code(500).send({
+        success: false,
+        error: err.message,
+      });
+    }
+  },
+});
+
+app.listen({
+  host: "127.0.0.1",
+  port: 3000,
+});
+
+
+const Fastify = require("fastify");
+
+const app = Fastify({
+  logger: false,
+  trustProxy: true,
+});
+
+const PORT = 3000;
+
+const ALLOWED_HOST = "www.screenify.fun";
+const SCREENIFY_ORIGIN = `https://${ALLOWED_HOST}`;
+
+const ALLOWED_ORIGINS = [
+  "https://zxcstream.xyz",
+  "https://www.zxcstream.xyz",
+  "https://player.zxcstream.xyz",
+  "https://zxcprime.xyz",
+  "https://www.zxcprime.xyz",
+  "https://player.zxcprime.xyz",
+  "http://localhost:3000",
+];
+
+const UPSTREAM_HEADERS = {
+  Referer: `${SCREENIFY_ORIGIN}/`,
+  Origin: SCREENIFY_ORIGIN,
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+  Accept: "*/*",
+};
+
+/*
+ * Logging
+ */
+app.addHook("onResponse", async (request, reply) => {
+  const ip =
+    request.headers["cf-connecting-ip"] ||
+    request.ip;
+
+  console.log(
+    `IP=${ip} ${request.method} ${request.url} STATUS=${reply.statusCode}`,
+  );
+});
+
+/*
+ * Check allowed origin
+ */
+function isAllowedOrigin(request) {
+  const origin = request.headers.origin || "";
+  const referer = request.headers.referer || "";
+
+  return (
+    ALLOWED_ORIGINS.includes(origin) ||
+    ALLOWED_ORIGINS.some((allowed) =>
+      referer.startsWith(`${allowed}/`),
+    )
+  );
+}
+
+/*
+ * Only allow Screenify
+ */
+function isAllowedUrl(url) {
+  return (
+    url.protocol === "https:" &&
+    url.hostname === ALLOWED_HOST
+  );
+}
+
+/*
+ * Resolve relative HLS URLs
+ */
+function resolveUrl(value, baseUrl) {
+  try {
+    return new URL(value, baseUrl).toString();
+  } catch {
+    return null;
+  }
+}
+
+/*
+ * Rewrite URI="..."
+ *
+ * Example:
+ *
+ * #EXT-X-KEY:METHOD=AES-128,URI="key.key"
+ *
+ * becomes:
+ *
+ * #EXT-X-KEY:METHOD=AES-128,URI="https://proxy.zxcstream.xyz/proxy?url=..."
+ */
+function rewriteUriAttributes(
+  line,
+  baseUrl,
+  proxyUrl,
+) {
+  return line.replace(
+    /URI="([^"]+)"/g,
+    (_, uri) => {
+      const absolute = resolveUrl(
+        uri,
+        baseUrl,
+      );
+
+      if (!absolute) {
+        return `URI="${uri}"`;
+      }
+
+      return `URI="${proxyUrl}?url=${encodeURIComponent(
+        absolute,
+      )}"`;
+    },
+  );
+}
+
+/*
+ * Rewrite M3U8
+ */
+function rewriteM3U8(
+  text,
+  upstreamUrl,
+  proxyUrl,
+) {
+  const upstream = new URL(upstreamUrl);
+
+  const baseUrl =
+    upstream.href.substring(
+      0,
+      upstream.href.lastIndexOf("/") + 1,
+    );
+
+  const lines = text.split("\n");
+
+  const rewritten = lines.map((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      return line;
+    }
+
+    /*
+     * URI attributes
+     */
+    if (
+      trimmed.startsWith("#") &&
+      trimmed.includes('URI="')
+    ) {
+      return rewriteUriAttributes(
+        line,
+        baseUrl,
+        proxyUrl,
+      );
+    }
+
+    /*
+     * HLS tags
+     */
+    if (trimmed.startsWith("#")) {
+      return line;
+    }
+
+    /*
+     * Playlist / segment URL
+     */
+    const absolute = resolveUrl(
+      trimmed,
+      baseUrl,
+    );
+
+    if (!absolute) {
+      return line;
+    }
+
+    return `${proxyUrl}?url=${encodeURIComponent(
+      absolute,
+    )}`;
+  });
+
+  /*
+   * Sort audio tracks:
+   *
+   * English first
+   * Audio Description last
+   */
+  const audioIndices = [];
+
+  rewritten.forEach((line, index) => {
+    if (
+      line.startsWith("#EXT-X-MEDIA") &&
+      line.includes("TYPE=AUDIO")
+    ) {
+      audioIndices.push(index);
+    }
+  });
+
+  const audioLines = audioIndices.map(
+    (index) => rewritten[index],
+  );
+
+  audioLines.sort((a, b) => {
+    const aEnglish = a.includes(
+      'LANGUAGE="en"',
+    )
+      ? 0
+      : 1;
+
+    const bEnglish = b.includes(
+      'LANGUAGE="en"',
+    )
+      ? 0
+      : 1;
+
+    if (aEnglish !== bEnglish) {
+      return aEnglish - bEnglish;
+    }
+
+    const aDescription = a.includes(
+      "Audio Description",
+    )
+      ? 1
+      : 0;
+
+    const bDescription = b.includes(
+      "Audio Description",
+    )
+      ? 1
+      : 0;
+
+    return aDescription - bDescription;
+  });
+
+  audioIndices.forEach((index, i) => {
+    rewritten[index] = audioLines[i];
+  });
+
+  return rewritten.join("\n");
+}
+
+/*
+ * Health check
+ *
+ * GET /
+ * HEAD /
+ */
+app.route({
+  method: ["GET", "HEAD"],
+  url: "/",
+  handler: async (request, reply) => {
+    reply
+      .header(
+        "Cache-Control",
+        "no-store",
+      )
+      .code(200);
+
+    if (request.method === "HEAD") {
+      return reply.send();
+    }
+
+    return reply.send("OK");
+  },
+});
+
+/*
+ * CORS preflight
+ *
+ * OPTIONS /proxy
+ */
+app.options(
+  "/proxy",
+  async (request, reply) => {
+    const origin =
+      request.headers.origin || "";
+
+    if (
+      origin &&
+      !ALLOWED_ORIGINS.includes(origin)
+    ) {
+      return reply
+        .code(403)
+        .send();
+    }
+
+    if (origin) {
+      reply.header(
+        "Access-Control-Allow-Origin",
+        origin,
+      );
+    } else {
+      reply.header(
+        "Access-Control-Allow-Origin",
+        "*",
+      );
+    }
+
+    return reply
+      .code(204)
+      .header(
+        "Access-Control-Allow-Methods",
+        "GET,HEAD,OPTIONS",
+      )
+      .header(
+        "Access-Control-Allow-Headers",
+        "Range, Authorization, If-Range, If-None-Match, If-Modified-Since, Content-Type",
+      )
+      .header(
+        "Access-Control-Expose-Headers",
+        "*",
+      )
+      .header(
+        "Access-Control-Max-Age",
+        "86400",
+      )
+      .header(
+        "Vary",
+        "Origin",
+      )
+      .send();
+  },
+);
+
+/*
+ * Main proxy
+ *
+ * GET /proxy?url=<m3u8>
+ */
+app.route({
+  method: ["GET", "HEAD"],
+  url: "/proxy",
+
+  handler: async (request, reply) => {
+    try {
+      const {
+        url: urlParam,
+      } = request.query || {};
+
+      /*
+       * No URL
+       */
+      if (!urlParam) {
+        return reply
+          .code(400)
+          .send("Missing url");
+      }
+
+      /*
+       * Validate URL
+       */
+      let upstreamUrl;
+
+      try {
+        upstreamUrl = new URL(
+          urlParam,
+        );
+      } catch {
+        return reply
+          .code(400)
+          .send("Invalid url");
+      }
+
+      /*
+       * Only Screenify
+       */
+      if (!isAllowedUrl(upstreamUrl)) {
+        return reply
+          .code(403)
+          .send("Forbidden");
+      }
+
+      /*
+       * Only .m3u8 and .ts
+       */
+      const pathname =
+        upstreamUrl.pathname.toLowerCase();
+
+      const isM3U8 =
+        pathname.endsWith(".m3u8");
+
+      const isTS =
+        pathname.endsWith(".ts");
+
+      if (!isM3U8 && !isTS) {
+        return reply
+          .code(404)
+          .send("Not found");
+      }
+
+      /*
+       * Origin / Referer protection
+       */
+      if (!isAllowedOrigin(request)) {
+        return reply
+          .code(403)
+          .send({
+            success: false,
+            error: "Forbidden",
+          });
+      }
+
+      /*
+       * HEAD
+       */
+      if (request.method === "HEAD") {
+        return reply
+          .code(200)
+          .header(
+            "Cache-Control",
+            "no-store",
+          )
+          .send();
+      }
+
+      /*
+       * Fetch Screenify
+       */
+      const upstream = await fetch(
+        upstreamUrl.toString(),
+        {
+          headers: UPSTREAM_HEADERS,
+          redirect: "follow",
+        },
+      );
+
+      if (!upstream.ok) {
+        return reply
+          .code(502)
+          .send("Bad gateway");
+      }
+
+      const contentType =
+        upstream.headers.get(
+          "content-type",
+        ) || "";
+
+      const detectedM3U8 =
+        isM3U8 ||
+        contentType.includes(
+          "mpegurl",
+        ) ||
+        contentType.includes(
+          "m3u8",
+        );
+
+      /*
+       * M3U8
+       */
+      if (detectedM3U8) {
+        const text =
+          await upstream.text();
+
+        /*
+         * Since your public endpoint is:
+         *
+         * https://proxy.zxcstream.xyz/proxy
+         */
+        const proxyUrl =
+          "https://proxy.zxcstream.xyz/proxy";
+
+        const rewritten =
+          rewriteM3U8(
+            text,
+            upstreamUrl.toString(),
+            proxyUrl,
+          );
+
+        const origin =
+          request.headers.origin || "";
+
+        reply
+          .code(200)
+          .header(
+            "Content-Type",
+            "application/vnd.apple.mpegurl",
+          )
+          .header(
+            "Cache-Control",
+            "public, max-age=604800",
+          )
+          .header(
+            "Access-Control-Allow-Origin",
+            origin || "*",
+          )
+          .header(
+            "Access-Control-Allow-Methods",
+            "GET,HEAD,OPTIONS",
+          )
+          .header(
+            "Access-Control-Expose-Headers",
+            "*",
+          )
+          .header(
+            "Vary",
+            "Origin",
+          );
+
+        return reply.send(
+          rewritten,
+        );
+      }
+
+      /*
+       * TS SEGMENT
+       */
+      const buffer =
+        await upstream.arrayBuffer();
+
+      const origin =
+        request.headers.origin || "";
+
+      reply
+        .code(200)
+        .header(
+          "Content-Type",
+          contentType ||
+            "video/mp2t",
+        )
+        .header(
+          "Cache-Control",
+          "public, max-age=31536000, immutable",
+        )
+        .header(
+          "Access-Control-Allow-Origin",
+          origin || "*",
+        )
+        .header(
+          "Access-Control-Allow-Methods",
+          "GET,HEAD,OPTIONS",
+        )
+        .header(
+          "Access-Control-Expose-Headers",
+          "*",
+        )
+        .header(
+          "Vary",
+          "Origin",
+        );
+
+      return reply.send(
+        Buffer.from(buffer),
+      );
+    } catch (error) {
+      console.error(
+        "[PROXY]",
+        error,
+      );
+
+      return reply
+        .code(500)
+        .send(
+          "Internal server error",
+        );
+    }
+  },
+});
+
+/*
+ * Start
+ */
+app.listen({
+  host: "127.0.0.1",
+  port: PORT,
+}).then(() => {
+  console.log(
+    `Proxy running on 127.0.0.1:${PORT}`,
+  );
+});

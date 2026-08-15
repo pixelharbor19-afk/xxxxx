@@ -13,43 +13,15 @@ const supabase = createClient(
 
 const SCREENIFY = "https://www.screenify.fun";
 
-const DAEDALUS_WORKERS = [
-  "test52-b2c",
-  "test51-8b1",
-  "test50-6c3",
-  "test49-3b0",
-  "test48-104",
-  "test47-0f7",
-  "test46-96a",
-  "test45-b77",
-  "test44-255",
-  "test42-947",
-  "test43-cbe",
-  //NO TOKEN
-  "test41-2c1",
-  "test40-fdf",
-  "test39-43c",
-  "test38-eab",
-  "test37-93b",
-  "test36-59e",
-  "test35-f46",
-  "test34-2ea",
-  "test33-4ce",
-  "test32-dc9",
-  "test31-5f3",
-  "test30-997",
-  "amenohabakiri174",
-  "zxcprime371",
-];
+const DAEDALUS_WORKERS = ["https://proxy.zxcstream.xyz"];
 
 async function resolveWorker(upstreamPath: string): Promise<string | null> {
   const shuffled = [...DAEDALUS_WORKERS].sort(() => Math.random() - 0.5);
 
   for (const worker of shuffled) {
-    const baseUrl = `https://daedalus.${worker}.workers.dev`;
     try {
       const probe = await fetchWithTimeout(
-        baseUrl,
+        worker,
         { method: "GET" },
         4000,
       ).catch(() => null);
@@ -58,7 +30,7 @@ async function resolveWorker(upstreamPath: string): Promise<string | null> {
         probe &&
         (probe.status === 200 || probe.status === 404 || probe.status === 206)
       ) {
-        return `${baseUrl}${upstreamPath}`;
+        return `${worker}${upstreamPath}`;
       }
     } catch {
       // try next
