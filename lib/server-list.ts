@@ -27,12 +27,12 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "4K Support & Fast",
   },
-  // {
-  //   name: "Resshin IV",
-  //   server: "1resshin",
-  //   status: "queue",
-  //   desc: "Download & Multi Audio Support",
-  // },
+  {
+    name: "Resshin IV",
+    server: "1resshin",
+    status: "queue",
+    desc: "Download & Multi Audio Support",
+  },
   // {
   //   name: "Daedalus",
   //   server: "1daedalus",
