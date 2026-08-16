@@ -96,6 +96,7 @@ export interface VideoControlsProps {
   setShowServer: Dispatch<SetStateAction<boolean>>;
 
   introData: IntroTypesResponse | undefined;
+  episodeSelector: boolean;
 }
 export default function MainControls({
   currentTime,
@@ -147,6 +148,7 @@ export default function MainControls({
   setShowServer,
 
   introData,
+  episodeSelector,
 }: VideoControlsProps) {
   const router = useRouter();
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -501,7 +503,7 @@ export default function MainControls({
                 source={source}
                 dubs={dubs}
               />
-              {media_type === "tv" && (
+              {media_type === "tv" && episodeSelector && (
                 <button
                   onClick={() => {
                     setOpen((prev) => !prev);
@@ -566,7 +568,7 @@ export default function MainControls({
           </div>
         </div>
       </div>
-      {media_type === "tv" && (
+      {media_type === "tv" && episodeSelector && (
         <Episodes
           tmdbId={tmdbId}
           season={season}

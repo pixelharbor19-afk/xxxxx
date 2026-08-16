@@ -40,14 +40,14 @@ export const initialServers: ServerTypes[] = [
   //   desc: "Alternative",
   // },
   {
-    name: "Athena IV",
+    name: "Athena V",
     server: "1athena",
     status: "queue",
     desc: "Main Server & Multi Audio Support",
   },
 
   {
-    name: "Sentinel V",
+    name: "Sentinel VI",
     server: "1sentinel",
     status: "queue",
     desc: "K-Dramas, C-Dramas & Asian movies",

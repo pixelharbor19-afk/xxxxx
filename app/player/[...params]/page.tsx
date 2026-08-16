@@ -109,6 +109,7 @@ export default function Player() {
   const language = searchParams.get("language") || "en-US";
   const subLang = searchParams.get("subLang") || "off";
   const back = searchParams.get("back") === "true";
+  const episodeSelector = searchParams.get("episodeSelector") !== "false";
   const resshin = searchParams.get("resshin") === "true";
   const dubLang =
     searchParams.get("dubLang") || searchParams.get("dublang") || "";
@@ -1231,6 +1232,7 @@ export default function Player() {
             setShowServer={setShowServer}
             introData={introData}
             status={status}
+            episodeSelector={episodeSelector}
           />
         )}
       </AnimatePresence>
