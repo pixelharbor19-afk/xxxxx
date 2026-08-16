@@ -355,6 +355,10 @@ const HOLLY_WORKERS = [
   "https://spring-water-af97.hotdog6.workers.dev/",
   "https://muddy-glade-0cdd.hotdog8.workers.dev/",
   "https://wandering-lab-8aaf.hotdog7.workers.dev/",
+  "https://lucky-lake-4dcd.hotdog9.workers.dev/",
+  "https://wandering-bar-125d.hotdog10.workers.dev/",
+  "https://old-thunder-6829.hotdog12.workers.dev/",
+  "https://spring-snowflake-0b64.hotdog11.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
