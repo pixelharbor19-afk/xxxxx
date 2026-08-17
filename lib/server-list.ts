@@ -20,17 +20,17 @@ export const initialServers: ServerTypes[] = [
     desc: "4K Support & Fast",
   },
   {
-    name: "Icarus IiI",
+    name: "Icarus III",
     server: "1icarus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
-  // {
-  //   name: "Resshin III",
-  //   server: "1resshin",
-  //   status: "queue",
-  //   desc: "Alternative Multi Audio Support",
-  // },
+  {
+    name: "Resshin v",
+    server: "1resshin",
+    status: "queue",
+    desc: "Alternative Multi Audio Support",
+  },
 
   {
     name: "Athena IV",
