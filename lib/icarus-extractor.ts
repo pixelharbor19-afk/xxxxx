@@ -115,11 +115,11 @@ export const proxies = [
   "https://frosty-term-80f0.icarus036.workers.dev/",
   "https://misty-wildflower-f895.icarus034.workers.dev/",
   //////
-  "https://snowy-lab-9d5f.icarus033.workers.dev/",
-  "https://rough-pond-0449.icarus032.workers.dev/",
-  "https://weathered-mountain-aca0.icarus031.workers.dev/",
-  "https://fragrant-surf-698c.icarus030.workers.dev/",
-  //
+  // "https://snowy-lab-9d5f.icarus033.workers.dev/",
+  // "https://rough-pond-0449.icarus032.workers.dev/",
+  // "https://weathered-mountain-aca0.icarus031.workers.dev/",
+  // "https://fragrant-surf-698c.icarus030.workers.dev/",
+  // //
   // "https://curly-snowflake-2593.icarus029.workers.dev/",
   // "https://calm-glitter-8377.icarus028.workers.dev/",
   // "https://withered-lab-a730.icarus027.workers.dev/",

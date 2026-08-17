@@ -4,13 +4,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDoubleTap } from "use-double-tap";
-import {
-  ArrowLeft,
-  RefreshCcw,
-  RotateCw,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+import { RefreshCcw, RotateCw, TriangleAlert, X } from "lucide-react";
 import { Tailspin } from "ldrs/react";
 import "ldrs/react/Tailspin.css";
 import { cn } from "@/lib/utils";
@@ -41,7 +35,6 @@ import { useSandboxDetection } from "@/hooks/useSandboxDetection";
 import { useTrackEmbedder } from "@/hooks/useTrackEmbedder";
 import Link from "next/link";
 import useSubtitle from "@/hooks/subs";
-import Script from "next/script";
 function getRootDomain(url: string) {
   try {
     const hostname = new URL(url).hostname;
@@ -70,25 +63,25 @@ function getRootDomain(url: string) {
   }
 }
 
-declare global {
-  interface Window {
-    webstats?: (
-      event: string,
-      data: {
-        type: "movie" | "tvshow";
-        ids: {
-          tmdb: string;
-        };
-        title: string;
-        episode?: {
-          season: number;
-          number: number;
-          title?: string;
-        };
-      },
-    ) => void;
-  }
-}
+// declare global {
+//   interface Window {
+//     webstats?: (
+//       event: string,
+//       data: {
+//         type: "movie" | "tvshow";
+//         ids: {
+//           tmdb: string;
+//         };
+//         title: string;
+//         episode?: {
+//           season: number;
+//           number: number;
+//           title?: string;
+//         };
+//       },
+//     ) => void;
+//   }
+// }
 
 export {};
 export default function Player() {
@@ -723,30 +716,30 @@ export default function Player() {
   // );
   // console.log(restricted && restrictionActive && isSandboxed);
 
-  useEffect(() => {
-    if (webstatsTracked.current) return;
-    if (!loaded || !metadataLoad) return;
+  // useEffect(() => {
+  //   if (webstatsTracked.current) return;
+  //   if (!loaded || !metadataLoad) return;
 
-    webstatsTracked.current = true;
+  //   webstatsTracked.current = true;
 
-    if (media_type === "tv") {
-      window.webstats?.("content", {
-        type: "tvshow",
-        ids: { tmdb: tmdbId },
-        title,
-        episode: {
-          season: Number(season),
-          number: Number(episode),
-        },
-      });
-    } else {
-      window.webstats?.("content", {
-        type: "movie",
-        ids: { tmdb: tmdbId },
-        title,
-      });
-    }
-  }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
+  //   if (media_type === "tv") {
+  //     window.webstats?.("content", {
+  //       type: "tvshow",
+  //       ids: { tmdb: tmdbId },
+  //       title,
+  //       episode: {
+  //         season: Number(season),
+  //         number: Number(episode),
+  //       },
+  //     });
+  //   } else {
+  //     window.webstats?.("content", {
+  //       type: "movie",
+  //       ids: { tmdb: tmdbId },
+  //       title,
+  //     });
+  //   }
+  // }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
   if (isLoading) {
     return (
       <div className="bg-black  h-svh flex justify-center items-center">
@@ -990,11 +983,11 @@ export default function Player() {
         isVisible ? "" : "cursor-none",
       )}
     >
-      <Script
+      {/* <Script
         src="https://a.vidstats.top/js/p.js?s=81b8fdef-01aa-4a35-91b8-562982270e9d"
         strategy="afterInteractive"
         onLoad={() => setLoaded(true)}
-      />
+      /> */}
 
       <AnimatePresence>
         {showFallbackBanner && (
