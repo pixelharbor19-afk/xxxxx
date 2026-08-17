@@ -19,12 +19,12 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
-  {
-    name: "Resshin III",
-    server: "1resshin",
-    status: "queue",
-    desc: "Alternative Multi Audio Support",
-  },
+  // {
+  //   name: "Resshin III",
+  //   server: "1resshin",
+  //   status: "queue",
+  //   desc: "Alternative Multi Audio Support",
+  // },
 
   {
     name: "Berkas V",
