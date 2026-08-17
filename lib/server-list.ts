@@ -20,23 +20,23 @@ export const initialServers: ServerTypes[] = [
     desc: "Download & Multi Audio Support",
   },
   {
-    name: "Berkas III",
+    name: "Resshin III",
+    server: "1resshin",
+    status: "queue",
+    desc: "Alternative Multi Audio Support",
+  },
+
+  {
+    name: "Berkas V",
     server: "1berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
-    name: "Athena IV",
+    name: "Athena V",
     server: "1athena",
     status: "queue",
     desc: "Main Server & Multi Audio Support",
-  },
-
-  {
-    name: "Resshin V",
-    server: "1resshin",
-    status: "queue",
-    desc: "Alternative Multi Audio Support",
   },
 
   // {
