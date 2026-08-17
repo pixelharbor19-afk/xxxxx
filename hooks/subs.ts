@@ -34,7 +34,7 @@ export default function useSubtitle({
     refetchOnReconnect: false,
     queryFn: async () => {
       const { xt, rt } = generateFrontendToken(String(tmdbId));
-      const backendRes = await axios.post("/backend/token__", {
+      const backendRes = await axios.post("/backend/token", {
         [FIELD_MAP.id]: tmdbId,
         [FIELD_MAP.fToken]: xt,
         [FIELD_MAP.ts]: rt,

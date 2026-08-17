@@ -1,50 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import crypto from "crypto";
+import { ALLOWED_ORIGINS } from "@/lib/allowed-referers";
+import { FIELD_MAP } from "@/lib/token";
+import { SALT } from "@/lib/salt";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL_SUS!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY_SUS!,
-);
+const SECRET = process.env.API_SECRET!;
 
-export async function GET(req: NextRequest) {
-  const ip =
-    req.headers.get("cf-connecting-ip") ||
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+function validateFrontendToken(xt: string, id: string, rt: number) {
+  const expected = crypto
+    .createHash("sha512")
+    .update(`${rt}:${SALT}:${id}`) // must mirror generateFrontendToken
+    .digest("hex")
+    .slice(0, 64);
 
-  console.log(`[SCRAPING ROUTE NO EXIST] | IP: ${ip}`);
+  return expected === xt && Date.now() - rt < 120000;
+}
 
-  try {
-    const { data } = await supabase
-      .from("suspicious_ips")
-      .select("hits")
-      .eq("ip", ip)
-      .maybeSingle();
+function generateBackendToken(xt: string, id: string) {
+  const rt = Date.now();
+  // 🔁 Rotate: include SALT in HMAC input
+  const sig = crypto
+    .createHmac("sha256", SECRET)
+    .update(`${SALT}:${id}:${xt}:${rt}`) // was: `${id}:${f_token}:${ts}`
+    .digest("hex");
 
-    if (data) {
-      await supabase
-        .from("suspicious_ips")
-        .update({
-          hits: data.hits + 1,
-          last_seen: new Date().toISOString(),
-        })
-        .eq("ip", ip);
-    } else {
-      await supabase.from("suspicious_ips").insert({
-        ip,
-        hits: 1,
-        asn: req.headers.get("cf-connecting-asn"),
-        country: req.headers.get("cf-ipcountry"),
-        method: req.method,
-        path: req.nextUrl.pathname,
-        user_agent: req.headers.get("user-agent"),
-        referer: req.headers.get("referer"),
-      });
-    }
-  } catch (err) {
-    console.error("Failed to log suspicious IP:", err);
+  return { [FIELD_MAP.token]: sig, [FIELD_MAP.ts]: rt };
+  // returns: { sig: "...", rt: 1234567890 }
+}
+
+const blockedIPs = ["45.86.86.43", "192.142.18.175"];
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const id = body[FIELD_MAP.id]; // body.mid
+  const xt = body[FIELD_MAP.fToken]; // body.xt
+  const rt = body[FIELD_MAP.ts]; // body.rt
+
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  const ip = forwardedFor?.split(",")[0] || "Unknown";
+  const origin = req.headers.get("origin") || "";
+
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return NextResponse.json(
+      { success: false, error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 
-  return new NextResponse(null, { status: 429 });
+  if (blockedIPs.includes(ip)) {
+    // console.log("Blocked IP tried to access:", ip, ua);
+    return new Response(null, { status: 403 });
+  }
+
+  if (!validateFrontendToken(xt, id, rt)) {
+    return NextResponse.json(
+      { error: "Blocked IP tried to access:" },
+      { status: 422 },
+    );
+  }
+
+  return NextResponse.json(generateBackendToken(xt, id));
 }
+// Bind HMAC token to IP — so even a stolen token is useless
