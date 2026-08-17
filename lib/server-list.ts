@@ -14,22 +14,28 @@ export const initialServers: ServerTypes[] = [
     desc: "Built-In Subtitle - English",
   },
   {
-    name: "Icarus II",
+    name: "Berkas II",
+    server: "1berkas",
+    status: "queue",
+    desc: "4K Support & Fast",
+  },
+  {
+    name: "Athena III",
+    server: "1athena",
+    status: "queue",
+    desc: "Main Server & Multi Audio Support",
+  },
+  {
+    name: "Icarus IV",
     server: "1icarus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
-  // {
-  //   name: "Resshin III",
-  //   server: "1resshin",
-  //   status: "queue",
-  //   desc: "Alternative Multi Audio Support",
-  // },
   {
-    name: "Berkas IV",
-    server: "1berkas",
+    name: "Resshin V",
+    server: "1resshin",
     status: "queue",
-    desc: "4K Support & Fast",
+    desc: "Alternative Multi Audio Support",
   },
 
   // {
@@ -38,12 +44,6 @@ export const initialServers: ServerTypes[] = [
   //   status: "queue",
   //   desc: "Alternative",
   // },
-  {
-    name: "Athena V",
-    server: "1athena",
-    status: "queue",
-    desc: "Main Server & Multi Audio Support",
-  },
 
   {
     name: "Sentinel VI",
