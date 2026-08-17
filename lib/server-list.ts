@@ -14,23 +14,24 @@ export const initialServers: ServerTypes[] = [
     desc: "Built-In Subtitle - English",
   },
   {
-    name: "Berkas II",
+    name: "Icarus II",
+    server: "1icarus",
+    status: "queue",
+    desc: "Download & Multi Audio Support",
+  },
+  {
+    name: "Berkas III",
     server: "1berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
-    name: "Athena III",
+    name: "Athena IV",
     server: "1athena",
     status: "queue",
     desc: "Main Server & Multi Audio Support",
   },
-  {
-    name: "Icarus IV",
-    server: "1icarus",
-    status: "queue",
-    desc: "Download & Multi Audio Support",
-  },
+
   {
     name: "Resshin V",
     server: "1resshin",
