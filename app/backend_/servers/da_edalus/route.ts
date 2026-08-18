@@ -30,12 +30,10 @@ async function fetchRogplayStreams(
       tmdbId,
       mediaType,
     });
-
     if (mediaType === "tv") {
-      if (season) params.set("season", season);
-      if (episode) params.set("episode", episode);
+      if (season) params.set("seasonNum", season);
+      if (episode) params.set("episodeNum", episode);
     }
-
     const encryptedRes = await fetchWithTimeout(
       `${ROGPLAY_API}?${params.toString()}`,
       { headers: HEADERS },
