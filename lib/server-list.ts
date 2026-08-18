@@ -21,13 +21,13 @@ export const initialServers: ServerTypes[] = [
   },
   {
     name: "Icarus III",
-    server: "ic_arus",
+    server: "titi",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
     name: "Resshin IV",
-    server: "re_sshin",
+    server: "kiki",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
