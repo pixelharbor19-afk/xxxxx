@@ -451,7 +451,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (Date.now() - ts > 15000) {
+    if (Date.now() - ts > 120000) {
       logRequest(401, "token expired");
       return NextResponse.json(
         { success: false, error: "Invalid token" },

@@ -13,7 +13,7 @@ function validateFrontendToken(xt: string, id: string, rt: number) {
     .digest("hex")
     .slice(0, 64);
 
-  return expected === xt && Date.now() - rt < 15000;
+  return expected === xt && Date.now() - rt < 120000;
 }
 
 function generateBackendToken(xt: string, id: string) {
