@@ -4,15 +4,15 @@ import { SALT } from "./salt";
 // 🔁 Rotate these constants every few weeks
 
 const FIELD_MAP = {
-  id: "c81f42d9e25464316f408",
-  fToken: "9e3c7b14af457652481d0e493",
+  id: "c81f42d9e225464316f408",
+  fToken: "9e3c7b134af457652481d0e493",
   ts: "54d8b2681fa37e60b1fd",
   token: "b7f18e4c225d63aef81c4a9",
-  title: "2af9c71de38480546391e",
-  year: "f0b34e866a909275a14f",
-  season: "d41e8c6b59af575100fc48a7e",
-  episode: "8b7d13fe69c94541d8e7bc2",
-  imdbId: "6e2af5c97d19840b631a6d54",
+  title: "2af9c71de328480546391e",
+  year: "f0b34e866a2909275a14f",
+  season: "d41e8c26b59af575100fc48a7e",
+  episode: "8b7d132fe69c94541d8e7bc2",
+  imdbId: "6e2af5c974d19840b631a6d54",
 } as const;
 
 export { FIELD_MAP };
