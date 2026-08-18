@@ -1,3 +1,3 @@
 // lib/salt.ts
 
-export const SALT = "3563343363768709090";
+export const SALT = "35633433637682422222132116709090";
