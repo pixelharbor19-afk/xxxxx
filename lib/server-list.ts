@@ -9,7 +9,7 @@ export const RESSHIN_SERVER: ServerTypes = {
 export const initialServers: ServerTypes[] = [
   {
     name: "Orion I",
-    server: "or_ion",
+    server: "kantot",
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
