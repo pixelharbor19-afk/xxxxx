@@ -209,8 +209,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const PROXY_URL = "https://screen.friedrice3.workers.dev/";
-
     links = links.map((link: any) => {
       if (!link.link) return link;
 
@@ -223,9 +221,7 @@ export async function GET(req: NextRequest) {
       return {
         ...link,
         type: "hls",
-        link: link.link.startsWith(PROXY_URL)
-          ? link.link
-          : `${PROXY_URL}?url=${encodeURIComponent(link.link)}`,
+        link: link.link,
       };
     });
 
