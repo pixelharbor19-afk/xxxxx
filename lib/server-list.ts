@@ -9,25 +9,25 @@ export const RESSHIN_SERVER: ServerTypes = {
 export const initialServers: ServerTypes[] = [
   {
     name: "Orion I",
-    server: "o_rion",
+    server: "or_ion",
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
   {
     name: "Berkas II",
-    server: "b_erkas",
+    server: "be_rkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
     name: "Icarus III",
-    server: "i_carus",
+    server: "ic_arus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
     name: "Resshin IV",
-    server: "r_esshin",
+    server: "re_sshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
