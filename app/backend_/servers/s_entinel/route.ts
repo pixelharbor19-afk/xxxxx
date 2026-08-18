@@ -156,12 +156,20 @@ async function fetchOneTouchStreams(
     [];
 
   const links = sources
-    .map((s: any) => ({
-      type: url.toLowerCase().includes(".m3u8") ? "hls" : "mp4",
-      link: s.file ?? s.url ?? s.src,
-      resolution: parseInt(s.label ?? s.quality ?? "0") || 0,
-    }))
-    .filter((s: any) => s.link);
+    .map((s: any) => {
+      const originalLink = s.file ?? s.url ?? s.src;
+
+      if (!originalLink) return null;
+
+      const isHls = originalLink.toLowerCase().includes(".m3u8");
+
+      return {
+        type: isHls ? "hls" : "mp4",
+        link: originalLink,
+        resolution: parseInt(s.label ?? s.quality ?? "0") || 0,
+      };
+    })
+    .filter((s: any) => s !== null);
 
   const rawSubs =
     result.track ??
@@ -293,6 +301,7 @@ export async function GET(req: NextRequest) {
         );
       }
     }
+
     if (!links.length) {
       logRequest(404, "no streams found");
       return NextResponse.json(
@@ -300,7 +309,29 @@ export async function GET(req: NextRequest) {
         { status: 404 },
       );
     }
+
+    const PROXY_URL = "https://screen.friedrice3.workers.dev/";
+
+    links = links.map((link: any) => {
+      if (!link.link) return link;
+
+      const isHls = link.link.toLowerCase().includes(".m3u8");
+
+      if (!isHls) {
+        return link;
+      }
+
+      return {
+        ...link,
+        type: "hls",
+        link: link.link.startsWith(PROXY_URL)
+          ? link.link
+          : `${PROXY_URL}?url=${encodeURIComponent(link.link)}`,
+      };
+    });
+
     logRequest(200, "SENTINEL OK!!!!!");
+
     return NextResponse.json({
       success: true,
       links,

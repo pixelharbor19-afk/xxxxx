@@ -32,14 +32,14 @@ export const initialServers: ServerTypes[] = [
     desc: "Alternative Multi Audio Support",
   },
 
+  // {
+  //   name: "Athena V",
+  //   server: "a_thena",
+  //   status: "queue",
+  //   desc: "Main Server & Multi Audio Support",
+  // },
   {
-    name: "Athena V",
-    server: "a_thena",
-    status: "queue",
-    desc: "Main Server & Multi Audio Support",
-  },
-  {
-    name: "Sentinel VI",
+    name: "Sentinel V",
     server: "s_entinel",
     status: "queue",
     desc: "K-Dramas, C-Dramas & Asian movies",
