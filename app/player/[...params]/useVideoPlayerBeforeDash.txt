@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import { useSettingsStore } from "@/zustand/settings-store";
 import { useVideoProgressStore } from "@/zustand/videoProgressStore";
-import * as dashjs from "dashjs";
+import { stat } from "fs";
 export interface VideoPlayerState {
   playing: boolean;
   currentTime: number;
@@ -106,7 +106,6 @@ export function useVideoPlayer({
 
   // ========================
   const videoRef = useRef<HTMLVideoElement>(null);
-  const dashRef = useRef<dashjs.MediaPlayerClass | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isSeekingRef = useRef(false);
   const hlsRef = useRef<Hls | null>(null);
@@ -203,16 +202,6 @@ export function useVideoPlayer({
         hls.destroy();
         hlsRef.current = null;
       };
-    } else if (srcType === "dash") {
-      const dash = dashjs.MediaPlayer().create();
-
-      dash.initialize(video, playerSrc, true);
-      dashRef.current = dash;
-
-      return () => {
-        dash.reset();
-        dashRef.current = null;
-      };
     } else {
       video.src = playerSrc;
       video.load();
@@ -221,16 +210,14 @@ export function useVideoPlayer({
   }, [playerSrc, srcType]);
 
   useEffect(() => {
-    if (srcType !== "hls" || !hlsRef.current) return;
-
+    if (!hlsRef.current) return;
     hlsRef.current.currentLevel = qualityId === "auto" ? -1 : Number(qualityId);
-  }, [qualityId, srcType]);
+  }, [qualityId]);
 
   useEffect(() => {
-    if (srcType !== "hls" || !hlsRef.current) return;
-
+    if (!hlsRef.current) return;
     hlsRef.current.audioTrack = audioId === null ? 0 : Number(audioId);
-  }, [audioId, srcType]);
+  }, [audioId]);
 
   useEffect(() => {
     // effectRunCount.current += 1;
@@ -446,6 +433,7 @@ export function useVideoPlayer({
     handleServerFail,
     playback.ended,
   ]);
+
   useEffect(() => {
     setQuality([]);
     setAudioTracks([]);
