@@ -158,7 +158,8 @@ export async function GET(req: NextRequest) {
                     type: (q.url ?? "").includes(".m3u8")
                       ? ("hls" as const)
                       : ("mp4" as const),
-                    link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
+                    link: `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    // link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   };
                 }),
             );
