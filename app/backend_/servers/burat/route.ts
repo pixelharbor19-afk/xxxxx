@@ -186,7 +186,7 @@ export async function GET(req: NextRequest) {
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
 
     const message =
-      `[SENTINEL] ${tmdbId}/${mediaType}${extra} | ` +
+      `[VIDLINK] ${tmdbId}/${mediaType}${extra} | ` +
       `${status} | ${reason} | ` +
       `ts: ${new Date().toISOString()} | IP: ${ip}`;
 
