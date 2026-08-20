@@ -7,7 +7,6 @@ import { isValidReferer } from "@/lib/allowed-referers";
 const ENC_DEC_API = "https://enc-dec.app/api";
 const VIDLINK_API = "https://vidlink.pro/api/b";
 const DASH_PROXY = "https://noon.mooncase.online";
-// const DASH_PROXY = "https://screen.friedrice3.workers.dev/";
 const HEADERS = {
   "User-Agent":
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
@@ -47,6 +46,7 @@ type Subtitle = {
 type StreamResult = {
   links: Link[];
   subtitles: Subtitle[];
+  error?: string;
 };
 
 async function fetchVidlinkStreams(
@@ -61,10 +61,22 @@ async function fetchVidlinkStreams(
     15000,
   );
 
+  if (!encryptedResponse.ok) {
+    return {
+      links: [],
+      subtitles: [],
+      error: `decoder HTTP ${encryptedResponse.status}`,
+    };
+  }
+
   const encryptedData = await encryptedResponse.json();
 
-  if (encryptedData.status !== 200 || !encryptedData.result) {
-    return { links: [], subtitles: [] };
+  if (!encryptedData.result) {
+    return {
+      links: [],
+      subtitles: [],
+      error: `decoder returned status ${encryptedData.status}`,
+    };
   }
 
   const encryptedId = encryptedData.result;
@@ -81,14 +93,22 @@ async function fetchVidlinkStreams(
   );
 
   if (!response.ok) {
-    return { links: [], subtitles: [] };
+    return {
+      links: [],
+      subtitles: [],
+      error: `Source HTTP ${response.status}`,
+    };
   }
 
   const data = await response.json();
   const stream = data?.stream;
 
   if (!stream?.playlist) {
-    return { links: [], subtitles: [] };
+    return {
+      links: [],
+      subtitles: [],
+      error: "Source returned no playlist",
+    };
   }
 
   const subtitles: Subtitle[] = Array.isArray(stream.captions)
@@ -119,39 +139,7 @@ async function fetchVidlinkStreams(
     subtitles,
   };
 }
-// function proxyLinks(links: Link[]): Link[] {
-//   return links.map((link) => {
-//     if (link.type !== "dash" || !link.link) {
-//       return link;
-//     }
 
-//     const cookie = link.headers?.Cookie;
-
-//     if (!cookie) {
-//       return link;
-//     }
-
-//     const mpd = new URL(link.link);
-
-//     const proxyUrl = new URL(DASH_PROXY);
-
-//     proxyUrl.searchParams.set(
-//       "base",
-//       `${mpd.origin}${mpd.pathname.substring(
-//         0,
-//         mpd.pathname.lastIndexOf("/") + 1,
-//       )}`,
-//     );
-
-//     proxyUrl.searchParams.set("cookie", cookie);
-
-//     return {
-//       ...link,
-//       link: proxyUrl.toString(),
-//       headers: undefined,
-//     };
-//   });
-// }
 function proxyLinks(links: Link[]): Link[] {
   return links.map((link) => {
     if (link.type !== "dash" || !link.link) {
@@ -253,8 +241,8 @@ export async function GET(req: NextRequest) {
       episode,
     );
 
-    if (!result.links.length) {
-      return error(404, "No streams found");
+    if (result.error) {
+      return error(502, result.error);
     }
 
     const links = proxyLinks(result.links);
