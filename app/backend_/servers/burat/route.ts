@@ -241,7 +241,8 @@ export async function GET(req: NextRequest) {
     const seasonKey = season ?? "";
     const episodeKey = episode ?? "";
 
-    // ─── CACHE (2 hours via created_at) ──────────────────────────────────────
+    // ─── CACHE (1 day via created_at) ──────────────────────────────────────
+
     const { data: cached } = await supabase
       .from("vidlink_cache")
       .select("playlist, cookie, subtitles")
@@ -249,7 +250,10 @@ export async function GET(req: NextRequest) {
       .eq("media_type", mediaType)
       .eq("season", seasonKey)
       .eq("episode", episodeKey)
-      .gt("created_at", new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString())
+      .gt(
+        "created_at",
+        new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      )
       .maybeSingle();
 
     if (cached?.playlist && cached?.cookie) {
