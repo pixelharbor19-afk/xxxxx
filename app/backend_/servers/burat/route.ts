@@ -3,7 +3,11 @@ import { validateBackendToken } from "@/lib/validate-token";
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { FIELD_MAP } from "@/lib/token";
 import { isValidReferer } from "@/lib/allowed-referers";
-
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.VIDLINK_SUPABASE_URL!,
+  process.env.VIDLINK_SUPABASE_SERVICE_ROLE_KEY!,
+);
 const ENC_DEC_API = "https://enc-dec.app/api";
 const VIDLINK_API = "https://vidlink.pro/api/b";
 const DASH_PROXY = "https://noon.mooncase.online";
@@ -234,6 +238,39 @@ export async function GET(req: NextRequest) {
       return error(403, "Forbidden");
     }
 
+    const seasonKey = season ?? "";
+    const episodeKey = episode ?? "";
+
+    // ─── CACHE ──────────────────────────────────────────────────────────────
+    const { data: cached } = await supabase
+      .from("vidlink_cache")
+      .select("playlist, cookie, subtitles")
+      .eq("tmdb_id", Number(tmdbId))
+      .eq("media_type", mediaType)
+      .eq("season", seasonKey)
+      .eq("episode", episodeKey)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle();
+
+    if (cached?.playlist && cached?.cookie) {
+      const links = proxyLinks([
+        {
+          type: "dash",
+          link: cached.playlist,
+          resolution: 0,
+          headers: { Cookie: cached.cookie },
+        },
+      ]);
+      logRequest(200, "CACHE HIT");
+      return NextResponse.json({
+        success: true,
+        links,
+        subtitles: cached.subtitles ?? [],
+        meow: true,
+      });
+    }
+
+    // ─── Fresh ──────────────────────────────────────────────────────────────
     const result = await fetchVidlinkStreams(
       tmdbId,
       mediaType,
@@ -243,6 +280,26 @@ export async function GET(req: NextRequest) {
 
     if (result.error) {
       return error(502, result.error);
+    }
+
+    const original = result.links[0];
+    const playlist = original?.link;
+    const cookie = original?.headers?.Cookie;
+
+    if (playlist && cookie) {
+      await supabase.from("vidlink_cache").upsert(
+        {
+          tmdb_id: Number(tmdbId),
+          media_type: mediaType,
+          season: seasonKey,
+          episode: episodeKey,
+          playlist,
+          cookie,
+          subtitles: result.subtitles,
+          expires_at: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+        },
+        { onConflict: "tmdb_id,media_type,season,episode" },
+      );
     }
 
     const links = proxyLinks(result.links);
