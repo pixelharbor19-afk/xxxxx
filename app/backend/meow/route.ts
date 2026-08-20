@@ -3,8 +3,13 @@ import crypto from "crypto";
 import { ALLOWED_ORIGINS } from "@/lib/allowed-referers";
 import { FIELD_MAP } from "@/lib/token";
 import { SALT } from "@/lib/salt";
+import { createClient } from "@supabase/supabase-js";
 
 const SECRET = process.env.API_SECRET!;
+const supabase = createClient(
+  process.env.SUPABASE_URL_TRACK!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY_TRACK!,
+);
 
 function validateFrontendToken(xt: string, id: string, rt: number) {
   const expected = crypto
@@ -57,6 +62,31 @@ export async function POST(req: NextRequest) {
       { error: "Blocked IP tried to access:" },
       { status: 422 },
     );
+  }
+
+  const tokenHash = crypto.createHash("sha256").update(xt).digest("hex");
+
+  const { data: existing } = await supabase
+    .from("used_tokens")
+    .select("hits, ips")
+    .eq("token_hash", tokenHash)
+    .maybeSingle();
+
+  if (existing) {
+    await supabase
+      .from("used_tokens")
+      .update({
+        hits: existing.hits + 1,
+        ips: existing.ips.includes(ip) ? existing.ips : [...existing.ips, ip],
+        last_used_at: new Date().toISOString(),
+      })
+      .eq("token_hash", tokenHash);
+  } else {
+    await supabase.from("used_tokens").insert({
+      token_hash: tokenHash,
+      hits: 1,
+      ips: [ip],
+    });
   }
 
   return NextResponse.json(generateBackendToken(xt, id));
