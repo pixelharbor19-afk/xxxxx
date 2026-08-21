@@ -8,69 +8,47 @@ export const RESSHIN_SERVER: ServerTypes = {
 };
 export const initialServers: ServerTypes[] = [
   {
-    name: "Orion I",
+    name: "Aquarius I",
+    server: "aquarius",
+    status: "queue",
+    desc: "Movies & TV Shows - HD Support",
+  },
+  {
+    name: "Orion II",
     server: "orion",
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
   {
-    name: "Berkas II",
+    name: "Berkas III",
     server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
-    name: "Atlas III",
+    name: "Atlas IV",
     server: "burat",
     status: "queue",
-    desc: "HD & Stable",
+    desc: "HD Quality & Reliable",
   },
   {
-    name: "Icarus IV",
+    name: "Icarus V",
     server: "icarus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
-    name: "Resshin V",
+    name: "Resshin VI",
     server: "resshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
-
   {
-    name: "Daedalus VI",
+    name: "Daedalus VII",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",
   },
-
-  // {
-  //   name: "Talos V",
-  //   server: "zeus",
-  //   status: "queue",
-  //   desc: "Alternative",
-  // },
-  // {
-  //   name: "Atlas VI",
-  //   server: "atlas_v2",
-  //   status: "queue",
-  //   desc: "4K Support & Multi Audio",
-  // },
-
-  // {
-  //   name: "Daedalus V",
-  //   server: "daedalus",
-  //   status: "queue",
-  //   desc: "Multi Audio Support",
-  // },
-
-  // {
-  //   name: "Talos VII",
-  //   server: "talos",
-  //   status: "queue",
-  //   desc: "Spanish Audio",
-  // },
 ];
 //https://megacloudx.net/pl/90521/8/27/
 //https://megacloudx.net/mv/tt8814476/1081003/
