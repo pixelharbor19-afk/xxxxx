@@ -56,16 +56,16 @@ export async function GET(req: NextRequest) {
         { status: 400 },
       );
     }
-    // const session = req.cookies.get("_ps")?.value;
+    const session = req.cookies.get("_ps")?.value;
 
-    // if (!session || !validateSession(session)) {
-    //   logRequest(401, "invalid session");
+    if (!session || !validateSession(session)) {
+      logRequest(401, "invalid session");
 
-    //   return NextResponse.json(
-    //     { success: false, error: "Invalid session" },
-    //     { status: 401 },
-    //   );
-    // }
+      return NextResponse.json(
+        { success: false, error: "Invalid session" },
+        { status: 401 },
+      );
+    }
 
     if (
       !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)

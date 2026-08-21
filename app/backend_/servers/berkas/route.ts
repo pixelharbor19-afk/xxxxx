@@ -318,25 +318,25 @@ export async function GET(req: NextRequest) {
     }
     const session = req.cookies.get("_ps")?.value;
 
-    // if (!session || !validateSession(session)) {
-    //   logRequest(401, "invalid session");
+    if (!session || !validateSession(session)) {
+      logRequest(401, "invalid session");
 
-    //   return NextResponse.json(
-    //     { success: false, error: "Invalid session" },
-    //     { status: 401 },
-    //   );
-    // }
+      return NextResponse.json(
+        { success: false, error: "Invalid session" },
+        { status: 401 },
+      );
+    }
 
-    // if (
-    //   !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
-    // ) {
-    //   logRequest(401, "invalid token");
+    if (
+      !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+    ) {
+      logRequest(401, "invalid token");
 
-    //   return NextResponse.json(
-    //     { success: false, error: "Invalid token" },
-    //     { status: 401 },
-    //   );
-    // }
+      return NextResponse.json(
+        { success: false, error: "Invalid token" },
+        { status: 401 },
+      );
+    }
 
     const referer = req.headers.get("referer") || "";
     if (!isValidReferer(referer)) {
