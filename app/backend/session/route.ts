@@ -39,23 +39,26 @@ export async function POST(req: NextRequest) {
     .update(payload)
     .digest("hex");
 
-  // const existingCookie = req.cookies.get("_ps")?.value;
+  const existingCookie = req.cookies.get("_ps")?.value;
 
   const response = NextResponse.json({ token, ts });
 
-  const value = crypto.randomBytes(32).toString("hex");
+  if (!existingCookie) {
+    const value = crypto.randomBytes(32).toString("hex");
 
-  const signature = crypto
-    .createHmac("sha256", SECRET)
-    .update(`${value}:${ts}`)
-    .digest("hex");
+    const signature = crypto
+      .createHmac("sha256", SECRET)
+      .update(`${value}:${ts}`)
+      .digest("hex");
 
-  response.cookies.set("_ps", `${value}.${ts}.${signature}`, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 120,
-  });
+    response.cookies.set("_ps", `${value}.${ts}.${signature}`, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+      maxAge: 120,
+    });
+  }
+
   return response;
 }
