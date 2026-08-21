@@ -9,7 +9,7 @@ export const RESSHIN_SERVER: ServerTypes = {
 export const initialServers: ServerTypes[] = [
   {
     name: "Orion I",
-    server: "kantot",
+    server: "orion",
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
@@ -21,27 +21,27 @@ export const initialServers: ServerTypes[] = [
   // },
   {
     name: "Berkas II",
-    server: "be_rkas",
+    server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
 
   {
     name: "Icarus III",
-    server: "titi",
+    server: "icarus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
     name: "Resshin IV",
-    server: "kiki",
+    server: "resshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
 
   {
     name: "Daedalus V",
-    server: "da_edalus",
+    server: "daedalus",
     status: "queue",
     desc: "Alternative",
   },

@@ -5,6 +5,8 @@ import { FIELD_MAP } from "@/lib/token";
 import { createClient } from "@supabase/supabase-js";
 import { isValidReferer } from "@/lib/allowed-referers";
 import CryptoJS from "crypto-js";
+import { validateSession } from "@/lib/validate-session";
+import { encryptLink } from "@/lib/link-crypto";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_SENTINEL!,
@@ -112,34 +114,39 @@ export async function GET(req: NextRequest) {
   };
 
   try {
-    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const path = req.nextUrl.pathname.split("/").pop()!;
+    const tmdbId = req.nextUrl.searchParams.get("id");
     const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
-    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
-    const title = req.nextUrl.searchParams.get(FIELD_MAP.title);
-    const year = req.nextUrl.searchParams.get(FIELD_MAP.year);
-    const ts = Number(req.nextUrl.searchParams.get(FIELD_MAP.ts));
-    const token = req.nextUrl.searchParams.get(FIELD_MAP.token)!;
-    const f_token = req.nextUrl.searchParams.get(FIELD_MAP.fToken)!;
+    const season = req.nextUrl.searchParams.get("season") ?? "";
+    const episode = req.nextUrl.searchParams.get("episode") ?? "";
+    const title = req.nextUrl.searchParams.get("title");
+    const year = req.nextUrl.searchParams.get("year");
+    const ts = Number(req.nextUrl.searchParams.get("ts"));
+    const token = req.nextUrl.searchParams.get("token");
 
     if (!tmdbId || !mediaType || !title || !year || !ts || !token) {
       logRequest(400, "missing params");
       return NextResponse.json(
-        { success: false, error: "need token" },
+        { success: false, error: "missing params" },
         { status: 400 },
       );
     }
+    const session = req.cookies.get("_ps")?.value;
 
-    if (Date.now() - ts > 120000) {
-      logRequest(401, "token expired");
+    if (!session || !validateSession(session)) {
+      logRequest(401, "invalid session");
+
       return NextResponse.json(
-        { success: false, error: "Invalid token" },
+        { success: false, error: "Invalid session" },
         { status: 401 },
       );
     }
 
-    if (!validateBackendToken(tmdbId, f_token, ts, token)) {
+    if (
+      !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+    ) {
       logRequest(401, "invalid token");
+
       return NextResponse.json(
         { success: false, error: "Invalid token" },
         { status: 401 },
@@ -209,27 +216,19 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    links = links.map((link: any) => {
-      if (!link.link) return link;
-
-      const isHls = link.link.toLowerCase().includes(".m3u8");
-
-      if (!isHls) {
-        return link;
-      }
-
-      return {
-        ...link,
-        type: "hls",
-        link: link.link,
-      };
-    });
+    links = links.map((link: any) => ({
+      ...link,
+      type: link.link.toLowerCase().includes(".m3u8") ? "hls" : "mp4",
+    }));
 
     logRequest(200, "SENTINEL OK!!!!!");
 
     return NextResponse.json({
       success: true,
-      links,
+      links: links.map((link) => ({
+        ...link,
+        link: encryptLink(link.link),
+      })),
       subtitles,
       meow: !!cached,
     });

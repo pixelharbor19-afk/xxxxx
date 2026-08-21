@@ -110,7 +110,7 @@ export default function MovieDetails() {
     tmdbId: id,
     season: isTv ? selectedSeason : 1,
     episode: isTv ? selectedEpisode : 1,
-    server: "resshin_",
+    path: "resshin_",
     imdbId,
     title,
     year,

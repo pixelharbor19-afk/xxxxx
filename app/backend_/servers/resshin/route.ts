@@ -6,6 +6,8 @@ import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
 import { encryptUrl } from "@/lib/encryptor";
 import { getWorkingProxy, proxies } from "@/lib/resshin-extractor";
+import { validateSession } from "@/lib/validate-session";
+import { encryptLink } from "@/lib/link-crypto";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_APP!,
@@ -34,15 +36,16 @@ export async function GET(req: NextRequest) {
   };
 
   try {
-    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const path = req.nextUrl.pathname.split("/").pop()!;
+    const tmdbId = req.nextUrl.searchParams.get("id");
     const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
-    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
-    const title = req.nextUrl.searchParams.get(FIELD_MAP.title);
+    const season = req.nextUrl.searchParams.get("season") ?? "";
+    const episode = req.nextUrl.searchParams.get("episode") ?? "";
+    const title = req.nextUrl.searchParams.get("title");
+    const ts = Number(req.nextUrl.searchParams.get("ts"));
+    const token = req.nextUrl.searchParams.get("token");
     const date = req.nextUrl.searchParams.get("date");
-    const ts = Number(req.nextUrl.searchParams.get(FIELD_MAP.ts));
-    const token = req.nextUrl.searchParams.get(FIELD_MAP.token)!;
-    const f_token = req.nextUrl.searchParams.get(FIELD_MAP.fToken)!;
+    //
     const dubCode = req.nextUrl.searchParams.get("dubCode");
     const dubType = Number(req.nextUrl.searchParams.get("dubType") ?? "0");
 
@@ -53,17 +56,22 @@ export async function GET(req: NextRequest) {
         { status: 400 },
       );
     }
+    const session = req.cookies.get("_ps")?.value;
 
-    if (Date.now() - ts > 120000) {
-      logRequest(401, "token expired");
+    if (!session || !validateSession(session)) {
+      logRequest(401, "invalid session");
+
       return NextResponse.json(
-        { success: false, error: "Invalid token" },
+        { success: false, error: "Invalid session" },
         { status: 401 },
       );
     }
 
-    if (!validateBackendToken(tmdbId, f_token, ts, token)) {
+    if (
+      !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+    ) {
       logRequest(401, "invalid token");
+
       return NextResponse.json(
         { success: false, error: "Invalid token" },
         { status: 401 },
@@ -78,7 +86,6 @@ export async function GET(req: NextRequest) {
         { status: 403 },
       );
     }
-
     // -------- Top-level Supabase cache checks --------
     const { data: cachedDubsRow } = await supabase
       .from("moviebox_cache")
@@ -158,7 +165,9 @@ export async function GET(req: NextRequest) {
                     type: (q.url ?? "").includes(".m3u8")
                       ? ("hls" as const)
                       : ("mp4" as const),
-                    link: `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    link: encryptLink(
+                      `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    ),
                     // link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   };
                 }),
@@ -234,7 +243,13 @@ export async function GET(req: NextRequest) {
     }
 
     logRequest(200, "OK");
-    return NextResponse.json(data);
+    return NextResponse.json({
+      ...data,
+      links: data.links.map((link: any) => ({
+        ...link,
+        link: encryptLink(link.link),
+      })),
+    });
   } catch (err: any) {
     logRequest(500, err.message);
     return NextResponse.json(

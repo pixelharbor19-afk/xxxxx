@@ -1,43 +1,50 @@
 // ICARUS SERVER (thin proxy)
 import { NextRequest, NextResponse } from "next/server";
 import { validateBackendToken } from "@/lib/validate-token";
+import { validateSession } from "@/lib/validate-session";
 import { isValidReferer } from "@/lib/allowed-referers";
-import { FIELD_MAP } from "@/lib/token";
 
 export async function GET(req: NextRequest) {
   try {
-    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const path = req.nextUrl.pathname.split("/").pop()!;
+
+    const tmdbId = req.nextUrl.searchParams.get("id");
     const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
-    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
-    const title = req.nextUrl.searchParams.get(FIELD_MAP.title);
+    const season = req.nextUrl.searchParams.get("season") ?? "";
+    const episode = req.nextUrl.searchParams.get("episode") ?? "";
+    const title = req.nextUrl.searchParams.get("title");
+    const year = req.nextUrl.searchParams.get("year");
     const date = req.nextUrl.searchParams.get("date");
-    const ts = Number(req.nextUrl.searchParams.get(FIELD_MAP.ts));
-    const token = req.nextUrl.searchParams.get(FIELD_MAP.token)!;
-    const f_token = req.nextUrl.searchParams.get(FIELD_MAP.fToken)!;
+    const ts = Number(req.nextUrl.searchParams.get("ts"));
+    const token = req.nextUrl.searchParams.get("token");
 
-    if (!tmdbId || !mediaType || !title || !date || !ts || !token) {
+    if (!tmdbId || !mediaType || !title || !year || !date || !ts || !token) {
       return NextResponse.json(
-        { success: false, error: "need token" },
-        { status: 404 },
+        { success: false, error: "missing params" },
+        { status: 400 },
       );
     }
 
-    if (Date.now() - ts > 30000) {
+    const session = req.cookies.get("_ps")?.value;
+
+    if (!session || !validateSession(session)) {
       return NextResponse.json(
-        { success: false, error: "Invalid token" },
-        { status: 403 },
+        { success: false, error: "Invalid session" },
+        { status: 401 },
       );
     }
 
-    if (!validateBackendToken(tmdbId, f_token, ts, token)) {
+    if (
+      !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+    ) {
       return NextResponse.json(
-        { success: false, error: "Invalid token" },
+        { success: false, error: "Invalid or expired token" },
         { status: 403 },
       );
     }
 
     const referer = req.headers.get("referer") || "";
+
     if (!isValidReferer(referer)) {
       return NextResponse.json(
         { success: false, error: "Forbidden" },
@@ -45,7 +52,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Forward only the extraction params to Backend B
     const params = new URLSearchParams({
       tmdbId,
       mediaType,
@@ -56,8 +62,7 @@ export async function GET(req: NextRequest) {
     });
 
     const res = await fetch(
-      `https://school-project-production-9d70.up.railway.app/subtitle?${params.toString()}`,
-      { method: "GET" },
+      `https://school-project-production-9d70.up.railway.app/subtitle?${params}`,
     );
 
     const data = await res.json();
@@ -70,7 +75,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (err: any) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 },

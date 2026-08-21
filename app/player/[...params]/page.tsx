@@ -244,7 +244,7 @@ export default function Player() {
     tmdbId,
     season,
     episode,
-    server: fetchServer.server,
+    path: fetchServer.server,
     imdbId,
     title,
     year,
@@ -741,11 +741,7 @@ export default function Player() {
   //   }
   // }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
   if (isLoading) {
-    return (
-      <div className="bg-black  h-svh flex justify-center items-center">
-        <Tailspin size="60" stroke="8" speed="2" color="white" />
-      </div>
-    );
+    return <div className="bg-black  h-svh flex justify-center items-center" />;
   }
   if (!isWhitelisted && isSandboxed) {
     return (

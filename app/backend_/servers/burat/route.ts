@@ -4,6 +4,7 @@ import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { FIELD_MAP } from "@/lib/token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
+import { validateSession } from "@/lib/validate-session";
 const supabase = createClient(
   process.env.VIDLINK_SUPABASE_URL!,
   process.env.VIDLINK_SUPABASE_SERVICE_ROLE_KEY!,
@@ -171,24 +172,16 @@ function proxyLinks(links: Link[]): Link[] {
   });
 }
 export async function GET(req: NextRequest) {
-  const params = req.nextUrl.searchParams;
-
-  const tmdbId = params.get(FIELD_MAP.id);
-  const mediaType = params.get("b");
-  const season = params.get(FIELD_MAP.season);
-  const episode = params.get(FIELD_MAP.episode);
-  const timestamp = Number(params.get(FIELD_MAP.ts));
-  const token = params.get(FIELD_MAP.token);
-  const fToken = params.get(FIELD_MAP.fToken);
-
   const logRequest = (status: number, reason: string) => {
+    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const mediaType = req.nextUrl.searchParams.get("b");
+    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
+    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
+
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
 
-    const message =
-      `[VIDLINK] ${tmdbId}/${mediaType}${extra} | ` +
-      `${status} | ${reason} | ` +
-      `ts: ${new Date().toISOString()} | IP: ${ip}`;
+    const message = `[VIDLINK] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
 
     if (status >= 500) {
       console.error(message);
@@ -212,30 +205,52 @@ export async function GET(req: NextRequest) {
   };
 
   try {
-    if (!tmdbId || !mediaType || !timestamp || !token) {
-      return error(400, "need token");
+    const path = req.nextUrl.pathname.split("/").pop()!;
+    const tmdbId = req.nextUrl.searchParams.get("id");
+    const mediaType = req.nextUrl.searchParams.get("b");
+    const season = req.nextUrl.searchParams.get("season") ?? "";
+    const episode = req.nextUrl.searchParams.get("episode") ?? "";
+    const title = req.nextUrl.searchParams.get("title");
+    const year = req.nextUrl.searchParams.get("year");
+    const ts = Number(req.nextUrl.searchParams.get("ts"));
+    const token = req.nextUrl.searchParams.get("token");
+
+    if (!tmdbId || !mediaType || !title || !year || !ts || !token) {
+      logRequest(400, "missing params");
+      return NextResponse.json(
+        { success: false, error: "missing params" },
+        { status: 400 },
+      );
+    }
+    const session = req.cookies.get("_ps")?.value;
+
+    if (!session || !validateSession(session)) {
+      logRequest(401, "invalid session");
+
+      return NextResponse.json(
+        { success: false, error: "Invalid session" },
+        { status: 401 },
+      );
     }
 
-    if (mediaType !== "movie" && mediaType !== "tv") {
-      return error(400, "Invalid media type");
+    if (
+      !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+    ) {
+      logRequest(401, "invalid token");
+
+      return NextResponse.json(
+        { success: false, error: "Invalid token" },
+        { status: 401 },
+      );
     }
 
-    if (mediaType === "tv" && (!season || !episode)) {
-      return error(400, "TV requires season and episode");
-    }
-
-    if (Date.now() - timestamp > 120000) {
-      return error(401, "Invalid token");
-    }
-
-    if (!validateBackendToken(tmdbId, fToken!, timestamp, token)) {
-      return error(401, "Invalid token");
-    }
-
-    const referer = req.headers.get("referer") ?? "";
-
+    const referer = req.headers.get("referer") || "";
     if (!isValidReferer(referer)) {
-      return error(403, "Forbidden");
+      logRequest(403, "invalid referrer");
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 },
+      );
     }
 
     const seasonKey = season ?? "";

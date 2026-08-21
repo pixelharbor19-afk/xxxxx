@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateBackendToken } from "@/lib/validate-token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { FIELD_MAP } from "@/lib/token";
 
@@ -53,13 +52,6 @@ export async function GET(req: NextRequest) {
     }
 
     if (Date.now() - ts > 8000) {
-      return NextResponse.json(
-        { success: false, error: "Invalid token" },
-        { status: 403 },
-      );
-    }
-
-    if (!validateBackendToken(id, f_token, ts, token)) {
       return NextResponse.json(
         { success: false, error: "Invalid token" },
         { status: 403 },
