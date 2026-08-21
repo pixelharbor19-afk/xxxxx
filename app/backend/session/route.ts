@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
 
     response.cookies.set("_ps", `${value}.${ts}.${signature}`, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       path: "/",
       maxAge: 120,
     });
