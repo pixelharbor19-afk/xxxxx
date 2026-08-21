@@ -13,34 +13,33 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "Built-In Subtitle - English",
   },
-  // {
-  //   name: "Atlas II",
-  //   server: "burat",
-  //   status: "queue",
-  //   desc: "HD & Stable",
-  // },
   {
     name: "Berkas II",
     server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
-
   {
-    name: "Icarus III",
+    name: "Atlas III",
+    server: "burat",
+    status: "queue",
+    desc: "HD & Stable",
+  },
+  {
+    name: "Icarus IV",
     server: "icarus",
     status: "queue",
     desc: "Download & Multi Audio Support",
   },
   {
-    name: "Resshin IV",
+    name: "Resshin V",
     server: "resshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
 
   {
-    name: "Daedalus V",
+    name: "Daedalus VI",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",
