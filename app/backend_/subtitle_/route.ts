@@ -25,14 +25,14 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const session = req.cookies.get("_ps")?.value;
+    // const session = req.cookies.get("_ps")?.value;
 
-    if (!session || !validateSession(session)) {
-      return NextResponse.json(
-        { success: false, error: "Invalid session" },
-        { status: 401 },
-      );
-    }
+    // if (!session || !validateSession(session)) {
+    //   return NextResponse.json(
+    //     { success: false, error: "Invalid session" },
+    //     { status: 401 },
+    //   );
+    // }
 
     if (
       !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
