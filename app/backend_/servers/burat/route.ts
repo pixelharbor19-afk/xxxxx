@@ -6,32 +6,6 @@ import { createClient } from "@supabase/supabase-js";
 import { encryptUrl } from "@/lib/encryptor";
 import { encryptLink } from "@/lib/link-crypto";
 
-const ENC_DEC_API = "https://enc-dec.app/api";
-const VIDLINK_API = "https://vidlink.pro/api/b";
-
-const HEADERS = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-  Origin: "https://vidlink.pro",
-  Referer: "https://vidlink.pro/",
-};
-
-const VIDLINK_HEADERS = {
-  Accept: "*/*",
-  "Accept-Language": "en-US,en;q=0.7",
-  Referer: "https://vidlink.pro/movie/1184918",
-  "Sec-CH-UA": '"Not=A?Brand";v="99", "Brave";v="151", "Chromium";v="151"',
-  "Sec-CH-UA-Mobile": "?0",
-  "Sec-CH-UA-Platform": '"Windows"',
-  "Sec-Fetch-Dest": "empty",
-  "Sec-Fetch-Mode": "cors",
-  "Sec-Fetch-Site": "same-origin",
-  "Sec-GPC": "1",
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
-  "X-Playback-Environment": "dash-hevc",
-};
-
 const DASH_WORKERS = [
   "https://aged-snow-6862.kantuninkita1.workers.dev/",
   "https://calm-base-d874.kantuninkita2.workers.dev/",
@@ -52,27 +26,27 @@ const DASH_WORKERS = [
   "https://small-recipe-9008.icarus09.workers.dev/",
   // "https://morning-haze-36e3.icarus08.workers.dev/",
   // "https://little-limit-e11e.icarus05.workers.dev/",
-  // "https://ancient-limit-83f0.icarus03.workers.dev/",
-  // "https://sparkling-credit-c6b8.icarus02.workers.dev/",
-  // "https://green-dawn-9241.icarus01.workers.dev/",
-  // "https://proxy.icarus14.workers.dev/",
-  // "https://proxy.icarus13.workers.dev/",
-  // "https://proxy.icarus12.workers.dev/",
-  // "https://proxy.icarus11.workers.dev/",
-  // "https://proxy.icarus10.workers.dev/",
-  // "https://proxy.icarus9.workers.dev/",
-  // "https://proxy.icarus8.workers.dev/",
-  // "https://proxy.icarus7.workers.dev/",
-  // "https://proxy.icarus3.workers.dev/",
-  // "https://icarus.test155-123.workers.dev/",
-  // "https://proxy.icarus1.workers.dev/",
-  // "https://proxy.icarus2.workers.dev/",
+  "https://ancient-limit-83f0.icarus03.workers.dev/",
+  "https://sparkling-credit-c6b8.icarus02.workers.dev/",
+  "https://green-dawn-9241.icarus01.workers.dev/",
+  "https://proxy.icarus14.workers.dev/",
+  "https://proxy.icarus13.workers.dev/",
+  "https://proxy.icarus12.workers.dev/",
+  "https://proxy.icarus11.workers.dev/",
+  "https://proxy.icarus10.workers.dev/",
+  "https://proxy.icarus9.workers.dev/",
+  "https://proxy.icarus8.workers.dev/",
+  "https://proxy.icarus7.workers.dev/",
+  "https://proxy.icarus3.workers.dev/",
+  "https://icarus.test155-123.workers.dev/",
+  "https://proxy.icarus1.workers.dev/",
+  "https://proxy.icarus2.workers.dev/",
+  "https://icarus.test154-123.workers.dev/",
+  "https://icarus.test156-123.workers.dev/",
+  "https://icarus.test157-123.workers.dev/",
+
   // "https://late-snowflake-5076.zxcprime362.workers.dev/",
   // "https://weathered-frost-60b0.zxcprime361.workers.dev/",
-  // "https://icarus.test154-123.workers.dev/",
-  // "https://icarus.test156-123.workers.dev/",
-  // "https://icarus.test157-123.workers.dev/",
-
   // "https://proxy.zxcprime359-test1.workers.dev/",
   // "https://proxy.orbitprime27.workers.dev/",
   // "https://proxy.silverlantern64.workers.dev/",
@@ -215,7 +189,7 @@ async function fetchVidlinkStreams(
   season: string | null,
   episode: string | null,
 ): Promise<StreamResult> {
-  const workerUrl = new URL("https://silent-sound-504b.vidlink.workers.dev/"); 
+  const workerUrl = new URL("https://silent-sound-504b.vidlink.workers.dev/");
   workerUrl.searchParams.set("tmdbId", tmdbId);
   workerUrl.searchParams.set("mediaType", mediaType);
   if (season) workerUrl.searchParams.set("season", season);
