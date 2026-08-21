@@ -15,25 +15,25 @@ const supabase = createClient(
 );
 
 export async function GET(req: NextRequest) {
- const logRequest = (status: number, reason: string) => {
-   const tmdbId = req.nextUrl.searchParams.get("id");
-   const mediaType = req.nextUrl.searchParams.get("b");
-   const season = req.nextUrl.searchParams.get("season");
-   const episode = req.nextUrl.searchParams.get("episode");
-   const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
+  const logRequest = (status: number, reason: string) => {
+    const tmdbId = req.nextUrl.searchParams.get("id");
+    const mediaType = req.nextUrl.searchParams.get("b");
+    const season = req.nextUrl.searchParams.get("season");
+    const episode = req.nextUrl.searchParams.get("episode");
+    const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
 
-   const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
+    const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
 
-   const message = `[ICARUS] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
+    const message = `[ICARUS] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
 
-   if (status >= 500) {
-     console.error(message);
-   } else if (status >= 400) {
-     console.warn(message);
-   } else {
-     console.log(message);
-   }
- };
+    if (status >= 500) {
+      console.error(message);
+    } else if (status >= 400) {
+      console.warn(message);
+    } else {
+      console.log(message);
+    }
+  };
   try {
     const path = req.nextUrl.pathname.split("/").pop()!;
     const tmdbId = req.nextUrl.searchParams.get("id");
@@ -161,7 +161,7 @@ export async function GET(req: NextRequest) {
                     ? ("hls" as const)
                     : ("mp4" as const),
                   link: encryptLink(
-                    `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   ),
                 };
               }),
