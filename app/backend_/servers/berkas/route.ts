@@ -279,10 +279,10 @@ const STREAMDATA_URL = "https://streamdata.vaplayer.ru/api.php";
 
 export async function GET(req: NextRequest) {
   const logRequest = (status: number, reason: string) => {
-    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const tmdbId = req.nextUrl.searchParams.get("id");
     const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
-    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
+    const season = req.nextUrl.searchParams.get("season");
+    const episode = req.nextUrl.searchParams.get("episode");
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
 
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
