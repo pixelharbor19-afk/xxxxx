@@ -215,59 +215,28 @@ async function fetchVidlinkStreams(
   season: string | null,
   episode: string | null,
 ): Promise<StreamResult> {
-  const encryptedResponse = await fetchWithTimeout(
-    `${ENC_DEC_API}/enc-vidlink?text=${encodeURIComponent(tmdbId)}`,
-    { headers: HEADERS },
-    15000,
+  const workerUrl = new URL("https://silent-sound-504b.vidlink.workers.dev/"); 
+  workerUrl.searchParams.set("tmdbId", tmdbId);
+  workerUrl.searchParams.set("mediaType", mediaType);
+  if (season) workerUrl.searchParams.set("season", season);
+  if (episode) workerUrl.searchParams.set("episode", episode);
+
+  const response = await fetchWithTimeout(
+    workerUrl.toString(),
+    { method: "GET" },
+    8000,
   );
 
-  const encryptedData = await encryptedResponse.json();
-  if (encryptedData.status !== 200 || !encryptedData.result) {
+  if (!response.ok) {
     return { links: [], subtitles: [] };
   }
 
-  const encryptedId = encryptedData.result;
-  const url =
-    mediaType === "movie"
-      ? `${VIDLINK_API}/movie/${encryptedId}?multiLang=0`
-      : `${VIDLINK_API}/tv/${encryptedId}/${season}/${episode}?multiLang=0`;
-
-  const response = await fetchWithTimeout(
-    url,
-    { headers: VIDLINK_HEADERS },
-    20000,
-  );
-  if (!response.ok) return { links: [], subtitles: [] };
-
   const data = await response.json();
-  const stream = data?.stream;
-  if (!stream?.playlist) return { links: [], subtitles: [] };
-
-  const subtitles: Subtitle[] = Array.isArray(stream.captions)
-    ? stream.captions
-        .map((caption: any) => ({
-          id: String(caption.id ?? caption.language ?? "unknown"),
-          display: caption.language ?? "Unknown",
-          file: caption.url,
-        }))
-        .filter((c: Subtitle) => Boolean(c.file))
-    : [];
-
-  const cookie = stream.playlistHeaders?.Cookie;
-
   return {
-    links: [
-      {
-        type: "dash",
-        link: stream.playlist,
-        resolution: 0,
-        ...(cookie && { headers: { Cookie: cookie } }),
-      },
-    ],
-    subtitles,
+    links: data.links ?? [],
+    subtitles: data.subtitles ?? [],
   };
 }
-
 async function buildProxiedLink(
   playlist: string,
   cookie: string,
