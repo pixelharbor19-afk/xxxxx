@@ -92,7 +92,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/you-are-gay", {
+      const { data: token } = await axios.post("/backend/nekot", {
         id: tmdbId,
         media_type,
         path,
