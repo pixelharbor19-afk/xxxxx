@@ -33,7 +33,7 @@ export default function useSubtitle({
     refetchOnReconnect: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/ngi", {
+      const { data: token } = await axios.post("/backend/dynamic-token", {
         id: tmdbId,
         media_type,
         path: "subtitle_",
