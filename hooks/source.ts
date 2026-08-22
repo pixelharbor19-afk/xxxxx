@@ -92,7 +92,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/session", {
+      const { data: token } = await axios.post("/backend/tarantado", {
         id: tmdbId,
         media_type,
         path,

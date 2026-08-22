@@ -1,0 +1,87 @@
+// worker.js
+
+const HEALTH_PATH = "/health";
+
+const MAIN = { name: "main", url: "https://zxcstream.xyz" };
+const BACKUPS = [
+   { name: "player", url: "https://player.zxcstream.xyz" },
+   { name: "backup-netlify", url: "   https://backup-zxcstream.netlify.app" },
+   { name: "backup-railway", url: "https://backup-zxcstream.up.railway.app" },
+];
+
+const TIMEOUT_MS = 30000;
+
+async function checkSite(site) {
+  try {
+    const res = await fetch(site.url + HEALTH_PATH, {
+      method: "HEAD",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      redirect: "follow",
+    });
+    return { ...site, up: res.ok, status: res.status, finalUrl: res.url };
+  } catch {
+    return { ...site, up: false, status: null, finalUrl: null };
+  }
+}
+
+async function updateBulkRedirects(env, targetUrl) {
+  const headers = {
+    Authorization: `Bearer ${env.CF_API_TOKEN}`,
+    "Content-Type": "application/json",
+  };
+
+  const listRes = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/rules/lists/${env.CF_BULK_REDIRECT_LIST_ID}/items`,
+    { headers }
+  );
+  const listJson = await listRes.json();
+
+  if (!listJson.success || !listJson.result) {
+    throw new Error(`Failed to fetch list items: ${JSON.stringify(listJson.errors)}`);
+  }
+
+  const newItems = listJson.result.map((item) => ({
+    redirect: { ...item.redirect, target_url: targetUrl },
+  }));
+
+  const putRes = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/rules/lists/${env.CF_BULK_REDIRECT_LIST_ID}/items`,
+    { method: "PUT", headers, body: JSON.stringify(newItems) }
+  );
+  return putRes.json();
+}
+
+async function runCheck(env) {
+  const mainResult = await checkSite(MAIN);
+
+  if (mainResult.up) {
+    return { main: mainResult, backups: [], nextActive: null, cloudflareUpdate: null };
+  }
+
+  const backupResults = await Promise.all(BACKUPS.map(checkSite));
+  const nextActive = backupResults.find((b) => b.up) || null;
+
+  let cloudflareUpdate = null;
+  if (nextActive) {
+    cloudflareUpdate = await updateBulkRedirects(env, nextActive.url);
+  }
+
+  return {
+    main: mainResult,
+    backups: backupResults,
+    nextActive: nextActive ? nextActive.name : null,
+    cloudflareUpdate,
+  };
+}
+
+export default {
+  async fetch(request, env, ctx) {
+    const result = await runCheck(env);
+    return Response.json(result);
+  },
+
+  async scheduled(event, env, ctx) {
+    const result = await runCheck(env);
+    console.log(JSON.stringify(result));
+  },
+};
