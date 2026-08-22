@@ -92,7 +92,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/nekot", {
+      const { data: token } = await axios.post("/backend/ngi", {
         id: tmdbId,
         media_type,
         path,
