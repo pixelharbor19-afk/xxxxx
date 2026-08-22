@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
 
-    const message = `[ICARUS] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
+    const message = `[FATALIS] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
 
     if (status >= 500) {
       console.error(message);
