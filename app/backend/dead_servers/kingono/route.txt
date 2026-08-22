@@ -172,7 +172,7 @@ export async function GET(req: NextRequest) {
 
       return Object.entries(qualities).map(([quality, link]) => ({
         type: "hls",
-        link: `/backend_/servers/rui/proxy?url=${link}`,
+        link: `/backend_/sources/rui/proxy?url=${link}`,
         resolution: resolutionMap[quality] ?? 0,
       }));
     });

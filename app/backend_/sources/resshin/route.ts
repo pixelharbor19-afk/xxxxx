@@ -228,7 +228,7 @@ export async function GET(req: NextRequest) {
 
     const res = await fetch(
       `https://school-project-production-9d70.up.railway.app/resshin?${params.toString()}`,
-      //`http://localhost:3000/backend_/servers/resshin_?${params.toString()}`,
+      //`http://localhost:3000/backend_/sources/resshin_?${params.toString()}`,
       { method: "GET" },
     );
 

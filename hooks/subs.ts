@@ -33,7 +33,7 @@ export default function useSubtitle({
     refetchOnReconnect: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/tarantado", {
+      const { data: token } = await axios.post("/backend/you-are-gay", {
         id: tmdbId,
         media_type,
         path: "subtitle_",

@@ -198,7 +198,7 @@ export async function GET(req: NextRequest) {
       const text = await upstream.text();
 
       const proxyUrl = new URL(
-        "/backend_/servers/1athena/proxy",
+        "/backend_/sources/1athena/proxy",
         req.url,
       ).toString();
 

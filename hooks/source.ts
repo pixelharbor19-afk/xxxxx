@@ -92,7 +92,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/tarantado", {
+      const { data: token } = await axios.post("/backend/you-are-gay", {
         id: tmdbId,
         media_type,
         path,
@@ -127,7 +127,7 @@ export default function useSource(params: UseSourceParams) {
       }
 
       const { data } = await axios.get<SourceTypes>(
-        `/backend_/servers/${path}?${search.toString()}`,
+        `/backend_/sources/${path}?${search.toString()}`,
       );
 
       // await new Promise((resolve) => setTimeout(resolve, 1200));
