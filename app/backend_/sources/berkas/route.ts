@@ -302,6 +302,18 @@ const PROXY_WORKERS = [
   "https://polished-cake-b12c.eggplant13.workers.dev/",
   "https://throbbing-shape-77d9.eggplant15.workers.dev/",
   "https://square-bird-5087.eggplant16.workers.dev/",
+  //
+  "https://hidden-forest-4358.tomato1.workers.dev/",
+  "https://fragrant-credit-7730.tomato4.workers.dev/",
+  // "https://delicate-unit-cc83.tomato3.workers.dev/",
+  // "https://fragrant-sun-a1d8.tomato6.workers.dev/",
+  // "https://yellow-feather-1b31.tomato5.workers.dev/",
+  // "https://late-dew-e4b9.tomato8.workers.dev/",
+  // "https://white-cloud-79db.tomato7.workers.dev/",
+  // "https://purple-mud-9dd2.tomato10.workers.dev/",
+  // "https://jolly-bread-f35a.tomato11-5a3.workers.dev/",
+  // "https://ancient-math-bc3f.tomato12.workers.dev/",
+  // "https://sweet-snow-fa63.tomato13.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
