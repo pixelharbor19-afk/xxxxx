@@ -190,8 +190,7 @@ const HOLLY_WORKERS = [
   "https://broken-king-75d2.onion21.workers.dev/",
   "https://small-cake-d1a9.garlic1.workers.dev/",
 
-  "https://dawn-surf-3fd4.cabbag16.workers.dev/",
-  "https://rapid-mountain-88b5.cabbage17.workers.dev/",
+
   "https://summer-sunset-baa7.cabbage18.workers.dev/",
   "https://nameless-darkness-6726.cabbage20.workers.dev/",
   "https://dawn-flower-62aa.cabbage19.workers.dev/",
