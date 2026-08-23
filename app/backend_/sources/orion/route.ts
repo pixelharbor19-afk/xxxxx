@@ -197,7 +197,7 @@ const HOLLY_WORKERS = [
  
 
   
-  "https://square-bird-5087.eggplant16.workers.dev/",
+
   "https://shy-mountain-1e6e.eggplant17.workers.dev/",
   "https://autumn-art-09cb.eggplant18.workers.dev/",
   "https://jolly-cell-b82a.eggplant20.workers.dev/",

@@ -298,9 +298,10 @@ const PROXY_WORKERS = [
   "https://orange-meadow-1144.eggplant10.workers.dev/",
   "https://plain-forest-d989.eggplant11.workers.dev/",
   "https://still-wind-8eae.eggplant12.workers.dev/",
-  // "https://late-field-9467.eggplant14.workers.dev/",
-  // "https://polished-cake-b12c.eggplant13.workers.dev/",
-  // "https://throbbing-shape-77d9.eggplant15.workers.dev/",
+  "https://late-field-9467.eggplant14.workers.dev/",
+  "https://polished-cake-b12c.eggplant13.workers.dev/",
+  "https://throbbing-shape-77d9.eggplant15.workers.dev/",
+  "https://square-bird-5087.eggplant16.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
