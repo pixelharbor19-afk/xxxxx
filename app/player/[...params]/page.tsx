@@ -96,7 +96,7 @@ export default function Player() {
   const season = Number(params?.[2]) || 1;
   const episode = Number(params?.[3]) || 1;
   const [showServer, setShowServer] = useState(true);
-  // const [startPlayer, setStartPlayer] = useState(false);
+  const [startPlayer, setStartPlayer] = useState(false);
   const defaultServerIndex = Number(searchParams.get("server")) || 0;
   const domain = searchParams.get("domainAd") || "zxcstream.icu";
   const color = searchParams.get("color") || "e50914";
@@ -201,9 +201,9 @@ export default function Player() {
     // !isLoading && !isSandboxed,
     // !isLoading && !(restricted && isSandboxed),
     // !isLoading && !(!isWhitelisted && isSandboxed && restrictionActive),
-    !isLoading && !(!isWhitelisted && isSandboxed),
+    // !isLoading && !(!isWhitelisted && isSandboxed),
     //
-    // !isLoading && !(!isWhitelisted && isSandboxed) && startPlayer,
+    !isLoading && !(!isWhitelisted && isSandboxed) && startPlayer,
   );
   const isRateLimited = metadataError?.response?.status === 429;
   const isForbidden = metadataError?.response?.status === 403;
@@ -740,18 +740,18 @@ export default function Player() {
   //   }
   // }, [loaded, metadataLoad, media_type, tmdbId, title, season, episode]);
 
-  // if (!startPlayer) {
-  //   return (
-  //     <div className="h-dvh flex justify-center items-center">
-  //       <button
-  //         onClick={() => setStartPlayer(true)}
-  //         className="cursor-pointer animate-pulse"
-  //       >
-  //         <Play className="size-13" strokeWidth={3} />
-  //       </button>
-  //     </div>
-  //   );
-  // }
+  if (!startPlayer) {
+    return (
+      <div className="h-dvh flex justify-center items-center">
+        <button
+          onClick={() => setStartPlayer(true)}
+          className="cursor-pointer animate-pulse"
+        >
+          <Play className="size-13" strokeWidth={3} />
+        </button>
+      </div>
+    );
+  }
   if (isLoading) {
     return <div className="bg-black  h-svh flex justify-center items-center" />;
   }
