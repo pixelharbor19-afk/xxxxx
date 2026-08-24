@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
       });
 
       const searchRes = await fetch(
-        `https://main-school-project-production.up.railway.app/search?${searchParams.toString()}`,
+        `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
