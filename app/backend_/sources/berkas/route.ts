@@ -384,12 +384,31 @@ const PROXY_WORKERS = [
   "https://lively-voice-cc6c.hotdog2.workers.dev/",
   "https://aged-firefly-c044.hotdog3.workers.dev/",
   "https://old-river-95a1.hotdog4.workers.dev/",
+
   "https://solitary-wind-5759.hotdog5.workers.dev/",
   "https://spring-water-af97.hotdog6.workers.dev/",
   "https://muddy-glade-0cdd.hotdog8.workers.dev/",
   "https://wandering-lab-8aaf.hotdog7.workers.dev/",
+
   "https://lucky-lake-4dcd.hotdog9.workers.dev/",
   "https://wandering-bar-125d.hotdog10.workers.dev/",
+  "https://old-thunder-6829.hotdog12.workers.dev/",
+  "https://spring-snowflake-0b64.hotdog11.workers.dev/",
+
+  //
+  "https://curly-field-b7ab.onlinesho1.workers.dev/",
+  "https://icy-glade-a2f9.onlineshop2-4fa.workers.dev/",
+  "https://misty-smoke-703c.onlineshop3.workers.dev/",
+  "https://steep-mode-f072.onlineshop4.workers.dev/",
+  "https://damp-tree-2a80.onlineshop5.workers.dev/",
+  "https://shy-glade-89f9.onlineshop6.workers.dev/",
+  "https://empty-glade-d144.onlineshop7.workers.dev/",
+  "https://orange-bush-746c.onlineshop8.workers.dev/",
+
+  "https://wild-limit-4cdd.onion-468.workers.dev/",
+  "https://shiny-feather-61d5.onion2.workers.dev/",
+  "https://blue-morning-b0ed.onlineshop10.workers.dev/",
+  "https://cold-block-fb91.onlineshop9.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {

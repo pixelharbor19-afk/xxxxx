@@ -57,18 +57,8 @@ const GOOD_HEADERS = {
 // Cookie:
 //   "cf_clearance=Shib.kVZbVDgJDU1GKv1nbUVUVOmaQ5xdjU5pvCwLxg-1783909046-1.2.1.1-3iK8K2GIOeCtRAJ3l3WmPdDHjpKVpo8ieaAy17TRByJ0l0wKYlDPz2dRkqyRSeqz0TziVHmaJraDRzSBukJ.zJxeUwgxvat9hz8kCvB9kMjEmtKQpFxcxoYQ3I7FguWEndAqQppX9Xo.wkTgzNHGaQZuzDE6znn7G0RvI2BcRsIIR0u4wlxrsANladOz8CRnsMN.EQ7mvPcHd3AWq0hXpsjG1n6WJljyriChUetClEthytE4mhzRc_3qMEPlJ85W2wz9RfuH1247.rEjaBt1ztWlACrkcUtDDsYOquAojthHFmKygvZOYhnw.KVZXacdIQGVSakwm4ISD9z4C4M_qkxqYV4gG6jdqvOBLKKFho3j9rU.VpZ1vzMErFSMYH5NgETYeV3sYBCSOQFtd.ELqqBLIM_vvCF6WMj1OPDynQSxX28EGs7irFkcJGLQh6WPwE4LzHYfPYUfuP76bfKx3tj6aE6HVYfhZlmNb7QYTkgC62NvSBh6eh3snymTMkVN",
 const HOLLY_WORKERS = [
-  "https://curly-field-b7ab.onlinesho1.workers.dev/",
-  "https://icy-glade-a2f9.onlineshop2-4fa.workers.dev/",
-  "https://misty-smoke-703c.onlineshop3.workers.dev/",
-  "https://steep-mode-f072.onlineshop4.workers.dev/",
-  "https://damp-tree-2a80.onlineshop5.workers.dev/",
-  "https://shy-glade-89f9.onlineshop6.workers.dev/",
-  "https://empty-glade-d144.onlineshop7.workers.dev/",
-  "https://orange-bush-746c.onlineshop8.workers.dev/",
-  "https://blue-morning-b0ed.onlineshop10.workers.dev/",
-  "https://cold-block-fb91.onlineshop9.workers.dev/",
-  "https://wild-limit-4cdd.onion-468.workers.dev/",
-  "https://shiny-feather-61d5.onion2.workers.dev/",
+
+
   "https://dark-cherry-6a91.onion1-15b.workers.dev/",
   "https://proud-cell-5939.onion3.workers.dev/",
   "https://tiny-recipe-0260.onion4.workers.dev/",
@@ -128,8 +118,7 @@ const HOLLY_WORKERS = [
   "https://frosty-pine-d395.tukmol11.workers.dev/",
   "https://winter-silence-9027.tukmol12.workers.dev/",
   
-  "https://old-thunder-6829.hotdog12.workers.dev/",
-  "https://spring-snowflake-0b64.hotdog11.workers.dev/",
+
   "https://little-hall-3be5.friedrice1.workers.dev/",
   "https://raspy-union-8ac8.friedrice2.workers.dev/",
   "https://rapid-meadow-568b.friedrice3.workers.dev/",
