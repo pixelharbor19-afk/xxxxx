@@ -8,29 +8,30 @@ export const RESSHIN_SERVER: ServerTypes = {
 };
 export const initialServers: ServerTypes[] = [
   {
-    name: "Berkas I",
+    name: "Aquarius I",
+    server: "aquarius",
+    status: "queue",
+    desc: "Movies & TV Shows - HD Support",
+  },
+
+  {
+    name: "Berkas II",
     server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
-    name: "Atlas II",
+    name: "Atlas III",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
 
   {
-    name: "Vendetta III",
+    name: "Vendetta IV",
     server: "vendetta",
     status: "queue",
     desc: "Extensive Movie & TV Library",
-  },
-  {
-    name: "Aquarius IV",
-    server: "aquarius",
-    status: "queue",
-    desc: "Movies & TV Shows - HD Support",
   },
 
   // {
