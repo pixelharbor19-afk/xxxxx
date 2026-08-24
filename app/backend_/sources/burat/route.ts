@@ -48,6 +48,7 @@ const DASH_WORKERS = [
 
   // "https://late-snowflake-5076.zxcprime362.workers.dev/",
   // "https://weathered-frost-60b0.zxcprime361.workers.dev/",
+
   // "https://proxy.zxcprime359-test1.workers.dev/",
   // "https://proxy.orbitprime27.workers.dev/",
   // "https://proxy.silverlantern64.workers.dev/",
@@ -67,9 +68,9 @@ const DASH_WORKERS = [
   // "https://still-butterfly-9b3e.zxcprime360.workers.dev/",
   // "https://empty-pond-805b.zxcprime363.workers.dev/",
   // //
-  // "https://summer-snow-a035.vps7.workers.dev/",
-  // "https://wandering-star-4ce0.vps8-cc9.workers.dev/",
-  // "https://fragrant-pond-cb40.vps5.workers.dev/",
+  "https://summer-snow-a035.vps7.workers.dev/",
+  "https://wandering-star-4ce0.vps8-cc9.workers.dev/",
+  "https://fragrant-pond-cb40.vps5.workers.dev/",
   // "https://crimson-wind-e271.vps6.workers.dev/",
   // "https://broken-unit-25d8.vps3-705.workers.dev/",
   // "https://silent-queen-3238.vps4-c8e.workers.dev/",
