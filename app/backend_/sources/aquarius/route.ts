@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
       logRequest(404, "Main request failed");
       return NextResponse.json(
         { success: false, error: "Main request failed" },
-        { status: 401 },
+        { status: 502 },
       );
     }
 
