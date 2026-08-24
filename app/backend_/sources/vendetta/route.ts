@@ -89,7 +89,7 @@ export async function GET(req: NextRequest) {
     });
 
     const res = await fetch(
-      `https://api1.zxcstream.xyz/scrape/hollymoviehd?${params.toString()}`,
+      `https://api1.zxcstream.xyz/vendetta?${params.toString()}`,
       {
         method: "GET",
         cache: "no-store",

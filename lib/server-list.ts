@@ -27,8 +27,8 @@ export const initialServers: ServerTypes[] = [
     desc: "HD Quality & Reliable",
   },
   {
-    name: "Fatalis IV",
-    server: "fatalis",
+    name: "Vendetta IV",
+    server: "vendetta",
     status: "queue",
     desc: "Huge Library",
   },
