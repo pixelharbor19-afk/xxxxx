@@ -90,16 +90,7 @@ const HOLLY_WORKERS = [
   "https://autumn-art-09cb.eggplant18.workers.dev/",
   "https://jolly-cell-b82a.eggplant20.workers.dev/",
   "https://cool-king-6047.eggplant19.workers.dev/",
-  "https://soft-snow-25d5.tomato2.workers.dev/",
 
-  "https://winter-resonance-4397.tomato14.workers.dev/",
-  "https://long-mountain-c477.tomato15.workers.dev/",
-  "https://icy-recipe-7f1f.tomato16.workers.dev/",
-  "https://quiet-boat-d3c5.tomato17.workers.dev/",
-  "https://nameless-river-3e50.tomato18.workers.dev/",
-  "https://billowing-thunder-d61e.tomato19.workers.dev/",
-  "https://round-lab-5901.tomato20.workers.dev/",
-  
 
   "https://lucky-bird-0b3f.tantado1.workers.dev/",
   "https://rapid-resonance-41cd.tantado2.workers.dev/",

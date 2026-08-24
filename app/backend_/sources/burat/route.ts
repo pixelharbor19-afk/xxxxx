@@ -56,11 +56,9 @@ const DASH_WORKERS = [
   // "https://orange-tooth-0e36.zxcprime369.workers.dev/",
   // "https://silent-glitter-744f.zxcprime365.workers.dev/",
   // "https://nameless-feather-4fca.zxcprime364.workers.dev/",
-  // "https://proxy.zxcprime.workers.dev/",
-  // "https://proxy.zxcprime3.workers.dev/",
-  // "https://proxy.zxcprime2.workers.dev/",
+
   // "https://orange-poetry-e481.jindaedalus2.workers.dev/",
-  // "https://proxy.primezxc9.workers.dev/",
+
   // "https://sweet-dust-bdb3.vetenabejar.workers.dev/",
   // "https://long-frog-ec4e.coupdegrace21799.workers.dev/",
   // "https://damp-bonus-5625.mosangfour.workers.dev/",
@@ -79,6 +77,20 @@ const DASH_WORKERS = [
   // "https://little-frog-dbca.icarus049.workers.dev/",
   // "https://dawn-violet-1bfc.icarus045.workers.dev/",
   // "https://cool-bonus-53bc.vps10-af1.workers.dev/",
+
+  // "https://proxy.zxcprime.workers.dev/",
+  // "https://proxy.zxcprime3.workers.dev/",
+  // "https://proxy.zxcprime2.workers.dev/",
+  // "https://proxy.primezxc9.workers.dev/",
+  "https://soft-snow-25d5.tomato2.workers.dev/",
+  "https://winter-resonance-4397.tomato14.workers.dev/",
+  "https://long-mountain-c477.tomato15.workers.dev/",
+  "https://icy-recipe-7f1f.tomato16.workers.dev/",
+
+  "https://quiet-boat-d3c5.tomato17.workers.dev/",
+  "https://nameless-river-3e50.tomato18.workers.dev/",
+  "https://billowing-thunder-d61e.tomato19.workers.dev/",
+  "https://round-lab-5901.tomato20.workers.dev/",
 ];
 
 const supabase = createClient(
