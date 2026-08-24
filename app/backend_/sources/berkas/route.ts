@@ -4,9 +4,9 @@ import { isValidReferer } from "@/lib/allowed-referers";
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { FIELD_MAP } from "@/lib/params";
 import { createClient } from "@supabase/supabase-js";
-import { encryptUrl } from "@/lib/encryptor";
+import { encryptUrl } from "@/lib/aes-encryptor";
 import { validateSession } from "@/lib/validate-session";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 
 //AES_KEY
 //48cea93448b6719f32471b15777eb140db961b6ba6f1fc92cb92b0fdd7da555d

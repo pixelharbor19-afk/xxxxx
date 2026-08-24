@@ -3,8 +3,8 @@ import { validateBackendToken } from "@/lib/validate-token";
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
-import { encryptUrl } from "@/lib/encryptor";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptUrl } from "@/lib/aes-encryptor";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
 
 const DASH_WORKERS = [

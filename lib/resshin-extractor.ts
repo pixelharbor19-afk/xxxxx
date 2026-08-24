@@ -1,7 +1,7 @@
 // @/lib/resshin-extractor.ts
 import crypto from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
-import { encryptUrl } from "./encryptor";
+import { encryptUrl } from "./aes-encryptor";
 import { fetchWithTimeout } from "./fetch-timeout";
 
 // ==================== CONFIG ====================

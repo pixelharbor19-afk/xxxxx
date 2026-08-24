@@ -4,10 +4,10 @@ import { validateBackendToken } from "@/lib/validate-token";
 import { FIELD_MAP } from "@/lib/params";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
-import { encryptUrl } from "@/lib/encryptor";
+import { encryptUrl } from "@/lib/aes-encryptor";
 import { getWorkingProxy, proxies } from "@/lib/resshin-extractor";
 import { validateSession } from "@/lib/validate-session";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_APP!,

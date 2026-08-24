@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { TOKEN_MAX_AGE } from "@/lib/security";
+import { TOKEN_MAX_AGE } from "@/lib/token-age";
 
 const SECRET = process.env.API_SECRET!;
 

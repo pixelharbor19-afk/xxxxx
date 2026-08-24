@@ -1,7 +1,7 @@
 // @/lib/icarus-extractor.ts
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { createClient } from "@supabase/supabase-js";
-import { encryptUrl } from "@/lib/encryptor";
+import { encryptUrl } from "@/lib/aes-encryptor";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_WEB!,
@@ -123,7 +123,6 @@ export const proxies = [
   // "https://curly-snowflake-2593.icarus029.workers.dev/",
   // "https://calm-glitter-8377.icarus028.workers.dev/",
   // "https://withered-lab-a730.icarus027.workers.dev/",
- 
 ];
 async function getWorkingProxy(proxies: string[]) {
   const activeProxies = await getActiveProxies(proxies);

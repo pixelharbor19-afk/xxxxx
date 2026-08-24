@@ -4,19 +4,20 @@ import { SALT } from "./salt";
 // 🔁 Rotate these constants every few weeks
 
 const FIELD_MAP = {
-  id: "c81f43316f408",
-  fToken: "9e3c7b13f41573652481d0e493",
-  ts: "54d8b2618337e260b13fd",
-  token: "b7f134c225d63aef381c4a9",
-  title: "2af19de332284805436391e",
-  year: "f0b34866a232909215a134f",
-  season: "d41e6b592af5751330f1c48a7e",
-  episode: "8b7d2fe6239c945341d8e7bc2",
-  imdbId: "6e5c97234d2198403b631a6d54",
-  path: "7f4a13c63e285b917d4c32",
-  mediaType: "a632c914f73853d204b17e",
-  date: "3b9142c685f53109a3336d",
+  id: "a7f39c821d604e5b92c7148f36e1547b",
+  fToken: "e83c4b719a526d8f31e6052479c1635a",
+  ts: "61d9a5274c8e3b219af750d684c291e6",
+  token: "c492f7a183de6502b91e746c538a716d",
+  title: "5e28c9147ab306d531e829f674b392a1",
+  year: "b731e6c94f5082a1639d725f841c306e",
+  season: "d8427b519ce306184a2f957c613e85b",
+  episode: "91c6e4a728bd503d1f785c9246b713d",
+  imdbId: "f35a8c219d6740b3265e871c493a725f",
+  path: "6b491e7c253ad80f14d392e7561a984c",
+  mediaType: "c7285f914ab306d281e947a5632e816b",
+  date: "e1649b732c508f216ad739e5814b027",
 } as const;
+
 export { FIELD_MAP };
 
 export function generateFrontendToken(id: string) {

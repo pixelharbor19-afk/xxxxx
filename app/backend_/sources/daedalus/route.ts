@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { isValidReferer } from "@/lib/allowed-referers";
 import CryptoJS from "crypto-js";
 import { validateSession } from "@/lib/validate-session";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_SENTINEL!,

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { MediaOption } from "./open-subtitle";
 import { AxiosError } from "axios";
-import { decryptLink } from "@/lib/link-crypto";
+import { decryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
 
 export interface QualityTrack {
@@ -93,7 +93,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend_/tite", {
+      const { data: token } = await axios.post("/backend_/kinanginamo", {
         [FIELD_MAP.id]: tmdbId,
         [FIELD_MAP.mediaType]: media_type,
         [FIELD_MAP.path]: path,

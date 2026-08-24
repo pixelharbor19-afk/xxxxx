@@ -4,9 +4,9 @@ import { validateBackendToken } from "@/lib/validate-token";
 
 import { createClient } from "@supabase/supabase-js";
 import { isValidReferer } from "@/lib/allowed-referers";
-import { encryptUrl } from "@/lib/encryptor";
+import { encryptUrl } from "@/lib/aes-encryptor";
 import { validateSession } from "@/lib/validate-session";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 
 let blacklistCache: Set<string> | null = null;
 let blacklistCacheTime = 0;
@@ -57,17 +57,12 @@ const GOOD_HEADERS = {
 // Cookie:
 //   "cf_clearance=Shib.kVZbVDgJDU1GKv1nbUVUVOmaQ5xdjU5pvCwLxg-1783909046-1.2.1.1-3iK8K2GIOeCtRAJ3l3WmPdDHjpKVpo8ieaAy17TRByJ0l0wKYlDPz2dRkqyRSeqz0TziVHmaJraDRzSBukJ.zJxeUwgxvat9hz8kCvB9kMjEmtKQpFxcxoYQ3I7FguWEndAqQppX9Xo.wkTgzNHGaQZuzDE6znn7G0RvI2BcRsIIR0u4wlxrsANladOz8CRnsMN.EQ7mvPcHd3AWq0hXpsjG1n6WJljyriChUetClEthytE4mhzRc_3qMEPlJ85W2wz9RfuH1247.rEjaBt1ztWlACrkcUtDDsYOquAojthHFmKygvZOYhnw.KVZXacdIQGVSakwm4ISD9z4C4M_qkxqYV4gG6jdqvOBLKKFho3j9rU.VpZ1vzMErFSMYH5NgETYeV3sYBCSOQFtd.ELqqBLIM_vvCF6WMj1OPDynQSxX28EGs7irFkcJGLQh6WPwE4LzHYfPYUfuP76bfKx3tj6aE6HVYfhZlmNb7QYTkgC62NvSBh6eh3snymTMkVN",
 const HOLLY_WORKERS = [
-
-
-
   "https://small-cake-d1a9.garlic1.workers.dev/",
-
 
   "https://shy-mountain-1e6e.eggplant17.workers.dev/",
   "https://autumn-art-09cb.eggplant18.workers.dev/",
   "https://jolly-cell-b82a.eggplant20.workers.dev/",
   "https://cool-king-6047.eggplant19.workers.dev/",
-
 
   "https://lucky-bird-0b3f.tantado1.workers.dev/",
   "https://rapid-resonance-41cd.tantado2.workers.dev/",
@@ -85,7 +80,6 @@ const HOLLY_WORKERS = [
   "https://solitary-bread-d752.tukmol9.workers.dev/",
   "https://frosty-pine-d395.tukmol11.workers.dev/",
   "https://winter-silence-9027.tukmol12.workers.dev/",
-  
 
   "https://little-hall-3be5.friedrice1.workers.dev/",
   "https://raspy-union-8ac8.friedrice2.workers.dev/",

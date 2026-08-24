@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateBackendToken } from "@/lib/validate-token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
-import { encryptLink } from "@/lib/link-crypto";
+import { encryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
 
 const supabase = createClient(
