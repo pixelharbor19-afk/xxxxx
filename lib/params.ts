@@ -4,18 +4,18 @@ import { SALT } from "./salt";
 // 🔁 Rotate these constants every few weeks
 
 const FIELD_MAP = {
-  id: "c81f42d9e22542643316f408",
-  fToken: "9e3c7b134a3f457652481d0e493",
-  ts: "54d8b2681fa337e260b1fd",
-  token: "b7f18e34c225d63aef81c4a9",
-  title: "2af9c71de33228480546391e",
-  year: "f0b34e866a232909275a14f",
-  season: "d41e8c26b592af575130fc48a7e",
-  episode: "8b7d132fe6239c94541d8e7bc2",
-  imdbId: "6e2af5c9734d219840b631a6d54",
-  path: "7f4a91c63e285b917d4c2",
-  mediaType: "a6e432c91f7385d204b17e",
-  date: "3b91e7d42c685f3109a36d",
+  id: "c81f42d9e225426413316f408",
+  fToken: "9e3c7b134a3f4157652481d0e493",
+  ts: "54d8b26181fa337e260b1fd",
+  token: "b7f118e34c225d63aef81c4a9",
+  title: "2af19c71de33228480546391e",
+  year: "f0b34e866a232909215a14f",
+  season: "d41e8c26b592af575130f1c48a7e",
+  episode: "8b7d1132fe6239c94541d8e7bc2",
+  imdbId: "6e2af5c97234d219840b631a6d54",
+  path: "7f4a913c63e285b917d4c2",
+  mediaType: "a6e432c914f7385d204b17e",
+  date: "3b91e7d42c685f53109a36d",
 } as const;
 export { FIELD_MAP };
 
