@@ -333,7 +333,6 @@ const PROXY_WORKERS = [
   "https://cool-sun-dbbc.wubbalubbadubdub16.workers.dev/",
   "https://shy-hill-e858.wubbalubbadubdub17.workers.dev/",
   "https://patient-smoke-9421.wubbalubbadubdub18.workers.dev/",
-  "https://empty-meadow-7845.wubbalubbadubdub19.workers.dev/",
 
   "https://white-rice-8ff0.wubbalubbadubdub20.workers.dev/",
   "https://wispy-dawn-7ed0.datikabanggago18.workers.dev/",
@@ -380,6 +379,17 @@ const PROXY_WORKERS = [
   "https://white-breeze-14ca.angsarapmopia19.workers.dev/",
   "https://solitary-flower-6ebd.angsarapmopia20.workers.dev/",
   "https://green-salad-281b.datikabanggago2.workers.dev/",
+
+  "https://blue-shape-8725.hotdog1.workers.dev/",
+  "https://lively-voice-cc6c.hotdog2.workers.dev/",
+  "https://aged-firefly-c044.hotdog3.workers.dev/",
+  "https://old-river-95a1.hotdog4.workers.dev/",
+  "https://solitary-wind-5759.hotdog5.workers.dev/",
+  "https://spring-water-af97.hotdog6.workers.dev/",
+  "https://muddy-glade-0cdd.hotdog8.workers.dev/",
+  "https://wandering-lab-8aaf.hotdog7.workers.dev/",
+  "https://lucky-lake-4dcd.hotdog9.workers.dev/",
+  "https://wandering-bar-125d.hotdog10.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
