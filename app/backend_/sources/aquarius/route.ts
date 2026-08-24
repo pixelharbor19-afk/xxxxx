@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
       console.log(message);
     }
   };
+
   try {
     const { searchParams, pathname } = req.nextUrl;
     const tmdbId = searchParams.get(FIELD_MAP.id);
@@ -44,8 +45,12 @@ export async function GET(req: NextRequest) {
 
     if (!tmdbId || !mediaType || !title || !date || !ts || !token) {
       logRequest(400, "missing params");
+
       return NextResponse.json(
-        { success: false, error: "missing params" },
+        {
+          success: false,
+          error: "missing params",
+        },
         { status: 400 },
       );
     }
@@ -54,36 +59,117 @@ export async function GET(req: NextRequest) {
       !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
     ) {
       logRequest(401, "Invalid token");
+
       return NextResponse.json(
-        { success: false, error: "Invalid token" },
+        {
+          success: false,
+          error: "Invalid token",
+        },
         { status: 401 },
       );
     }
 
     if (!isValidReferer(req.headers.get("referer") || "")) {
       logRequest(403, "Forbidden");
+
       return NextResponse.json(
-        { success: false, error: "Forbidden" },
+        {
+          success: false,
+          error: "Forbidden",
+        },
         { status: 403 },
       );
     }
 
-    const { data } = await supabase
+    // -----------------------------
+    // Cache lookup
+    // -----------------------------
+
+    let { data } = await supabase
       .from("moviebox_cache")
       .select("dubs")
       .eq("tmdb_id", tmdbId)
       .eq("media_type", mediaType)
       .maybeSingle();
 
+    // -----------------------------
+    // Cache missing → ICARUS search
+    // -----------------------------
+
+    if (!data?.dubs?.length) {
+      const searchParams = new URLSearchParams({
+        id: tmdbId,
+        b: mediaType,
+        title,
+        date,
+      });
+
+      const searchRes = await fetch(
+        `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
+        {
+          cache: "no-store",
+        },
+      );
+
+      if (!searchRes.ok) {
+        logRequest(404, "ICARUS search failed");
+
+        return NextResponse.json(
+          {
+            success: false,
+            error: "ICARUS search failed",
+          },
+          { status: searchRes.status },
+        );
+      }
+
+      const searchData = await searchRes.json();
+
+      if (!searchData?.success) {
+        logRequest(404, "ICARUS unavailable");
+
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Unavailable",
+          },
+          { status: 404 },
+        );
+      }
+
+      // Search endpoint has already saved
+      // the dubs to Supabase, so fetch cache again.
+      const result = await supabase
+        .from("moviebox_cache")
+        .select("dubs")
+        .eq("tmdb_id", tmdbId)
+        .eq("media_type", mediaType)
+        .maybeSingle();
+
+      data = result.data;
+    }
+
+    // -----------------------------
+    // Get original
+    // -----------------------------
+
     const original = data?.dubs?.find((d: any) => d.original === true);
 
     if (!original?.subjectId || !original?.detailPath) {
       logRequest(404, "Original source not found");
+
       return NextResponse.json(
-        { success: false, error: "Original source not found" },
+        {
+          success: false,
+          error: "Original source not found",
+        },
         { status: 404 },
       );
     }
+
+    // -----------------------------
+    // Scraper
+    // -----------------------------
 
     const params = new URLSearchParams({
       type: "dash",
@@ -91,7 +177,6 @@ export async function GET(req: NextRequest) {
       detailPath: original.detailPath,
     });
 
-    // TV shows need season + episode
     if (mediaType === "tv") {
       params.set("se", season || "0");
       params.set("ep", episode || "0");
@@ -106,9 +191,13 @@ export async function GET(req: NextRequest) {
 
     if (!res.ok) {
       logRequest(404, "Main request failed");
+
       return NextResponse.json(
-        { success: false, error: "Main request failed" },
-        { status: 502 },
+        {
+          success: false,
+          error: "Main request failed",
+        },
+        { status: 401 },
       );
     }
 
@@ -116,8 +205,12 @@ export async function GET(req: NextRequest) {
 
     if (!scraped?.data?.length) {
       logRequest(404, "No sources found");
+
       return NextResponse.json(
-        { success: false, error: "No sources found" },
+        {
+          success: false,
+          error: "No sources found",
+        },
         { status: 404 },
       );
     }
@@ -129,14 +222,19 @@ export async function GET(req: NextRequest) {
       type: "dash",
       link: encryptLink(source.url),
     }));
+
     logRequest(200, "AQUARIUS OK!!!!!");
+
     return NextResponse.json({
       success: true,
       links,
     });
   } catch {
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
+      {
+        success: false,
+        error: "Internal server error",
+      },
       { status: 500 },
     );
   }
