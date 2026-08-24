@@ -183,7 +183,7 @@ export async function GET(req: NextRequest) {
     }
 
     const res = await fetch(
-      `https://main-school-project-production.up.railway.app/scrape/123movies?${params}`,
+      `https://api1.zxcstream.xyz/scrape/123movies?${params}`,
       {
         cache: "no-store",
       },
