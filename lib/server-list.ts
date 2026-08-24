@@ -13,25 +13,27 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "4K Support & Fast",
   },
+
   {
-    name: "Aquarius II",
+    name: "Vendetta II",
+    server: "vendetta",
+    status: "queue",
+    desc: "Huge Library",
+  },
+  {
+    name: "Aquarius III",
     server: "aquarius",
     status: "queue",
     desc: "Movies & TV Shows - HD Support",
   },
 
   {
-    name: "Atlas III",
+    name: "Atlas IV",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
-  {
-    name: "Vendetta IV",
-    server: "vendetta",
-    status: "queue",
-    desc: "Huge Library",
-  },
+
   // {
   //   name: "Icarus V",
   //   server: "icarus",
