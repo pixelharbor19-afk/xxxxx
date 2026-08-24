@@ -4,19 +4,7 @@ const ALLOWED_HOST = "www.screenify.fun";
 const ALLOWED_ORIGIN = `https://${ALLOWED_HOST}`;
 
 // const DAEDALUS_WORKERS = [
-//   "test52-b2c",
-//   "test51-8b1",
-//   "test50-6c3",
-//   "test49-3b0",
-//   "test48-104",
-//   "test47-0f7",
-//   "test46-96a",
-//   "test45-b77",
-//   "test44-255",
-//   "test42-947",
-//   "test43-cbe",
-//   //NO TOKEN
-//   "test41-2c1",
+
 //   "test40-fdf",
 //   "test39-43c",
 //   "test38-eab",
