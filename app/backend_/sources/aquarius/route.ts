@@ -3,6 +3,7 @@ import { validateBackendToken } from "@/lib/validate-token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
 import { encryptLink } from "@/lib/link-crypto";
+import { FIELD_MAP } from "@/lib/params";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_WEB!,
@@ -11,10 +12,10 @@ const supabase = createClient(
 
 export async function GET(req: NextRequest) {
   const logRequest = (status: number, reason: string) => {
-    const tmdbId = req.nextUrl.searchParams.get("id");
-    const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get("season");
-    const episode = req.nextUrl.searchParams.get("episode");
+    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
+    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
+    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
 
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
@@ -31,15 +32,14 @@ export async function GET(req: NextRequest) {
   };
   try {
     const { searchParams, pathname } = req.nextUrl;
-
-    const tmdbId = searchParams.get("id");
-    const mediaType = searchParams.get("b");
-    const season = searchParams.get("season") ?? "";
-    const episode = searchParams.get("episode") ?? "";
-    const title = searchParams.get("title");
-    const ts = Number(searchParams.get("ts"));
-    const token = searchParams.get("token");
-    const date = searchParams.get("date");
+    const tmdbId = searchParams.get(FIELD_MAP.id);
+    const mediaType = searchParams.get(FIELD_MAP.mediaType);
+    const season = searchParams.get(FIELD_MAP.season) ?? "";
+    const episode = searchParams.get(FIELD_MAP.episode) ?? "";
+    const title = searchParams.get(FIELD_MAP.title);
+    const ts = Number(searchParams.get(FIELD_MAP.ts));
+    const token = searchParams.get(FIELD_MAP.token);
+    const date = searchParams.get(FIELD_MAP.date);
     const path = pathname.split("/").pop()!;
 
     if (!tmdbId || !mediaType || !title || !date || !ts || !token) {
