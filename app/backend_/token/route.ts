@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { ALLOWED_ORIGINS } from "@/lib/allowed-referers";
+import { FIELD_MAP } from "@/lib/params";
 
 const SECRET = process.env.API_SECRET!;
 
@@ -14,7 +15,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { id, media_type, season, episode, path } = await req.json();
+  const body = await req.json();
+
+  const id = body[FIELD_MAP.id];
+  const media_type = body[FIELD_MAP.mediaType];
+  const season = body[FIELD_MAP.season];
+  const episode = body[FIELD_MAP.episode];
+  const path = body[FIELD_MAP.path];
 
   if (!id || !media_type || !path) {
     return NextResponse.json(
@@ -24,6 +31,7 @@ export async function POST(req: NextRequest) {
   }
 
   const ts = Date.now();
+
   let payload: string;
 
   if (media_type === "tv") {
@@ -41,7 +49,10 @@ export async function POST(req: NextRequest) {
 
   const existingCookie = req.cookies.get("_ps")?.value;
 
-  const response = NextResponse.json({ token, ts });
+  const response = NextResponse.json({
+    token,
+    ts,
+  });
 
   if (!existingCookie) {
     const value = crypto.randomBytes(32).toString("hex");

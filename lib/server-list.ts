@@ -32,20 +32,20 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "Huge Library",
   },
+  // {
+  //   name: "Icarus V",
+  //   server: "icarus",
+  //   status: "queue",
+  //   desc: "Download & Multi Audio Support",
+  // },
   {
-    name: "Icarus V",
-    server: "icarus",
-    status: "queue",
-    desc: "Download & Multi Audio Support",
-  },
-  {
-    name: "Resshin VI",
+    name: "Resshin V",
     server: "resshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
   {
-    name: "Daedalus VII",
+    name: "Daedalus VI",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",

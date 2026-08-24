@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MediaOption } from "./open-subtitle";
 import { AxiosError } from "axios";
 import { decryptLink } from "@/lib/link-crypto";
+import { FIELD_MAP } from "@/lib/params";
 
 export interface QualityTrack {
   resolution?: number;
@@ -93,28 +94,29 @@ export default function useSource(params: UseSourceParams) {
 
     queryFn: async () => {
       const { data: token } = await axios.post("/backend_/token", {
-        id: tmdbId,
-        media_type,
-        path,
-        ...(media_type === "tv" && { season, episode }),
+        [FIELD_MAP.id]: tmdbId,
+        [FIELD_MAP.mediaType]: media_type,
+        [FIELD_MAP.path]: path,
+        ...(media_type === "tv" && {
+          [FIELD_MAP.season]: season,
+          [FIELD_MAP.episode]: episode,
+        }),
       });
 
-      const ts = token.ts;
-      const sig = token.token;
-
       const search = new URLSearchParams({
-        id: tmdbId,
-        b: media_type,
-        ts: String(ts),
-        token: sig,
-        title,
-        year,
-        date,
+        [FIELD_MAP.id]: tmdbId,
+        [FIELD_MAP.path]: path,
+        [FIELD_MAP.mediaType]: media_type,
+        [FIELD_MAP.ts]: String(token.ts),
+        [FIELD_MAP.token]: token.token,
+        [FIELD_MAP.title]: title,
+        [FIELD_MAP.year]: year,
+        [FIELD_MAP.date]: date,
       });
 
       if (media_type === "tv") {
-        search.set("season", String(season));
-        search.set("episode", String(episode));
+        search.set(FIELD_MAP.season, String(season));
+        search.set(FIELD_MAP.episode, String(episode));
       }
 
       if (dubCode && dubType) {
@@ -123,14 +125,12 @@ export default function useSource(params: UseSourceParams) {
       }
 
       if (imdbId) {
-        search.set("imdbId", imdbId);
+        search.set(FIELD_MAP.imdbId, imdbId);
       }
 
       const { data } = await axios.get<SourceTypes>(
         `/backend_/sources/${path}?${search.toString()}`,
       );
-
-      // await new Promise((resolve) => setTimeout(resolve, 1200));
 
       return {
         ...data,

@@ -3,20 +3,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateBackendToken } from "@/lib/validate-token";
 import { validateSession } from "@/lib/validate-session";
 import { isValidReferer } from "@/lib/allowed-referers";
+import { FIELD_MAP } from "@/lib/params";
 
 export async function GET(req: NextRequest) {
   try {
     const path = req.nextUrl.pathname.split("/").pop()!;
 
-    const tmdbId = req.nextUrl.searchParams.get("id");
-    const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get("season") ?? "";
-    const episode = req.nextUrl.searchParams.get("episode") ?? "";
-    const title = req.nextUrl.searchParams.get("title");
-    const year = req.nextUrl.searchParams.get("year");
-    const date = req.nextUrl.searchParams.get("date");
-    const ts = Number(req.nextUrl.searchParams.get("ts"));
-    const token = req.nextUrl.searchParams.get("token");
+    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
+    const season = req.nextUrl.searchParams.get(FIELD_MAP.season) ?? "";
+    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode) ?? "";
+    const title = req.nextUrl.searchParams.get(FIELD_MAP.title);
+    const year = req.nextUrl.searchParams.get(FIELD_MAP.year);
+    const date = req.nextUrl.searchParams.get(FIELD_MAP.date);
+    const ts = Number(req.nextUrl.searchParams.get(FIELD_MAP.ts));
+    const token = req.nextUrl.searchParams.get(FIELD_MAP.token);
 
     if (!tmdbId || !mediaType || !title || !year || !date || !ts || !token) {
       return NextResponse.json(

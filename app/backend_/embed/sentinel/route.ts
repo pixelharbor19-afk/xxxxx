@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isValidReferer } from "@/lib/allowed-referers";
-import { FIELD_MAP } from "@/lib/token";
+import { FIELD_MAP } from "@/lib/params";
 
 const MEGACLOUD = "https://megacloudx.net";
 

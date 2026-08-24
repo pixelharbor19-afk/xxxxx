@@ -1,4 +1,4 @@
-import { generateFrontendToken, FIELD_MAP } from "@/lib/token";
+import { generateFrontendToken, FIELD_MAP } from "@/lib/params";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -24,7 +24,7 @@ async function fetchSentinelEmbed({
 }: FetchEmbedParams) {
   const { xt, rt } = generateFrontendToken(tmdbId);
 
-  const backendRes = await axios.post("/backend/token", {
+  const backendRes = await axios.post("/backend_/token", {
     [FIELD_MAP.id]: tmdbId,
     [FIELD_MAP.fToken]: xt,
     [FIELD_MAP.ts]: rt,

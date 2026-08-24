@@ -1,4 +1,4 @@
-// lib/token.ts  ← single source of truth, change here to rotate
+// lib/params.ts  ← single source of truth, change here to rotate
 import crypto from "crypto";
 import { SALT } from "./salt";
 // 🔁 Rotate these constants every few weeks
@@ -13,8 +13,10 @@ const FIELD_MAP = {
   season: "d41e8c26b592af575100fc48a7e",
   episode: "8b7d132fe629c94541d8e7bc2",
   imdbId: "6e2af5c974d219840b631a6d54",
+  path: "7f4a91c63e285b917d4c2",
+  mediaType: "a6e42c91f7385d204b17e",
+  date: "3b91e7d42c685f109a36d",
 } as const;
-
 export { FIELD_MAP };
 
 export function generateFrontendToken(id: string) {

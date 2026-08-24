@@ -5,6 +5,7 @@ import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
 import { encryptUrl } from "@/lib/encryptor";
 import { encryptLink } from "@/lib/link-crypto";
+import { FIELD_MAP } from "@/lib/params";
 
 const DASH_WORKERS = [
   "https://aged-snow-6862.kantuninkita1.workers.dev/",
@@ -238,14 +239,14 @@ export async function GET(req: NextRequest) {
   const params = req.nextUrl.searchParams;
 
   const path = req.nextUrl.pathname.split("/").pop()!;
-  const tmdbId = params.get("id");
-  const mediaType = params.get("b");
-  const season = params.get("season") ?? "";
-  const episode = params.get("episode") ?? "";
-  const title = params.get("title");
-  const year = params.get("year");
-  const ts = Number(params.get("ts"));
-  const token = params.get("token");
+  const tmdbId = params.get(FIELD_MAP.id);
+  const mediaType = params.get(FIELD_MAP.mediaType);
+  const season = params.get(FIELD_MAP.season) ?? "";
+  const episode = params.get(FIELD_MAP.episode) ?? "";
+  const title = params.get(FIELD_MAP.title);
+  const year = params.get(FIELD_MAP.year);
+  const ts = Number(params.get(FIELD_MAP.ts));
+  const token = params.get(FIELD_MAP.token);
 
   const logRequest = (status: number, reason: string) => {
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";

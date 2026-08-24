@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { MediaOption } from "./open-subtitle";
+import { FIELD_MAP } from "@/lib/params";
 
 interface UseSubtitleParams {
   tmdbId: string;
@@ -34,25 +35,29 @@ export default function useSubtitle({
 
     queryFn: async () => {
       const { data: token } = await axios.post("/backend_/token", {
-        id: tmdbId,
-        media_type,
-        path: "subtitle_",
-        ...(media_type === "tv" && { season, episode }),
+        [FIELD_MAP.id]: tmdbId,
+        [FIELD_MAP.mediaType]: media_type,
+        [FIELD_MAP.path]: "subtitle_",
+        ...(media_type === "tv" && {
+          [FIELD_MAP.season]: season,
+          [FIELD_MAP.episode]: episode,
+        }),
       });
 
       const search = new URLSearchParams({
-        id: tmdbId,
-        b: media_type,
-        ts: String(token.ts),
-        token: token.token,
-        title,
-        year,
-        date,
+        [FIELD_MAP.id]: tmdbId,
+        [FIELD_MAP.mediaType]: media_type,
+        [FIELD_MAP.path]: "subtitle_",
+        [FIELD_MAP.ts]: String(token.ts),
+        [FIELD_MAP.token]: token.token,
+        [FIELD_MAP.title]: title,
+        [FIELD_MAP.year]: year,
+        [FIELD_MAP.date]: date,
       });
 
       if (media_type === "tv") {
-        search.set("season", String(season));
-        search.set("episode", String(episode));
+        search.set(FIELD_MAP.season, String(season));
+        search.set(FIELD_MAP.episode, String(episode));
       }
 
       const { data } = await axios.get(
