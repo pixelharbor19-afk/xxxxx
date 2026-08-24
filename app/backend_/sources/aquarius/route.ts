@@ -197,7 +197,7 @@ export async function GET(req: NextRequest) {
           success: false,
           error: "Main request failed",
         },
-        { status: res.status },
+        { status: 401 },
       );
     }
 
