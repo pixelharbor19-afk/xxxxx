@@ -417,6 +417,37 @@ const PROXY_WORKERS = [
   "https://daedalus.test47-0f7.workers.dev/",
   "https://daedalus.test46-96a.workers.dev/",
   "https://daedalus.test45-b77.workers.dev/",
+
+  //
+  "https://dark-cherry-6a91.onion1-15b.workers.dev/",
+  "https://proud-cell-5939.onion3.workers.dev/",
+  "https://tiny-recipe-0260.onion4.workers.dev/",
+  "https://little-river-b101.onion5.workers.dev/",
+
+  "https://silent-bonus-7a24.onion6.workers.dev/",
+  "https://aged-base-c9ac.onion7.workers.dev/",
+  "https://muddy-lab-95c2.onion8.workers.dev/",
+  "https://empty-wind-c60d.onion9.workers.dev/",
+
+  "https://silent-poetry-4f31.onion10.workers.dev/",
+  "https://misty-flower-259e.onion11.workers.dev/",
+  "https://yellow-flower-c806.onion12.workers.dev/",
+  "https://winter-snowflake-221b.onion13.workers.dev/",
+
+  "https://patient-cake-5c11.onion14.workers.dev/",
+  "https://misty-sunset-2fbb.onion15.workers.dev/",
+  "https://round-frost-a275.onion16.workers.dev/",
+  "https://empty-rice-a229.onion18.workers.dev/",
+
+  "https://dry-limit-0202.onion17.workers.dev/",
+  "https://late-field-848e.onion20.workers.dev/",
+  "https://delicate-rice-21d0.onion19.workers.dev/",
+  "https://broken-shape-6e6f.onion22.workers.dev/",
+
+  "https://broken-king-75d2.onion21.workers.dev/",
+  "https://summer-sunset-baa7.cabbage18.workers.dev/",
+  "https://nameless-darkness-6726.cabbage20.workers.dev/",
+  "https://dawn-flower-62aa.cabbage19.workers.dev/",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
