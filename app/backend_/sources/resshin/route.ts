@@ -197,7 +197,7 @@ export async function GET(req: NextRequest) {
                     //   `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
                     // ),
                     link: encryptLink(
-                      `https://api1.zxcstream.xyz/media/mp4?url=${encodeURIComponent(encrypted)}&headers=${encryptedHeader}`,
+                      `https://api1.zxcstream.xyz/media/mp4?url=${encodeURIComponent(encrypted)}&header=${encryptedHeader}`,
                     ),
                     // link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   };

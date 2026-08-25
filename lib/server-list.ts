@@ -13,7 +13,6 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "Movies & TV Shows - HD Support",
   },
-
   {
     name: "Berkas II",
     server: "berkas",
@@ -26,28 +25,26 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "HD Quality & Reliable",
   },
-
   {
     name: "Vendetta IV",
     server: "vendetta",
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
-
-  // {
-  //   name: "Icarus V",
-  //   server: "icarus",
-  //   status: "queue",
-  //   desc: "Download & Multi Audio Support",
-  // },
   {
-    name: "Resshin V",
+    name: "Icarus V",
+    server: "icarus",
+    status: "queue",
+    desc: "Download & Multi Audio Support",
+  },
+  {
+    name: "Resshin VI",
     server: "resshin",
     status: "queue",
     desc: "Alternative Multi Audio Support",
   },
   {
-    name: "Daedalus VI",
+    name: "Daedalus VII",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",
