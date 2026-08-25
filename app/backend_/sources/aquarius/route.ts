@@ -4,6 +4,7 @@ import { isValidReferer } from "@/lib/allowed-referers";
 import { createClient } from "@supabase/supabase-js";
 import { encryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
+import { logRequest } from "@/lib/log-request";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_WEB!,
@@ -11,28 +12,9 @@ const supabase = createClient(
 );
 
 export async function GET(req: NextRequest) {
-  const logRequest = (status: number, reason: string) => {
-    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
-    const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
-    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
-    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
-    const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
-
-    const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
-
-    const message = `[AQUARUIS] ${tmdbId}/${mediaType}${extra} | ${status} | ${reason} | ts: ${new Date().toISOString()} | IP: ${ip}`;
-
-    if (status >= 500) {
-      console.error(message);
-    } else if (status >= 400) {
-      console.warn(message);
-    } else {
-      console.log(message);
-    }
-  };
-
   try {
     const { searchParams, pathname } = req.nextUrl;
+
     const tmdbId = searchParams.get(FIELD_MAP.id);
     const mediaType = searchParams.get(FIELD_MAP.mediaType);
     const season = searchParams.get(FIELD_MAP.season) ?? "";
@@ -43,8 +25,19 @@ export async function GET(req: NextRequest) {
     const date = searchParams.get(FIELD_MAP.date);
     const path = pathname.split("/").pop()!;
 
-    if (!tmdbId || !mediaType || !title || !date || !ts || !token) {
-      logRequest(400, "missing params");
+    // -----------------------------
+    // Validate params
+    // -----------------------------
+
+    if (
+      !tmdbId ||
+      !mediaType ||
+      !title ||
+      !date ||
+      !Number.isFinite(ts) ||
+      !token
+    ) {
+      logRequest(req, "AQUARIUS", 400, "missing params");
 
       return NextResponse.json(
         {
@@ -55,10 +48,14 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // -----------------------------
+    // Validate token
+    // -----------------------------
+
     if (
       !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
     ) {
-      logRequest(401, "Invalid token");
+      logRequest(req, "AQUARIUS", 401, "Invalid token");
 
       return NextResponse.json(
         {
@@ -69,8 +66,12 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // -----------------------------
+    // Validate referer
+    // -----------------------------
+
     if (!isValidReferer(req.headers.get("referer") || "")) {
-      logRequest(403, "Forbidden");
+      logRequest(req, "AQUARIUS", 403, "Forbidden");
 
       return NextResponse.json(
         {
@@ -85,18 +86,20 @@ export async function GET(req: NextRequest) {
     // Cache lookup
     // -----------------------------
 
-    let { data } = await supabase
+    const { data: cached } = await supabase
       .from("moviebox_cache")
       .select("dubs")
       .eq("tmdb_id", tmdbId)
       .eq("media_type", mediaType)
       .maybeSingle();
 
+    let dubs = cached?.dubs ?? [];
+    let fromCache = dubs.length > 0;
     // -----------------------------
     // Cache missing → ICARUS search
     // -----------------------------
 
-    if (!data?.dubs?.length) {
+    if (!dubs.length) {
       const searchParams = new URLSearchParams({
         id: tmdbId,
         b: mediaType,
@@ -105,14 +108,14 @@ export async function GET(req: NextRequest) {
       });
 
       const searchRes = await fetch(
-        `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
+        `http://localhost:3001/search?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
       );
 
       if (!searchRes.ok) {
-        logRequest(404, "ICARUS search failed");
+        logRequest(req, "AQUARIUS", 502, "ICARUS search failed");
 
         return NextResponse.json(
           {
@@ -125,8 +128,8 @@ export async function GET(req: NextRequest) {
 
       const searchData = await searchRes.json();
 
-      if (!searchData?.success) {
-        logRequest(404, "ICARUS unavailable");
+      if (!searchData?.success || !searchData?.dubs?.length) {
+        logRequest(req, "AQUARIUS", 404, "Unavailable");
 
         return NextResponse.json(
           {
@@ -137,26 +140,37 @@ export async function GET(req: NextRequest) {
         );
       }
 
-      // Search endpoint has already saved
-      // the dubs to Supabase, so fetch cache again.
-      const result = await supabase
-        .from("moviebox_cache")
-        .select("dubs")
-        .eq("tmdb_id", tmdbId)
-        .eq("media_type", mediaType)
-        .maybeSingle();
+      // ICARUS found the dubs.
+      dubs = searchData.dubs;
+      fromCache = false;
 
-      data = result.data;
+      // -----------------------------
+      // Save cache
+      // -----------------------------
+
+      await supabase.from("moviebox_cache").upsert(
+        {
+          tmdb_id: tmdbId,
+          media_type: mediaType,
+          dubs,
+          release_date: date,
+          title,
+        },
+        {
+          onConflict: "tmdb_id,media_type",
+          ignoreDuplicates: true,
+        },
+      );
     }
 
     // -----------------------------
     // Get original
     // -----------------------------
 
-    const original = data?.dubs?.find((d: any) => d.original === true);
+    const original = dubs.find((d: any) => d.original === true);
 
     if (!original?.subjectId || !original?.detailPath) {
-      logRequest(404, "Original source not found");
+      logRequest(req, "AQUARIUS", 404, "Original source not found");
 
       return NextResponse.json(
         {
@@ -183,28 +197,28 @@ export async function GET(req: NextRequest) {
     }
 
     const res = await fetch(
-      `https://api1.zxcstream.xyz/scrape/123movies?${params}`,
+      `https://api1.zxcstream.xyz/scrape/123movies?${params.toString()}`,
       {
         cache: "no-store",
       },
     );
 
     if (!res.ok) {
-      logRequest(404, "Main request failed");
+      logRequest(req, "AQUARIUS", res.status, "Main request failed");
 
       return NextResponse.json(
         {
           success: false,
           error: "Main request failed",
         },
-        { status: 401 },
+        { status: res.status },
       );
     }
 
     const scraped = await res.json();
 
     if (!scraped?.data?.length) {
-      logRequest(404, "No sources found");
+      logRequest(req, "AQUARIUS", 404, "No sources found");
 
       return NextResponse.json(
         {
@@ -215,6 +229,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // -----------------------------
+    // Encrypt links
+    // -----------------------------
+
     const links = scraped.data.map((source: any) => ({
       resolution: source.resolutions,
       format: source.format,
@@ -223,11 +241,12 @@ export async function GET(req: NextRequest) {
       link: encryptLink(source.url),
     }));
 
-    logRequest(200, "AQUARIUS OK!!!!!");
+    logRequest(req, "AQUARIUS", 200, "OK");
 
     return NextResponse.json({
       success: true,
       links,
+      cached: fromCache,
     });
   } catch {
     return NextResponse.json(

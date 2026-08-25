@@ -13,7 +13,32 @@ const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_APP!,
   process.env.SUPABASE_SERVICE_ROLE_KEY_MOVIEBOX_APP!,
 );
-
+const CLIENT_INFO = JSON.stringify({
+  package_name: "com.community.mbox.in.geobypass",
+  version_name: "3.0.14.0422.03",
+  version_code: 51042203,
+  os: "android",
+  os_version: "7.1.2",
+  brand: "samsung",
+  model: "SM-G955N",
+  system_language: "en",
+  net: "NETWORK_WIFI",
+  region: "US",
+  timezone: "Africa/Brazzaville",
+  sp_code: "20801",
+  "X-Play-Mode": "2",
+  "X-Family-Mode": "0",
+});
+const BASE_HEADERS = {
+  accept: "*/*",
+  "accept-encoding": "identity",
+  "user-agent":
+    "com.community.mbox.in.geobypass/51042203 (Linux; Android 7.1.2)",
+  "x-client-info": CLIENT_INFO,
+  "x-client-status": "0",
+  "x-family-mode": "0",
+  "x-play-mode": "2",
+};
 export async function GET(req: NextRequest) {
   const logRequest = (status: number, reason: string) => {
     const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
@@ -158,6 +183,9 @@ export async function GET(req: NextRequest) {
                 .filter(Boolean)
                 .map(async (q: any) => {
                   const encrypted = await encryptUrl(q.url);
+                  const encryptedHeader = await encryptUrl(
+                    JSON.stringify(BASE_HEADERS),
+                  );
                   return {
                     resolution: q.resolution,
                     format: q.format,
@@ -165,8 +193,11 @@ export async function GET(req: NextRequest) {
                     type: (q.url ?? "").includes(".m3u8")
                       ? ("hls" as const)
                       : ("mp4" as const),
+                    // link: encryptLink(
+                    //   `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                    // ),
                     link: encryptLink(
-                      `https://proxy.zxcstream.xyz/proxy?data=${encodeURIComponent(encrypted)}`,
+                      `https://api1.zxcstream.xyz/media/mp4?url=${encodeURIComponent(encrypted)}&headers=${encryptedHeader}`,
                     ),
                     // link: `${workingProxy}?data=${encodeURIComponent(encrypted)}`,
                   };

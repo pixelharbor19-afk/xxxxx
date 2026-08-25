@@ -3,13 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateBackendToken } from "@/lib/validate-token";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { encryptLink } from "@/lib/source-link-enc-dec";
+import { FIELD_MAP } from "@/lib/params";
 
 export async function GET(req: NextRequest) {
   const logRequest = (status: number, reason: string) => {
-    const tmdbId = req.nextUrl.searchParams.get("id");
-    const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get("season");
-    const episode = req.nextUrl.searchParams.get("episode");
+    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
+    const season = req.nextUrl.searchParams.get(FIELD_MAP.season);
+    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode);
     const extra = mediaType === "tv" ? `/${season}/${episode}` : "";
 
     const ip = req.headers.get("cf-connecting-ip") ?? "unknown";
@@ -27,15 +28,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const path = req.nextUrl.pathname.split("/").pop()!;
-
-    const tmdbId = req.nextUrl.searchParams.get("id");
-    const mediaType = req.nextUrl.searchParams.get("b");
-    const season = req.nextUrl.searchParams.get("season") ?? "";
-    const episode = req.nextUrl.searchParams.get("episode") ?? "";
-    const title = req.nextUrl.searchParams.get("title");
-    const ts = Number(req.nextUrl.searchParams.get("ts"));
-    const token = req.nextUrl.searchParams.get("token");
-    const date = req.nextUrl.searchParams.get("date");
+    const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
+    const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
+    const season = req.nextUrl.searchParams.get(FIELD_MAP.season) ?? "";
+    const episode = req.nextUrl.searchParams.get(FIELD_MAP.episode) ?? "";
+    const title = req.nextUrl.searchParams.get(FIELD_MAP.title);
+    const ts = Number(req.nextUrl.searchParams.get(FIELD_MAP.ts));
+    const token = req.nextUrl.searchParams.get(FIELD_MAP.token);
+    const date = req.nextUrl.searchParams.get(FIELD_MAP.date);
 
     const dubCode = req.nextUrl.searchParams.get("dubCode");
     const dubType = req.nextUrl.searchParams.get("dubType");
