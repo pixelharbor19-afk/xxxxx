@@ -184,7 +184,7 @@ export default function MainControls({
         "z-50 absolute inset-0",
         "flex flex-col justify-between",
         "pointer-events-none",
-        "bg-linear-to-b from-black/30 via-transparent to-black/60",
+        "bg-linear-to-b from-black/30 via-transparent to-black/80",
 
         "after:absolute after:inset-0 after:content-['']",
         "after:bg-linear-to-bl after:from-transparent after:via-transparent after:to-black/50",

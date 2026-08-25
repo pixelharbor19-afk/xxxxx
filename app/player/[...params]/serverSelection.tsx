@@ -148,7 +148,7 @@ export function LyricsServerPicker({
                 "lg:py-8 md:py-6 py-5 landscape:py-3",
                 "lg:px-8 px-2",
                 isActive &&
-                  "lg:-translate-x-20 -translate-x-8 landscape:-translate-x-4",
+                  "lg:-translate-x-18 -translate-x-8 landscape:-translate-x-4",
                 isNear &&
                   "lg:-translate-x-10 -translate-x-4 landscape:-translate-x-2 opacity-80",
                 !isActive &&

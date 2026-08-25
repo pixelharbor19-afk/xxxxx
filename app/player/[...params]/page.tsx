@@ -4,7 +4,16 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDoubleTap } from "use-double-tap";
-import { Play, RefreshCcw, RotateCw, TriangleAlert, X } from "lucide-react";
+import {
+  ClockAlert,
+  CloudOff,
+  HatGlasses,
+  RefreshCcw,
+  RotateCw,
+  SearchX,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import { Tailspin } from "ldrs/react";
 import "ldrs/react/Tailspin.css";
 import { cn } from "@/lib/utils";
@@ -812,24 +821,30 @@ export default function Player() {
       >
         <div className="absolute w-64 h-64 rounded-full bg-blue-600/10 blur-3xl pointer-events-none animate-pulse" />
         <div className="relative z-10 text-center px-4">
-          <div className="space-y-2">
-            <div>
-              <span className="font-bold lg:text-xl md:text-lg text-base landscape:text-sm">
-                ༼;´༎ຶ ۝ ༎ຶ༽
-              </span>
+          <div className="space-y-4 landscape:space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-2 landscape:space-y-1">
+              <div className="flex items-center justify-center rounded-full bg-orange-500/10 p-3 ring-1 ring-orange-500/20 landscape:p-1.5">
+                <ClockAlert className="size-8 text-orange-500 md:size-10 landscape:size-4" />
+              </div>
+
+              <p className="text-lg font-semibold tracking-tight md:text-2xl landscape:text-sm">
+                Too Many Requests
+              </p>
             </div>
 
-            <p className="lg:text-2xl md:text-xl text-lg landscape:text-base -tracking-[0.04em] font-semibold mt-6 landscape:mt-1">
-              Too many requests
+            <p className="mx-auto max-w-xl text-sm font-medium text-muted-foreground md:text-lg landscape:text-xs">
+              You've made too many requests too quickly. Please wait a few
+              seconds before trying again.
             </p>
 
-            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-3">
-              You've made too many requests too quickly. Please wait a few
-              seconds, then try again.
-            </p>
+            <div className="mx-auto w-fit rounded-lg border border-orange-500/20 bg-orange-500/5 px-4 py-2.5 landscape:px-2 landscape:py-1">
+              <p className="text-sm font-semibold text-orange-500 md:text-base landscape:text-[10px]">
+                Please wait and try again.
+              </p>
+            </div>
           </div>
           <Button
-            variant={cooldown ? "outline" : "destructive"}
+            variant={cooldown ? "outline" : "secondary"}
             className="mt-6"
             onClick={handleTryAgain}
             disabled={cooldown > 0}
@@ -852,32 +867,34 @@ export default function Player() {
       >
         <div className="absolute w-64 h-64 rounded-full bg-blue-600/10 blur-3xl pointer-events-none animate-pulse" />
         <div className="relative z-10 text-center px-4">
-          <div className="space-y-2">
-            <div>
-              <span className="font-bold lg:text-xl md:text-lg text-base landscape:text-sm">
-                ༼;´༎ຶ ۝ ༎ຶ༽
-              </span>
+          <div className="space-y-4 landscape:space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-2 landscape:space-y-1">
+              <div className="flex items-center justify-center rounded-full bg-yellow-500/10 p-3 ring-1 ring-yellow-500/20 landscape:p-1.5">
+                <HatGlasses className="size-8 text-yellow-500 md:size-10 landscape:size-4" />
+              </div>
+
+              <p className="text-lg font-semibold tracking-tight md:text-2xl landscape:text-sm">
+                VPN Detected
+              </p>
             </div>
 
-            <p className="lg:text-2xl md:text-xl text-lg landscape:text-base -tracking-[0.04em] font-semibold mt-6 landscape:mt-1">
-              IP Address Blocked
+            <p className="mx-auto max-w-xl text-sm font-medium text-muted-foreground md:text-lg landscape:text-xs">
+              Your VPN or proxy IP address is currently blocked due to abuse.
             </p>
 
-            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-3">
-              Your IP address has been blocked due to suspected malicious
-              activity.
-            </p>
+            <div className="mx-auto w-fit rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-4 py-2.5 landscape:px-2 landscape:py-1">
+              <p className="text-sm font-semibold text-yellow-500 md:text-base landscape:text-[10px]">
+                Please disconnect your VPN and try again.
+              </p>
+            </div>
 
-            <p className="text-yellow-500 font-semibold lg:text-base text-sm mt-2">
-              Using a VPN? Disconnect it or try a different VPN.
-            </p>
-
-            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-2">
-              If you believe this was a mistake, join our Discord and appeal.
+            <p className="mx-auto max-w-xl text-sm font-medium text-muted-foreground md:text-lg landscape:text-xs">
+              Not using a VPN? Try disabling your proxy, switching networks, or
+              using another browser.
             </p>
           </div>
           <Button
-            variant={cooldown ? "outline" : "destructive"}
+            variant={cooldown ? "outline" : "secondary"}
             className="mt-6"
             onClick={handleTryAgain}
             disabled={cooldown > 0}
@@ -900,24 +917,30 @@ export default function Player() {
       >
         <div className="absolute w-64 h-64 rounded-full bg-blue-600/10 blur-3xl pointer-events-none animate-pulse" />
         <div className="relative z-10 text-center px-4">
-          <div className="space-y-2">
-            <div>
-              <span className="font-bold lg:text-xl md:text-lg text-base landscape:text-sm">
-                ༼;´༎ຶ ۝ ༎ຶ༽
-              </span>
+          <div className="space-y-4 landscape:space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-2 landscape:space-y-1">
+              <div className="flex items-center justify-center rounded-full bg-muted/50 p-3 ring-1 ring-border landscape:p-1.5">
+                <SearchX className="size-8 text-muted-foreground md:size-10 landscape:size-4" />
+              </div>
+
+              <p className="text-lg font-semibold tracking-tight md:text-2xl landscape:text-sm">
+                No Resources Found
+              </p>
             </div>
 
-            <p className="lg:text-2xl md:text-xl text-lg landscape:text-base -tracking-[0.04em] font-semibold mt-6 landscape:mt-1">
-              No resources found
-            </p>
-
-            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-3">
+            <p className="mx-auto max-w-xl text-sm font-medium text-muted-foreground md:text-lg landscape:text-xs">
               Nothing to stream here. The resource you're looking for doesn't
               exist or has been removed.
             </p>
+
+            <div className="mx-auto w-fit rounded-lg border border-border bg-muted/30 px-4 py-2.5 landscape:px-2 landscape:py-1">
+              <p className="text-sm font-medium text-muted-foreground md:text-base landscape:text-[10px]">
+                Try again or check back later.
+              </p>
+            </div>
           </div>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={handleMetadataRetry}
             disabled={retryCooldown > 0}
             className="mt-8 landscape:text-xs landscape:px-2 landscape:py-1 gap-2"
@@ -948,24 +971,30 @@ export default function Player() {
 
         <div className="absolute w-64 h-64 rounded-full bg-blue-600/10 blur-3xl pointer-events-none animate-pulse" />
         <div className="relative z-10 text-center px-4">
-          <div className="space-y-2">
-            <div>
-              <span className="font-bold lg:text-xl md:text-lg text-base landscape:text-sm">
-                ༼;´༎ຶ ۝ ༎ຶ༽
-              </span>
+          <div className="space-y-4 landscape:space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-2 landscape:space-y-1">
+              <div className="flex items-center justify-center rounded-full bg-muted/60 p-3 ring-1 ring-border landscape:p-1.5">
+                <CloudOff className="size-8 text-muted-foreground md:size-10 landscape:size-4" />
+              </div>
+
+              <p className="text-lg font-semibold tracking-tight md:text-2xl landscape:text-sm">
+                Unable to Load Content
+              </p>
             </div>
 
-            <p className="lg:text-2xl md:text-xl text-lg landscape:text-base -tracking-[0.04em] font-semibold mt-6 landscape:mt-1">
-              All servers failed
+            <p className="mx-auto max-w-xl text-sm font-medium text-muted-foreground md:text-lg landscape:text-xs">
+              We couldn't find a working server for this content. It may be
+              temporarily unavailable or still processing.
             </p>
 
-            <p className="text-muted-foreground lg:text-lg text-sm font-medium landscape:text-xs max-w-xl mt-3">
-              The content may not be available yet, or the servers are currently
-              failing.
-            </p>
+            <div className="mx-auto w-fit rounded-lg border border-border bg-muted/40 px-4 py-2.5 landscape:px-2 landscape:py-1">
+              <p className="text-sm font-medium text-muted-foreground md:text-base landscape:text-[10px]">
+                Please try again later.
+              </p>
+            </div>
           </div>
           <Button
-            variant="outline"
+            variant="destructive"
             className="mt-6"
             onClick={handleResetServers}
             disabled={serverCooldown > 0}

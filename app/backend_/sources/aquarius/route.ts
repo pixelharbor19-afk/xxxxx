@@ -234,7 +234,7 @@ export async function GET(req: NextRequest) {
     // -----------------------------
 
     const links = scraped.data.map((source: any) => ({
-      resolution: source.resolutions,
+      resolution: source.resolutions?.split(",")[0] || "N/A",
       format: source.format,
       size: source.size,
       type: "dash",
