@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
       });
 
       const searchRes = await fetch(
-        `http://localhost:3001/search?${searchParams.toString()}`,
+        `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
