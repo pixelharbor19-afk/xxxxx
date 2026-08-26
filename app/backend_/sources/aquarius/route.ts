@@ -7,8 +7,8 @@ import { FIELD_MAP } from "@/lib/params";
 import { logRequest } from "@/lib/log-request";
 
 const supabase = createClient(
-  process.env.SUPABASE_URL_MOVIEBOX_WEB!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY_MOVIEBOX_WEB!,
+  process.env.SUPABASE_URL_MOVIEBOX_WEB2!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY_MOVIEBOX_WEB2!,
 );
 
 export async function GET(req: NextRequest) {
