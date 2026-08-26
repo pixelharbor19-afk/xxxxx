@@ -1,75 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import { ALLOWED_ORIGINS } from "@/lib/allowed-referers";
-import { FIELD_MAP } from "@/lib/params";
+import { createClient } from "@supabase/supabase-js";
 
-const SECRET = process.env.API_SECRET!;
+const supabase = createClient(
+  process.env.SUPABASE_URL_SUS!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY_SUS!,
+);
 
-export async function POST(req: NextRequest) {
-  const origin = req.headers.get("origin") || "";
+export async function GET(req: NextRequest) {
+  const ip =
+    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown";
 
-  if (!ALLOWED_ORIGINS.includes(origin)) {
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+  console.log(`[SCRAPING ROUTE NO EXIST] | IP: ${ip}`);
+
+  try {
+    const { data } = await supabase
+      .from("suspicious_ips")
+      .select("hits")
+      .eq("ip", ip)
+      .maybeSingle();
+
+    if (data) {
+      await supabase
+        .from("suspicious_ips")
+        .update({
+          hits: data.hits + 1,
+          last_seen: new Date().toISOString(),
+        })
+        .eq("ip", ip);
+    } else {
+      await supabase.from("suspicious_ips").insert({
+        ip,
+        hits: 1,
+        asn: req.headers.get("cf-connecting-asn"),
+        country: req.headers.get("cf-ipcountry"),
+        method: req.method,
+        path: req.nextUrl.pathname,
+        user_agent: req.headers.get("user-agent"),
+        referer: req.headers.get("referer"),
+      });
+    }
+  } catch (err) {
+    console.error("Failed to log suspicious IP:", err);
   }
 
-  const body = await req.json();
-
-  const id = body[FIELD_MAP.id];
-  const media_type = body[FIELD_MAP.mediaType];
-  const season = body[FIELD_MAP.season];
-  const episode = body[FIELD_MAP.episode];
-  const path = body[FIELD_MAP.path];
-
-  if (!id || !media_type || !path) {
-    return NextResponse.json(
-      { success: false, error: "Invalid request" },
-      { status: 400 },
-    );
-  }
-
-  const ts = Date.now();
-
-  let payload: string;
-
-  if (media_type === "tv") {
-    payload = [id, media_type, season ?? "1", episode ?? "1", path, ts].join(
-      ":",
-    );
-  } else {
-    payload = [id, media_type, path, ts].join(":");
-  }
-
-  const token = crypto
-    .createHmac("sha256", SECRET)
-    .update(payload)
-    .digest("hex");
-
-  const existingCookie = req.cookies.get("_ps")?.value;
-
-  const response = NextResponse.json({
-    token,
-    ts,
-  });
-
-  if (!existingCookie) {
-    const value = crypto.randomBytes(32).toString("hex");
-
-    const signature = crypto
-      .createHmac("sha256", SECRET)
-      .update(`${value}:${ts}`)
-      .digest("hex");
-
-    response.cookies.set("_ps", `${value}.${ts}.${signature}`, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-      maxAge: 120,
-    });
-  }
-
-  return response;
+  return new NextResponse(null, { status: 429 });
 }
