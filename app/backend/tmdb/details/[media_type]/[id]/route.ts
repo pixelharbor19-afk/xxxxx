@@ -130,6 +130,7 @@ export async function GET(
     title: data.title || data.name,
     overview: data.overview,
     release_date: data.release_date || data.first_air_date,
+    last_air_date: data.last_air_date || null,
     runtime: data.runtime || data.episode_run_time?.[0],
     rating: data.vote_average,
     genres: data.genres,

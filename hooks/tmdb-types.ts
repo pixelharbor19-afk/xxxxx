@@ -3,6 +3,7 @@ export type TmdbDetailsResponse = {
   title: string;
   overview: string;
   release_date: string;
+  last_air_date: string | null;
   runtime: number;
   rating: number;
   status: string;

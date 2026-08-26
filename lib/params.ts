@@ -16,6 +16,7 @@ const FIELD_MAP = {
   path: "6b491e7253ad80f14d392e7561a9384c",
   mediaType: "c285f914ab306d281e947a35632e816b",
   date: "e164932c508f216ad739e5814b3027",
+  latestDate: "e164932c54356416ad739e5814b3027",
 } as const;
 
 export { FIELD_MAP };

@@ -234,6 +234,7 @@ export default function Player() {
   //   : null;
   const title = metadata?.title || "";
   const date = metadata?.release_date;
+  const latestDate = metadata?.last_air_date;
   const year = date ? String(new Date(date).getFullYear()) : "";
   const genre = metadata?.genres?.[0]?.name ?? "N/A";
   const seasons = metadata?.seasons ?? [];
@@ -257,6 +258,9 @@ export default function Player() {
     title,
     year,
     date: String(date),
+    ...(latestDate && {
+      latestDate,
+    }),
     enable: !allFailed && metadataLoad,
     dubCode: dub || dubLang,
     dubType: dub || dubLang ? (dub ? type : dubType) : "",

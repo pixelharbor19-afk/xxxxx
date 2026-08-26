@@ -45,6 +45,7 @@ interface UseSourceParams {
   title: string;
   year: string;
   date: string;
+  latestDate?: string;
   quality?: "4k" | null;
   dubCode: string;
   dubType: string;
@@ -62,12 +63,13 @@ export default function useSource(params: UseSourceParams) {
     title,
     year,
     date,
+    latestDate,
     quality,
     dubCode,
     dubType,
     enable,
   } = params;
-
+  console.log("latestDate1", latestDate);
   return useQuery<SourceTypes, AxiosError>({
     queryKey: [
       "get-source",
@@ -79,6 +81,7 @@ export default function useSource(params: UseSourceParams) {
       path,
       title,
       year,
+      date,
       quality,
       dubCode,
       dubType,
@@ -117,6 +120,11 @@ export default function useSource(params: UseSourceParams) {
       if (media_type === "tv") {
         search.set(FIELD_MAP.season, String(season));
         search.set(FIELD_MAP.episode, String(episode));
+
+        if (latestDate) {
+          console.log("latestDate2", latestDate);
+          search.set(FIELD_MAP.latestDate, latestDate);
+        }
       }
 
       if (dubCode && dubType) {

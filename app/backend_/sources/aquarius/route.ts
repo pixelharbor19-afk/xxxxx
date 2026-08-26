@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
     const ts = Number(searchParams.get(FIELD_MAP.ts));
     const token = searchParams.get(FIELD_MAP.token);
     const date = searchParams.get(FIELD_MAP.date);
+    const latestDate = searchParams.get(FIELD_MAP.latestDate);
     const path = pathname.split("/").pop()!;
 
     // -----------------------------
@@ -106,7 +107,11 @@ export async function GET(req: NextRequest) {
         title,
         date,
       });
+      if (latestDate && mediaType === "tv") {
+        searchParams.set("latestDate", latestDate);
+      }
 
+    
       const searchRes = await fetch(
         `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
         {
