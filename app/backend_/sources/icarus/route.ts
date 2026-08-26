@@ -8,8 +8,8 @@ import { logRequest } from "@/lib/log-request";
 import { encryptUrl } from "@/lib/aes-encryptor";
 
 const supabase = createClient(
-  process.env.SUPABASE_URL_MOVIEBOX_WEB!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY_MOVIEBOX_WEB!,
+  process.env.SUPABASE_URL_MOVIEBOX_WEB2!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY_MOVIEBOX_WEB2!,
 );
 const BASE_HEADERS = {
   Origin: "https://movibox.net",
