@@ -8,8 +8,8 @@ export const RESSHIN_SERVER: ServerTypes = {
 };
 export const initialServers: ServerTypes[] = [
   {
-    name: "Aquarius I",
-    server: "aquarius",
+    name: "Zinogre I",
+    server: "zinogre",
     status: "queue",
     desc: "Movies & TV Shows - HD Support",
   },
@@ -20,14 +20,20 @@ export const initialServers: ServerTypes[] = [
     desc: "4K Support & Fast",
   },
   {
-    name: "Atlas III",
+    name: "Valstrax III",
+    server: "valstrax",
+    status: "queue",
+    desc: "HD Quality & Reliable",
+  },
+  {
+    name: "Atlas IV",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
   {
-    name: "Vendetta IV",
-    server: "vendetta",
+    name: "Alatreon V",
+    server: "alatreon",
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
@@ -44,7 +50,7 @@ export const initialServers: ServerTypes[] = [
   //   desc: "Alternative Multi Audio Support",
   // },
   {
-    name: "Daedalus V",
+    name: "Daedalus VII",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",

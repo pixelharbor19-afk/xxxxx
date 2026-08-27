@@ -111,9 +111,8 @@ export async function GET(req: NextRequest) {
         searchParams.set("latestDate", latestDate);
       }
 
-    
       const searchRes = await fetch(
-        `https://api1.zxcstream.xyz/search?${searchParams.toString()}`,
+        `https://api1.zxcstream.xyz/search-moviebox?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
@@ -202,7 +201,7 @@ export async function GET(req: NextRequest) {
     }
 
     const res = await fetch(
-      `https://api1.zxcstream.xyz/scrape/123movies?${params.toString()}`,
+      `https://api1.zxcstream.xyz/moviebox?${params.toString()}`,
       {
         cache: "no-store",
       },

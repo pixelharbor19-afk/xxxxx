@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/backend/dead_servers/atlas/route copy.TXT", "app/backend_/sources/aquarius/route.tsx"  ],
+, "app/backend/dead_servers/atlas/route copy.TXT", "app/backend_/sources/zinogre/route.tsx"  ],
   "exclude": ["node_modules"]
 }
