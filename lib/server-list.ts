@@ -19,12 +19,12 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "4K Support & Fast",
   },
-  {
-    name: "Valstrax III",
-    server: "valstrax",
-    status: "queue",
-    desc: "HD Quality & Reliable",
-  },
+  // {
+  //   name: "Valstrax III",
+  //   server: "valstrax",
+  //   status: "queue",
+  //   desc: "HD Quality & Reliable",
+  // },
   {
     name: "Atlas IV",
     server: "burat",
