@@ -31,20 +31,20 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
+  // {
+  //   name: "Icarus V",
+  //   server: "icarus",
+  //   status: "queue",
+  //   desc: "Download & Multi Audio Support",
+  // },
+  // {
+  //   name: "Resshin VI",
+  //   server: "resshin",
+  //   status: "queue",
+  //   desc: "Alternative Multi Audio Support",
+  // },
   {
-    name: "Icarus V",
-    server: "icarus",
-    status: "queue",
-    desc: "Download & Multi Audio Support",
-  },
-  {
-    name: "Resshin VI",
-    server: "resshin",
-    status: "queue",
-    desc: "Alternative Multi Audio Support",
-  },
-  {
-    name: "Daedalus VII",
+    name: "Daedalus V",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",
