@@ -19,23 +19,25 @@ export const initialServers: ServerTypes[] = [
     status: "queue",
     desc: "4K Support & Fast",
   },
+
   {
-    name: "Valstrax III",
-    server: "valstrax",
-    status: "queue",
-    desc: "HD Quality & Reliable",
-  },
-  {
-    name: "Atlas IV",
+    name: "Atlas III",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
+
   {
-    name: "Alatreon V",
+    name: "Alatreon IV",
     server: "alatreon",
     status: "queue",
     desc: "Extensive Movie & TV Library",
+  },
+  {
+    name: "Valstrax V",
+    server: "valstrax",
+    status: "queue",
+    desc: "HD Quality & Reliable",
   },
   // {
   //   name: "Icarus V",
@@ -50,7 +52,7 @@ export const initialServers: ServerTypes[] = [
   //   desc: "Alternative Multi Audio Support",
   // },
   {
-    name: "Daedalus VII",
+    name: "Daedalus VI",
     server: "daedalus",
     status: "queue",
     desc: "Alternative",

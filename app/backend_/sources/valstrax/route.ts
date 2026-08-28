@@ -3,14 +3,47 @@ import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { encryptUrl } from "@/lib/aes-encryptor";
 import { encryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
+import { validateBackendToken } from "@/lib/validate-token";
+import { isValidReferer } from "@/lib/allowed-referers";
+import { logRequest } from "@/lib/log-request";
 
 export async function GET(req: NextRequest) {
-  const params = req.nextUrl.searchParams;
+  const { searchParams, pathname } = req.nextUrl;
 
-  const tmdbId = params.get(FIELD_MAP.id);
-  const mediaType = params.get(FIELD_MAP.mediaType);
-  const season = params.get(FIELD_MAP.season);
-  const episode = params.get(FIELD_MAP.episode);
+  const tmdbId = searchParams.get(FIELD_MAP.id);
+  const mediaType = searchParams.get(FIELD_MAP.mediaType);
+  const season = searchParams.get(FIELD_MAP.season) ?? "";
+  const episode = searchParams.get(FIELD_MAP.episode) ?? "";
+  const token = searchParams.get(FIELD_MAP.token);
+  const ts = Number(searchParams.get(FIELD_MAP.ts));
+  const path = pathname.split("/").pop()!;
+
+  if (!tmdbId || !mediaType || !token) {
+    logRequest(req, "VALSTRAX", 400, "missing params");
+    return NextResponse.json(
+      { success: false, error: "missing params" },
+      { status: 400 },
+    );
+  }
+
+  if (
+    !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
+  ) {
+    logRequest(req, "VALSTRAX", 401, "invalid token");
+    return NextResponse.json(
+      { success: false, error: "Invalid token" },
+      { status: 401 },
+    );
+  }
+
+  const referer = req.headers.get("referer") || "";
+  if (!isValidReferer(referer)) {
+    logRequest(req, "VALSTRAX", 403, "invalid referrer");
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
+    );
+  }
 
   try {
     const workerUrl = new URL("https://api1.zxcstream.xyz/vidlink");
@@ -28,6 +61,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (!response.ok) {
+      logRequest(req, "VALSTRAX", 404, "No stream found");
       return NextResponse.json(
         {
           success: false,
@@ -40,6 +74,7 @@ export async function GET(req: NextRequest) {
     const { stream } = await response.json();
 
     if (!stream) {
+      logRequest(req, "VALSTRAX", 404, "No stream found");
       return NextResponse.json(
         {
           success: false,
@@ -101,7 +136,7 @@ export async function GET(req: NextRequest) {
         link: encryptLink(link.link),
       });
     }
-
+    logRequest(req, "VALSTRAX", 200, "OK!!!!!!");
     return NextResponse.json({
       success: true,
       links,
