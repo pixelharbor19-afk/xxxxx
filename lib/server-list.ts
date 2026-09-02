@@ -45,12 +45,12 @@ export const initialServers: ServerTypes[] = [
   //   status: "queue",
   //   desc: "Download & Multi Audio Support",
   // },
-  // {
-  //   name: "Resshin VI",
-  //   server: "resshin",
-  //   status: "queue",
-  //   desc: "Alternative Multi Audio Support",
-  // },
+  {
+    name: "Resshin",
+    server: "resshin",
+    status: "queue",
+    desc: "Alternative Multi Audio Support",
+  },
   {
     name: "Daedalus VI",
     server: "daedalus",
