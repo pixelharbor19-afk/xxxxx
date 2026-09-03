@@ -112,8 +112,8 @@ export async function GET(req: NextRequest) {
       }
 
       const searchRes = await fetch(
-        // `https://api1.zxcstream.xyz/search-moviebox?${searchParams.toString()}`,
-        `https://main-school-project-production.up.railway.app/search-moviebox?${searchParams.toString()}`,
+        `https://api1.zxcstream.xyz/search-moviebox?${searchParams.toString()}`,
+        // `https://main-school-project-production.up.railway.app/search-moviebox?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
@@ -202,7 +202,7 @@ export async function GET(req: NextRequest) {
     }
 
     const res = await fetch(
-      `https://main-school-project-production.up.railway.app/moviebox?${params.toString()}`,
+      `https://api1.zxcstream.xyz/moviebox?${params.toString()}`,
       {
         cache: "no-store",
       },
