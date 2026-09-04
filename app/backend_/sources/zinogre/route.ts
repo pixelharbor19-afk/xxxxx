@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { encryptLink } from "@/lib/source-link-enc-dec";
 import { FIELD_MAP } from "@/lib/params";
 import { logRequest } from "@/lib/log-request";
+import { encryptUrl } from "@/lib/aes-encryptor";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_WEB2!,
@@ -200,7 +201,7 @@ export async function GET(req: NextRequest) {
       params.set("se", season || "0");
       params.set("ep", episode || "0");
     }
-
+    params.set("streamSignType", "1");
     const res = await fetch(
       `https://api1.zxcstream.xyz/moviebox?${params.toString()}`,
       {
@@ -238,13 +239,37 @@ export async function GET(req: NextRequest) {
     // Encrypt links
     // -----------------------------
 
-    const links = scraped.data.map((source: any) => ({
-      resolution: source.resolutions?.split(",")[0] || "N/A",
-      format: source.format,
-      size: source.size,
-      type: "dash",
-      link: encryptLink(source.url),
-    }));
+    // const links = scraped.data.map((source: any) => ({
+    //   resolution: source.resolutions?.split(",")[0] || "N/A",
+    //   format: source.format,
+    //   size: source.size,
+    //   type: "dash",
+    //   link: encryptLink(source.url),
+    // }));
+
+    const links = await Promise.all(
+      scraped.data.map(async (source: any) => {
+        const url = await encryptUrl(source.url);
+
+        const header = await encryptUrl(
+          JSON.stringify({
+            Referer:
+              "https://movibox.net/movies/the-runner-McIeQZEGPQ?id=715214082269397240&type=/movie/detail&detailSe=&detailEp=&lang=en",
+            "X-MB-Token": source.signCookie,
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+          }),
+        );
+
+        const proxyUrl = `https://api1.zxcstream.xyz/media/dash?url=${url}&header=${header}`;
+
+        return {
+          type: "dash",
+          link: encryptLink(proxyUrl),
+          resolution: Number(source.resolutions?.split(",")[0]) || 0,
+        };
+      }),
+    );
 
     logRequest(req, "AQUARIUS", 200, "OK");
 
