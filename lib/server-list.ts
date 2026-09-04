@@ -8,48 +8,49 @@ export const RESSHIN_SERVER: ServerTypes = {
 };
 export const initialServers: ServerTypes[] = [
   {
-    name: "Berkas I",
+    name: "Valstrax I",
+    server: "valstrax",
+    status: "queue",
+    desc: "HD Quality & Reliable",
+  },
+  {
+    name: "Berkas II",
     server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
   {
-    name: "Atlas II",
+    name: "Atlas III",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
 
   {
-    name: "Zinogre III",
+    name: "Zinogre IV",
     server: "zinogre",
     status: "queue",
     desc: "Movies & TV Shows - HD Support",
   },
   {
-    name: "Alatreon IV",
+    name: "Alatreon V",
     server: "alatreon",
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
-  {
-    name: "Valstrax V",
-    server: "valstrax",
-    status: "queue",
-    desc: "HD Quality & Reliable",
-  },
+
   // {
   //   name: "Icarus V",
   //   server: "icarus",
   //   status: "queue",
   //   desc: "Download & Multi Audio Support",
   // },
-  {
-    name: "Resshin",
-    server: "resshin",
-    status: "queue",
-    desc: "Alternative Multi Audio Support",
-  },
+  // {
+  //   name: "Resshin",
+  //   server: "resshin",
+  //   status: "queue",
+  //   desc: "Alternative Multi Audio Support",
+  // },
   {
     name: "Daedalus VI",
     server: "daedalus",

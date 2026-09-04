@@ -127,7 +127,7 @@ export async function GET(req: NextRequest) {
 
       const link = {
         type: stream.type,
-        link: `https://api1.zxcstream.xyz/media/${stream.type}?url=${url}&header=${header}`,
+        link: `https://api1.zxcstream.xyz/media/npmrundev?url=${url}&header=${header}`,
         resolution: Number(stream.playbackMetadata?.resolutions?.[0]) || 0,
       };
 
