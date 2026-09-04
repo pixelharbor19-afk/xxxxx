@@ -8,25 +8,24 @@ export const RESSHIN_SERVER: ServerTypes = {
 };
 export const initialServers: ServerTypes[] = [
   {
-    name: "Zinogre I",
-    server: "zinogre",
-    status: "queue",
-    desc: "Movies & TV Shows - HD Support",
-  },
-  {
-    name: "Berkas II",
+    name: "Berkas I",
     server: "berkas",
     status: "queue",
     desc: "4K Support & Fast",
   },
-
   {
-    name: "Atlas III",
+    name: "Atlas II",
     server: "burat",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
 
+  {
+    name: "Zinogre III",
+    server: "zinogre",
+    status: "queue",
+    desc: "Movies & TV Shows - HD Support",
+  },
   {
     name: "Alatreon IV",
     server: "alatreon",
