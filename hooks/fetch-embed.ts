@@ -24,7 +24,7 @@ async function fetchSentinelEmbed({
 }: FetchEmbedParams) {
   const { xt, rt } = generateFrontendToken(tmdbId);
 
-  const backendRes = await axios.post("/backend/npmrunstart", {
+  const backendRes = await axios.post("/backend/npmruntite", {
     [FIELD_MAP.id]: tmdbId,
     [FIELD_MAP.fToken]: xt,
     [FIELD_MAP.ts]: rt,
