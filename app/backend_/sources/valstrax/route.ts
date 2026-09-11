@@ -223,7 +223,7 @@ export async function GET(req: NextRequest) {
       .maybeSingle();
 
     if (cached) {
-      logRequest(req, "VALSTRAX", 200, "CACHE HIT");
+      // logRequest(req, "VALSTRAX", 200, "CACHE HIT");
 
       stream = {
         type: "dash",
@@ -354,7 +354,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    logRequest(req, "VALSTRAX", 200, "OK!!!!!!");
+    logRequest(req, "VALSTRAX", 200, !!cached ? "CACHE HIT OK" : "OK");
 
     return NextResponse.json({
       success: true,
