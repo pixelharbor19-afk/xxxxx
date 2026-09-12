@@ -27,18 +27,17 @@ export const initialServers: ServerTypes[] = [
   },
 
   {
-    name: "Zinogre IV",
-    server: "zinogre",
-    status: "queue",
-    desc: "Movies & TV Shows - HD Support",
-  },
-  {
-    name: "Alatreon V",
+    name: "Alatreon IV",
     server: "alatreon",
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
-
+  {
+    name: "Zinogre V",
+    server: "zinogre",
+    status: "queue",
+    desc: "Movies & TV Shows - HD Support",
+  },
   // {
   //   name: "Icarus V",
   //   server: "icarus",

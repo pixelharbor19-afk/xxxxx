@@ -209,6 +209,19 @@ export function useVideoPlayer({
       dash.initialize(video, playerSrc, true);
       dashRef.current = dash;
 
+      dash.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, () => {
+        const representations = dash.getRepresentationsByType("video");
+
+        if (!representations.length) {
+          handleServerFail();
+          return;
+        }
+      });
+
+      dash.on(dashjs.MediaPlayer.events.ERROR, () => {
+        handleServerFail();
+      });
+
       return () => {
         dash.reset();
         dashRef.current = null;
