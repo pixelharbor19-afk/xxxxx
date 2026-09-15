@@ -34,18 +34,15 @@ export default function useSubtitle({
     refetchOnReconnect: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post(
-        "/a7f39c821d6143238f36e15b/a7f39c821d6143238f36e15b ",
-        {
-          [FIELD_MAP.id]: tmdbId,
-          [FIELD_MAP.mediaType]: media_type,
-          [FIELD_MAP.path]: "subtitle_",
-          ...(media_type === "tv" && {
-            [FIELD_MAP.season]: season,
-            [FIELD_MAP.episode]: episode,
-          }),
-        },
-      );
+      const { data: token } = await axios.post("/backend/wtf", {
+        [FIELD_MAP.id]: tmdbId,
+        [FIELD_MAP.mediaType]: media_type,
+        [FIELD_MAP.path]: "subtitle_",
+        ...(media_type === "tv" && {
+          [FIELD_MAP.season]: season,
+          [FIELD_MAP.episode]: episode,
+        }),
+      });
 
       const search = new URLSearchParams({
         [FIELD_MAP.id]: tmdbId,

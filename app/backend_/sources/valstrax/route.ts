@@ -232,7 +232,9 @@ export async function GET(req: NextRequest) {
       };
     } else {
       // Fetch fresh stream
-      const workerUrl = new URL("https://api1.zxcstream.xyz/vidlink");
+      const workerUrl = new URL(
+        "https://vidstuck.xyz/backend/database/vidlink",
+      );
 
       workerUrl.searchParams.set("tmdbId", tmdbId);
       workerUrl.searchParams.set("mediaType", mediaType);
