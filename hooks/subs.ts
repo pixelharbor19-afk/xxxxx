@@ -34,7 +34,7 @@ export default function useSubtitle({
     refetchOnReconnect: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/wtf", {
+      const { data: token } = await axios.post("/backend/whattheactualfuck", {
         [FIELD_MAP.id]: tmdbId,
         [FIELD_MAP.mediaType]: media_type,
         [FIELD_MAP.path]: "subtitle_",
@@ -61,10 +61,10 @@ export default function useSubtitle({
       }
 
       const { data } = await axios.get(
-        `/backend_/subtitle_?${search.toString()}`,
+        `https://vidstuck.xyz/backend/subtitle?${search.toString()}`,
       );
 
-      return data.subtitles ?? [];
+      return data.captions ?? [];
     },
   });
 }
