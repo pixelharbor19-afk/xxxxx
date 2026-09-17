@@ -21,35 +21,16 @@ export const initialServers: ServerTypes[] = [
   },
   {
     name: "Atlas III",
-    server: "burat",
+    server: "atlas",
     status: "queue",
     desc: "HD Quality & Reliable",
   },
-
   {
     name: "Alatreon IV",
     server: "alatreon",
     status: "queue",
     desc: "Extensive Movie & TV Library",
   },
-  {
-    name: "Zinogre V",
-    server: "zinogre",
-    status: "queue",
-    desc: "Movies & TV Shows - HD Support",
-  },
-  // {
-  //   name: "Icarus V",
-  //   server: "icarus",
-  //   status: "queue",
-  //   desc: "Download & Multi Audio Support",
-  // },
-  // {
-  //   name: "Resshin",
-  //   server: "resshin",
-  //   status: "queue",
-  //   desc: "Alternative Multi Audio Support",
-  // },
   {
     name: "Daedalus VI",
     server: "daedalus",
