@@ -44,33 +44,7 @@ import { useSandboxDetection } from "@/hooks/useSandboxDetection";
 import { useTrackEmbedder } from "@/hooks/useTrackEmbedder";
 import Link from "next/link";
 import useSubtitle from "@/hooks/subs";
-function getRootDomain(url: string) {
-  try {
-    const hostname = new URL(url).hostname;
-
-    // localhost / IP addresses
-    if (hostname === "localhost" || /^\d+\.\d+\.\d+\.\d+$/.test(hostname)) {
-      return hostname;
-    }
-
-    const parts = hostname.split(".");
-
-    // Handles common ccTLDs like example.co.uk
-    const secondLevel = ["co", "com", "net", "org", "gov", "edu", "ac"];
-
-    if (
-      parts.length >= 3 &&
-      parts[parts.length - 1].length === 2 &&
-      secondLevel.includes(parts[parts.length - 2])
-    ) {
-      return parts.slice(-3).join(".");
-    }
-
-    return parts.slice(-2).join(".");
-  } catch {
-    return url;
-  }
-}
+import { getDomain } from "tldts";
 
 // declare global {
 //   interface Window {
@@ -124,8 +98,7 @@ export default function Player() {
   const enableLoadProgress = searchParams.get("load_progress") !== "false"; // default true
   const load = Number(searchParams.get("load")) || undefined; // default undefined
   const dubLangApplied = useRef(false);
-  const trackedRef = useRef(false);
-
+  const [tracked, setTracked] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [retryCooldown, setRetryCooldown] = useState(0);
   // const restrictionActive = phHour >= 17 || phHour < 5;
@@ -472,39 +445,43 @@ export default function Player() {
   // }, [playback.canPlay, source?.active]);
 
   useEffect(() => {
-    if (trackedRef.current) return;
-    if (isLoading) return;
-    if (!metadataLoad) return;
-
-    trackedRef.current = true;
-
-    // Direct visit
-    if (window.self === window.top) {
-      trackEmbedder({
-        embed: getRootDomain(window.location.origin),
-        embedder: "direct",
-        sandbox: false,
-      });
+    if (
+      isLoading ||
+      isSandboxed ||
+      !playback.playing ||
+      tracked ||
+      !metadataLoad
+    )
       return;
+
+    let embedder = "Direct";
+
+    if (window.self !== window.top) {
+      const referrer = document.referrer;
+
+      if (referrer) {
+        const hostname = new URL(referrer).hostname;
+        embedder = getDomain(hostname) || hostname;
+      } else {
+        embedder = "Hidden";
+      }
     }
 
-    // Ignore sandboxed embeds
-    if (isSandboxed && !isWhitelisted) return;
-
-    let embedder = "unknown";
-
-    try {
-      if (document.referrer) {
-        embedder = getRootDomain(document.referrer);
-      }
-    } catch {}
-
     trackEmbedder({
-      embed: getRootDomain(window.location.origin),
+      embed: getDomain(window.location.hostname) || window.location.hostname,
       embedder,
-      sandbox: isSandboxed,
+      sandbox: false,
     });
-  }, [isLoading, isSandboxed, trackEmbedder, metadataLoad]);
+
+    setTracked(true);
+  }, [
+    isLoading,
+    isSandboxed,
+    playback.playing,
+    tracked,
+    metadataLoad,
+    trackEmbedder,
+  ]);
 
   // useEffect(() => {
   //   dubLangApplied.current = false;

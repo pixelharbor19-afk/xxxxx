@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from "react";
 import {
-  ArrowUp,
   ArrowDown,
+  ArrowUp,
   ArrowUpDown,
+  Activity,
   Boxes,
   CircleCheck,
-  ShieldAlert,
-  Activity,
   ExternalLink,
+  ShieldAlert,
 } from "lucide-react";
 import { useEmbedders, type Embedder } from "@/hooks/useEmbedders";
 import {
@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
@@ -32,61 +31,64 @@ type SortKey =
   | "load_today"
   | "last_seen"
   | "status";
+
 type SortDir = "asc" | "desc";
 
 const columns: { key: SortKey; label: string }[] = [
   { key: "embed", label: "Embed" },
   { key: "embedder", label: "Embedder" },
   { key: "sandbox", label: "Sandbox" },
-
-  { key: "load_today", label: "Today/Total" },
-
+  { key: "load_today", label: "Today / Total" },
   { key: "last_seen", label: "Last seen" },
   { key: "status", label: "Status" },
 ];
 
-// const NEW_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
 const NEW_THRESHOLD_MS = 24 * 60 * 60 * 1000;
+
 function isRecentlyAdded(createdAt: string) {
   return Date.now() - new Date(createdAt).getTime() < NEW_THRESHOLD_MS;
 }
 
 export default function EmbeddersTable() {
   const { data, isLoading, isError } = useEmbedders();
-  const [sortKey, setSortKey] = useState<SortKey>("load_count");
+
+  const [sortKey, setSortKey] = useState<SortKey>("load_today");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   const sorted = useMemo(() => {
     const rows = data?.embedders ?? [];
+
     return [...rows].sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
+
       let cmp = 0;
+
       if (typeof aVal === "number" && typeof bVal === "number") {
         cmp = aVal - bVal;
       } else {
         cmp = String(aVal).localeCompare(String(bVal));
       }
+
       return sortDir === "asc" ? cmp : -cmp;
     });
   }, [data, sortKey, sortDir]);
 
   const total = data?.embedders.length ?? 0;
+
   const active =
     data?.embedders.filter((e) => e.status === "Active").length ?? 0;
+
   const inactive = total - active;
+
   const sandboxed = data?.embedders.filter((e) => e.sandbox).length ?? 0;
+
   const totalLoads =
     data?.embedders.reduce((sum, e) => sum + e.load_count, 0) ?? 0;
+
   const totalLoadsToday =
     data?.embedders.reduce((sum, e) => sum + e.load_today, 0) ?? 0;
-  const sandboxLoads =
-    data?.embedders
-      .filter((e) => e.sandbox)
-      .reduce((sum, e) => sum + e.load_count, 0) ?? 0;
-  const nonSandboxLoads = totalLoads - sandboxLoads;
-  const sandboxLoadPct =
-    totalLoads > 0 ? Math.round((sandboxLoads / totalLoads) * 100) : 0;
+
   const activePct = total > 0 ? Math.round((active / total) * 100) : 0;
   const sandboxPct = total > 0 ? Math.round((sandboxed / total) * 100) : 0;
 
@@ -95,168 +97,236 @@ export default function EmbeddersTable() {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     } else {
       setSortKey(key);
-      setSortDir("asc");
+      setSortDir("desc");
     }
   }
 
-  if (isLoading) return <p className="p-4 text-sm text-slate-500">Loading…</p>;
-  if (isError)
+  if (isLoading) {
+    return <div className="p-6 text-base text-muted-foreground">Loading…</div>;
+  }
+
+  if (isError) {
     return (
-      <p className="p-4 text-sm text-red-600">Failed to load embedders.</p>
+      <div className="p-6 text-base text-red-600">
+        Failed to load embedders.
+      </div>
     );
+  }
 
   return (
-    <div className="space-y-6 p-4">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">
+    <div className="space-y-8 p-4 md:p-8 ">
+      {/* Stats */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-2xl border bg-primary/10 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">
+              Loads today
+            </p>
+            <Activity className="size-5 text-primary" />
+          </div>
+
+          <p className="mt-4 text-5xl font-bold">
+            {totalLoadsToday.toLocaleString()}
+          </p>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            {totalLoads.toLocaleString()} total loads
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-muted/30 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">
               Total embedders
-            </CardTitle>
-            <Boxes className="h-4 w-4 text-slate-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold">{total}</div>
-            <p className="text-xs text-slate-500">{inactive} inactive</p>
-          </CardContent>
-        </Card>
+            </p>
+            <Boxes className="size-5 text-muted-foreground" />
+          </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">
-              Active
-            </CardTitle>
-            <CircleCheck className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold text-green-600">
-              {active}
-            </div>
-            <p className="text-xs text-slate-500">{activePct}% of total</p>
-          </CardContent>
-        </Card>
+          <p className="mt-4 text-5xl font-bold">{total.toLocaleString()}</p>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">
+          <p className="mt-2 text-sm text-muted-foreground">
+            {inactive} inactive
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-green-500/10 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Active</p>
+            <CircleCheck className="size-5 text-green-500" />
+          </div>
+
+          <p className="mt-4 text-5xl font-bold text-green-500">{active}</p>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            {activePct}% of embedders
+          </p>
+        </div>
+
+        <div className="rounded-2xl border bg-amber-500/10 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">
               Sandboxed
-            </CardTitle>
-            <ShieldAlert className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold">{sandboxed}</div>
-            <p className="text-xs text-slate-500">{sandboxPct}% of total</p>
-          </CardContent>
-        </Card>
+            </p>
+            <ShieldAlert className="size-5 text-amber-500" />
+          </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">
-              Loads by sandbox
-            </CardTitle>
-            <Activity className="h-4 w-4 text-slate-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold">{totalLoads}</div>
-            <p className="text-xs text-slate-500">
-              {totalLoadsToday} loads today
-            </p>
-            <div className="mt-2 flex h-1.5 overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="bg-amber-500"
-                style={{ width: `${sandboxLoadPct}%` }}
-              />
-              <div
-                className="bg-slate-400"
-                style={{ width: `${100 - sandboxLoadPct}%` }}
-              />
-            </div>
-            <p className="mt-1.5 text-xs text-slate-500">
-              {sandboxLoads} sandboxed ({sandboxLoadPct}%) · {nonSandboxLoads}{" "}
-              not sandboxed
-            </p>
-          </CardContent>
-        </Card>
+          <p className="mt-4 text-5xl font-bold text-amber-500">{sandboxed}</p>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            {sandboxPct}% of embedders
+          </p>
+        </div>
       </div>
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border bg-card">
+        <div className="border-b px-5 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-semibold">Embedders</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Websites using your player
+              </p>
+            </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            {columns.map((col) => (
-              <TableHead key={col.key}>
-                <button
-                  onClick={() => toggleSort(col.key)}
-                  className="flex items-center gap-1 hover:text-foreground"
+            <Badge variant="secondary" className="px-3 py-1 text-sm">
+              {total} total
+            </Badge>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/30 hover:bg-muted/30">
+                <TableHead className="w-14 px-5 text-sm font-semibold">
+                  #
+                </TableHead>
+
+                {columns.map((col) => (
+                  <TableHead key={col.key} className="text-sm font-semibold">
+                    <button
+                      onClick={() => toggleSort(col.key)}
+                      className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+                    >
+                      {col.label}
+
+                      {sortKey === col.key ? (
+                        sortDir === "asc" ? (
+                          <ArrowUp className="size-4" />
+                        ) : (
+                          <ArrowDown className="size-4" />
+                        )
+                      ) : (
+                        <ArrowUpDown className="size-4 opacity-30" />
+                      )}
+                    </button>
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {sorted.map((e: Embedder, i) => (
+                <TableRow
+                  key={e.id}
+                  className="text-base transition-colors hover:bg-muted/30"
                 >
-                  {col.label}
-                  {sortKey === col.key ? (
-                    sortDir === "asc" ? (
-                      <ArrowUp className="h-3.5 w-3.5" />
+                  <TableCell className="px-5 text-sm font-medium text-muted-foreground">
+                    {i + 1}
+                  </TableCell>
+
+                  <TableCell className="font-medium">{e.embed}</TableCell>
+
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {e.embedder.includes("https://") ? (
+                        <Link
+                          href={e.embedder}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-blue-500 hover:underline"
+                        >
+                          {e.embedder}
+                          <ExternalLink className="size-4" />
+                        </Link>
+                      ) : e.embedder.includes("http://") ? (
+                        <Link
+                          href={e.embedder}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-red-500 hover:underline"
+                        >
+                          {e.embedder}
+                          <ExternalLink className="size-4" />
+                        </Link>
+                      ) : (
+                        <span className="text-muted-foreground">
+                          {e.embedder}
+                        </span>
+                      )}
+
+                      {isRecentlyAdded(e.created_at) && (
+                        <Badge variant="outline" className="text-xs">
+                          New
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    {e.sandbox ? (
+                      <Badge
+                        variant="outline"
+                        className="border-amber-500/30 bg-amber-500/10 text-amber-600"
+                      >
+                        Yes
+                      </Badge>
                     ) : (
-                      <ArrowDown className="h-3.5 w-3.5" />
-                    )
-                  ) : (
-                    <ArrowUpDown className="h-3.5 w-3.5 opacity-40" />
-                  )}
-                </button>
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sorted.map((e: Embedder, i) => (
-            <TableRow key={e.id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{e.embed}</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  {e.embedder.includes("https://") ? (
-                    <Link
-                      href={e.embedder}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline flex items-center gap-1.5"
-                    >
-                      {e.embedder}
-                      <ExternalLink className="size-3.5" />
-                    </Link>
-                  ) : e.embedder.includes("http://") ? (
-                    <Link
-                      href={e.embedder}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-red-500 hover:underline"
-                    >
-                      {e.embedder}
-                    </Link>
-                  ) : (
-                    <h1 className="text-gray-400 ">{e.embedder}</h1>
-                  )}
-                  {isRecentlyAdded(e.created_at) && (
-                    <Badge variant="outline">New</Badge>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>{e.sandbox ? "Yes" : "No"}</TableCell>
-              <TableCell>
-                {e.load_today} / {e.load_count}
-              </TableCell>
+                      <Badge
+                        variant="outline"
+                        className="border-green-500/30 bg-green-500/10 text-green-600"
+                      >
+                        No
+                      </Badge>
+                    )}
+                  </TableCell>
 
-              <TableCell>{new Date(e.last_seen).toLocaleString()}</TableCell>
-              <TableCell>
-                <span
-                  className={
-                    e.status === "Active" ? "text-green-600" : "text-slate-400"
-                  }
-                >
-                  {e.status}
-                </span>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                  <TableCell>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-lg font-semibold">
+                        {e.load_today.toLocaleString()}
+                      </span>
+
+                      <span className="text-sm text-muted-foreground">
+                        / {e.load_count.toLocaleString()}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="text-muted-foreground">
+                    {new Date(e.last_seen).toLocaleString()}
+                  </TableCell>
+
+                  <TableCell>
+                    {e.status === "Active" ? (
+                      <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/10">
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="text-muted-foreground"
+                      >
+                        Inactive
+                      </Badge>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 }
