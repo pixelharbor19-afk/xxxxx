@@ -96,7 +96,7 @@ export default function useSource(params: UseSourceParams) {
     refetchIntervalInBackground: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/whattheactualfuck", {
+      const { data: token } = await axios.post("/backend/a1b2c3", {
         [FIELD_MAP.id]: tmdbId,
         [FIELD_MAP.mediaType]: media_type,
         [FIELD_MAP.path]: path,
