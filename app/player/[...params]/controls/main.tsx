@@ -17,7 +17,7 @@ import { formatTime } from "@/lib/format-time";
 import { AnimatePresence, motion } from "framer-motion";
 import Episodes from "../episodes";
 import { useRouter, useSearchParams } from "next/navigation";
-import { DubTypes, QualityTrack } from "@/hooks/sauce";
+import { DubTypes, QualityTrack } from "@/hooks/tarandtadongsauce";
 import Link from "next/link";
 import { Cloud, Inbox, Layers2, Server, TextAlignEnd } from "lucide-react";
 
