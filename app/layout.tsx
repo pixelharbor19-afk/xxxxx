@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import Provider from "./provider";
 import Script from "next/script";
 import DevToolGuard from "@/components/ui/debug_guard";
+import AdScript from "./ad-script";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -93,7 +94,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Provider>{children}</Provider>
+          <Provider>
+            {children} <AdScript />
+          </Provider>
         </ThemeProvider>
 
         {isProduction && <DevToolGuard />}

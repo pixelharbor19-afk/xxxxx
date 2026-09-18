@@ -247,10 +247,10 @@ export default function Home() {
     setType(newType);
     setId(DEFAULT_IDS[newType]);
   };
-  useAdsScript({
-    enabled: true,
-    platform: "adsterra",
-  });
+  // useAdsScript({
+  //   enabled: true,
+  //   platform: "adsterra",
+  // });
   return (
     <>
       <div>

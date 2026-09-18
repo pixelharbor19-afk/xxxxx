@@ -581,10 +581,10 @@ export default function Player() {
     });
   }, [mergeSubtitles.length]);
 
-  useAdsScript({
-    enabled: metadataLoad,
-    platform: "profiton",
-  });
+  // useAdsScript({
+  //   enabled: metadataLoad,
+  //   platform: "profiton",
+  // });
 
   useKeyboardControls({ controls, setDoubleTapSide });
   // useEffect(() => {
