@@ -1,5 +1,9 @@
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 export const workerProxies = [
+  "https://rapid-mountain-88b5.cabbage17.workers.dev/",
+  "https://dawn-surf-3fd4.cabbag16.workers.dev/",
+  "https://odd-wind-9c3b.expired2.workers.dev/",
+  "https://little-bird-702a.carrot2.workers.dev/",
   "https://blue-morning-b0ed.onlineshop10.workers.dev/",
   "https://berkas.test029.workers.dev/",
   "https://sweet-waterfall-2678.datikabanggago6.workers.dev/",
