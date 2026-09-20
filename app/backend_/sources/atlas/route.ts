@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
       }
 
       const searchRes = await fetch(
-        `https://backup.vidstuck.xyz/backend/database/search-moviebox?${searchParams.toString()}`,
+        `https://vidstuck.xyz/backend/database/search-moviebox?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
@@ -265,7 +265,7 @@ export async function GET(req: NextRequest) {
     params.set("streamSignType", "1");
 
     const res = await fetch(
-      `https://backup.vidstuck.xyz/backend/database/moviebox?${params.toString()}`,
+      `https://vidstuck.xyz/backend/database/moviebox?${params.toString()}`,
       {
         cache: "no-store",
       },
