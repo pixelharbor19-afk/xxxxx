@@ -17,7 +17,7 @@ export const ALLOWED_ORIGINS = [
   //
   "https://player.zxcstream.xyz",
   "https://player.zxcprime.xyz",
-  "https://backup.zxcprime.xyz/",
+  "https://backup.zxcprime.xyz",
 
   //BACKUP
   "https://backup-zxcstream-xyz.up.railway.app",
