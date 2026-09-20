@@ -13,7 +13,7 @@ const supabase = createClient(
 );
 
 export async function GET(req: NextRequest) {
-  const domain = "https://vidstuck.xyz";
+  const domain = "https://backup.vidstuck.xyz";
   const path = req.nextUrl.pathname.split("/").pop()!;
   const tmdbId = req.nextUrl.searchParams.get(FIELD_MAP.id);
   const mediaType = req.nextUrl.searchParams.get(FIELD_MAP.mediaType);
