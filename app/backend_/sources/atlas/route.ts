@@ -119,7 +119,7 @@ export async function GET(req: NextRequest) {
             error: "zinogre search failed",
             server: path,
           },
-          { status: searchRes.status },
+          { status: 502 },
         );
       }
 
@@ -272,7 +272,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (!res.ok) {
-      logRequest(req, "ZINOGRE", res.status, "Main request failed");
+      logRequest(req, "ZINOGRE", 502, "Main request failed");
 
       return NextResponse.json(
         {
@@ -280,7 +280,7 @@ export async function GET(req: NextRequest) {
           error: "Main request failed",
           server: path,
         },
-        { status: res.status },
+        { status: 502 },
       );
     }
 
