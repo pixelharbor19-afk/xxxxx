@@ -1,3 +1,4 @@
+import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { NextRequest, NextResponse } from "next/server";
 import nacl from "tweetnacl";
 
@@ -95,7 +96,7 @@ async function sendFollowUp(
   const url = `${DISCORD_API}/webhooks/${DISCORD_APPLICATION_ID}/${interactionToken}/messages/@original`;
 
   try {
-    const res = await fetch(url, {
+    const res = await fetchWithTimeout(url, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -197,8 +198,10 @@ async function handleAutocomplete(interaction: DiscordInteraction) {
   }
 
   try {
-    const res = await fetch(
+    const res = await fetchWithTimeout(
       `https://api.themoviedb.org/3/search/${commandName}?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`,
+      {},
+      2000,
     );
 
     const data = await res.json();
@@ -226,8 +229,11 @@ async function handleAutocomplete(interaction: DiscordInteraction) {
       },
     });
   } catch (error) {
-    console.error("Autocomplete error:", error);
-
+    if (error instanceof DOMException && error.name === "TimeoutError") {
+      console.error("Autocomplete timed out. Try again.");
+    } else {
+      console.error("Autocomplete failed. Try again:", error);
+    }
     return NextResponse.json({
       type: 8,
       data: {
@@ -237,7 +243,7 @@ async function handleAutocomplete(interaction: DiscordInteraction) {
   }
 }
 async function getTMDBDetails(type: "movie" | "tv", id: string) {
-  const res = await fetch(
+  const res = await fetchWithTimeout(
     `https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_API_KEY}`,
   );
 
