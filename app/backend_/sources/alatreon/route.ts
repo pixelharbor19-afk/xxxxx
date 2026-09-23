@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
   const date = req.nextUrl.searchParams.get(FIELD_MAP.date);
 
   if (!tmdbId || !mediaType || !title || !year || !ts || !token || !date) {
-    logRequest(req, "ATLAS", 400, "missing params");
+    logRequest(req, "ALATREON", 400, "missing params");
     return NextResponse.json(
       { success: false, error: "missing params", server: path },
       { status: 400 },
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
   if (
     !validateBackendToken(tmdbId, mediaType, season, episode, path, ts, token)
   ) {
-    logRequest(req, "ATLAS", 401, "invalid token");
+    logRequest(req, "ALATREON", 401, "invalid token");
     return NextResponse.json(
       { success: false, error: "Invalid token", server: path },
       { status: 401 },
@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
       );
 
       if (!scrapeRes.ok) {
-        logRequest(req, "ATLAS", 404, "Holly scrape failed");
+        logRequest(req, "ALATREON", 404, "Holly scrape failed");
         return NextResponse.json(
           { success: false, error: "Holly scrape failed", server: path },
           { status: 404 },
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
       const scraped = await scrapeRes.json();
 
       if (!scraped?.qualities?.length) {
-        logRequest(req, "ATLAS", 404, "No Holly embeds found");
+        logRequest(req, "ALATREON", 404, "No Holly embeds found");
         return NextResponse.json(
           { success: false, error: "No Holly embeds found", server: path },
           { status: 404 },
@@ -112,7 +112,7 @@ export async function GET(req: NextRequest) {
       );
 
       if (!resolveRes.ok) {
-        logRequest(req, "ATLAS", 502, "Holly resolve failed");
+        logRequest(req, "ALATREON", 502, "Holly resolve failed");
         return NextResponse.json(
           { success: false, error: "Holly resolve failed", server: path },
           { status: 502 },
@@ -124,7 +124,7 @@ export async function GET(req: NextRequest) {
       sources = data?.sources ?? [];
 
       if (!sources.length) {
-        logRequest(req, "ATLAS", 404, "No Holly sources found");
+        logRequest(req, "ALATREON", 404, "No Holly sources found");
         return NextResponse.json(
           { success: false, error: "No Holly sources found", server: path },
           { status: 404 },
@@ -173,14 +173,14 @@ export async function GET(req: NextRequest) {
     );
 
     if (!links.length) {
-      logRequest(req, "ATLAS", 404, "No /pl/ sources found");
+      logRequest(req, "ALATREON", 404, "No /pl/ sources found");
       return NextResponse.json(
         { success: false, error: "No /pl/ sources found", server: path },
         { status: 404 },
       );
     }
 
-    logRequest(req, "ATLAS", 200, "OK");
+    logRequest(req, "ALATREON", 200, "OK");
 
     return NextResponse.json({
       success: true,
@@ -190,7 +190,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("[ATLAS]", error);
 
-    logRequest(req, "ATLAS", 500, "Internal server error");
+    logRequest(req, "ALATREON", 500, "Internal server error");
 
     return NextResponse.json(
       { success: false, error: "Internal server error", server: path },
