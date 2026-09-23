@@ -6,6 +6,7 @@ import { validateBackendToken } from "@/lib/validate-token";
 import { encryptLink } from "@/lib/source-link-enc-dec";
 import { encryptUrl } from "@/lib/aes-encryptor";
 import { isValidReferer } from "@/lib/allowed-referers";
+import { fetchWithTimeout } from "@/lib/fetch-timeout";
 
 const domain = "https://vidstuck.xyz";
 const holly = "https://vidstuck.xyz/backend/database/holly";
@@ -83,8 +84,10 @@ export async function GET(req: NextRequest) {
         mediaType === "tv" ? `-season-${season}-episode-${episode}` : `-${year}`
       }`;
 
-      const scrapeRes = await fetch(
+      const scrapeRes = await fetchWithTimeout(
         `${holly}/scrape?slug=${encodeURIComponent(slug)}`,
+        {},
+        10000,
       );
 
       if (!scrapeRes.ok) {
@@ -107,8 +110,10 @@ export async function GET(req: NextRequest) {
 
       const embed = scraped.qualities[0];
 
-      const resolveRes = await fetch(
+      const resolveRes = await fetchWithTimeout(
         `${holly}/resolve?embed_url=${encodeURIComponent(embed.embed_url)}`,
+        {},
+        10000,
       );
 
       if (!resolveRes.ok) {
