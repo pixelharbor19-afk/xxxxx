@@ -171,6 +171,7 @@ async function handleCommand(interaction: DiscordInteraction): Promise<void> {
 }
 
 async function handleAutocomplete(interaction: DiscordInteraction) {
+  console.log("AUTOCOMPLETE HIT", interaction.data?.name);
   const commandName = interaction.data?.name;
 
   if (commandName !== "movie" && commandName !== "tv") {
