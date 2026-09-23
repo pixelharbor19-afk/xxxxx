@@ -539,6 +539,19 @@ export const workerProxies = [
   "https://shrill-smoke-e6eb.test60-598.workers.dev/",
   "https://twilight-resonance-eb4d.test28-f24.workers.dev/",
 
+  "https://red-pine-791c.x1-344.workers.dev/",
+  "https://wandering-salad-49a3.x2-a53.workers.dev/",
+  "https://patient-star-ecad.x3-63f.workers.dev/",
+  "https://wispy-sound-8e53.x4-ac8.workers.dev/",
+  "https://tiny-cloud-7b86.x5-971.workers.dev/",
+  "https://purple-resonance-a587.x6-bb4.workers.dev/",
+  "https://billowing-block-f48e.x7-de4.workers.dev/",
+  "https://mute-block-f82f.x8-412.workers.dev/",
+  "https://purple-river-e367.x9-aa3.workers.dev/",
+  "https://royal-truth-abbc.x10-cc4.workers.dev/",
+  "https://fragrant-glade-7a12.x11-c94.workers.dev/",
+  "https://orange-lake-78e9.x12-67f.workers.dev/",
+
   // "https://billowing-rain-7239.test27-15e.workers.dev/",
 ];
 
