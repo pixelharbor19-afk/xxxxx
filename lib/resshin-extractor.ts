@@ -64,16 +64,16 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export const proxies = [
-  "https://proxy.zxcstream.xyz/proxy",
-  "https://fragrant-surf-698c.icarus030.workers.dev/",
-  "https://proxy.test4-eb0.workers.dev/",
-  "https://proxy.test3-ed1.workers.dev/",
-  "https://proxy.test2-425.workers.dev/",
-  "https://proxy.test1-845.workers.dev/",
-  "https://icarus.test151-009.workers.dev/",
-  "https://icarus.test150-e8d.workers.dev/",
-  "https://icarus.test153-224.workers.dev/",
-  "https://icarus.test152-5d8.workers.dev/",
+  // "https://proxy.zxcstream.xyz/proxy",
+  // "https://fragrant-surf-698c.icarus030.workers.dev/",
+  // "https://proxy.test4-eb0.workers.dev/",
+  // "https://proxy.test3-ed1.workers.dev/",
+  // "https://proxy.test2-425.workers.dev/",
+  // "https://proxy.test1-845.workers.dev/",
+  // "https://icarus.test151-009.workers.dev/",
+  // "https://icarus.test150-e8d.workers.dev/",
+  // "https://icarus.test153-224.workers.dev/",
+  // "https://icarus.test152-5d8.workers.dev/",
 ];
 
 export async function getWorkingProxy(proxies: string[]) {

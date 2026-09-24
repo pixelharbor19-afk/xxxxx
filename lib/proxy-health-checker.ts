@@ -7,6 +7,27 @@ const supabase = createClient(
 );
 
 export const workerProxies = [
+  "https://proxy.test4-eb0.workers.dev/",
+  "https://proxy.test2-425.workers.dev/",
+  "https://fragrant-surf-698c.icarus030.workers.dev/",
+  "https://proxy.test3-ed1.workers.dev/",
+  "https://proxy.test1-845.workers.dev/",
+  "https://icarus.test151-009.workers.dev/",
+  "https://icarus.test150-e8d.workers.dev/",
+  "https://icarus.test153-224.workers.dev/",
+  "https://icarus.test152-5d8.workers.dev/",
+  "https://snowy-lab-9d5f.icarus033.workers.dev/",
+  "https://rough-pond-0449.icarus032.workers.dev/",
+  "https://weathered-mountain-aca0.icarus031.workers.dev/",
+  "https://fragrant-surf-698c.icarus030.workers.dev/",
+  "https://curly-snowflake-2593.icarus029.workers.dev/",
+  "https://calm-glitter-8377.icarus028.workers.dev/",
+  "https://withered-lab-a730.icarus027.workers.dev/",
+  "https://rapid-waterfall-1d25.expired5.workers.dev/",
+  "https://purple-thunder-0eb4.wubbalubbadubdub19.workers.dev/",
+  "https://square-dust-80f5.wubbalubbadubdub02.workers.dev/",
+  "https://blue-sun-21d4.wubbalubbadubdub09.workers.dev/",
+  "https://blue-sun-2b6e.test20-5b4.workers.dev/",
   "https://restless-night-5882.carrot5.workers.dev/",
   "https://lively-rain-6889.carrot17.workers.dev/",
   "https://purple-sea-e132.carrot20.workers.dev/",
@@ -58,12 +79,10 @@ export const workerProxies = [
   "https://broken-paper-2e14.test19-31a.workers.dev/",
   "https://polished-rice-b094.test18-8cb.workers.dev/",
   "https://soft-bread-864e.test16-011.workers.dev/",
-
   "https://rapid-mountain-88b5.cabbage17.workers.dev/",
   "https://dawn-surf-3fd4.cabbag16.workers.dev/",
   "https://odd-wind-9c3b.expired2.workers.dev/",
   "https://little-bird-702a.carrot2.workers.dev/",
-
   "https://blue-morning-b0ed.onlineshop10.workers.dev/",
   "https://berkas.test029.workers.dev/",
   "https://sweet-waterfall-2678.datikabanggago6.workers.dev/",
@@ -96,7 +115,6 @@ export const workerProxies = [
   "https://lively-heart-12e9.angsarapmopia17.workers.dev/",
   "https://green-salad-281b.datikabanggago2.workers.dev/",
   "https://square-bird-5087.eggplant16.workers.dev/",
-  //
   "https://cold-dust-67b4.wubbalubbadubdub3.workers.dev/",
   "https://aged-glitter-ff14.wubbalubbadubdub4.workers.dev/",
   "https://weathered-bonus-4c38.wubbalubbadubdub5.workers.dev/",
@@ -152,7 +170,6 @@ export const workerProxies = [
   "https://noisy-rain-cec7.angsarapmopia14.workers.dev/",
   "https://shy-truth-902b.angsarapmopia16.workers.dev/",
   "https://solitary-flower-6ebd.angsarapmopia20.workers.dev/",
-
   "https://polished-dawn-ad7d.angsarapmopia9.workers.dev/",
   "https://raspy-glitter-ae5f.angsarapmopia11.workers.dev/",
   "https://red-sea-b7e3.angsarapmopia13.workers.dev/",
@@ -160,7 +177,6 @@ export const workerProxies = [
   "https://white-breeze-14ca.angsarapmopia19.workers.dev/",
   "https://still-glade-c30d.cabbage14.workers.dev/",
   "https://fragrant-sun-a1d8.tomato6.workers.dev/",
-
   "https://winter-snowflake-221b.onion13.workers.dev/",
   "https://twilight-sky-ee61.berkas006.workers.dev/",
   "https://wispy-river-ce4f.berkas008.workers.dev/",
@@ -216,8 +232,6 @@ export const workerProxies = [
   "https://yellow-flower-c806.onion12.workers.dev/",
   "https://summer-sunset-baa7.cabbage18.workers.dev/",
   "https://nameless-darkness-6726.cabbage20.workers.dev/",
-  //
-
   "https://berkas.test030.workers.dev/",
   "https://berkas.test028.workers.dev/",
   "https://dry-unit-59a0.berkas001.workers.dev/",
@@ -254,8 +268,6 @@ export const workerProxies = [
   "https://sweet-snow-fa63.tomato13.workers.dev/",
   "https://dawn-glitter-d569.wubbalubbadubdub1.workers.dev/",
   "https://dawn-butterfly-cf4e.wubbalubbadubdub2.workers.dev/",
-  //
-
   "https://berkas.test075-123.workers.dev/",
   "https://berkas.test078-123.workers.dev/",
   "https://berkas.test077-123.workers.dev/",
@@ -346,7 +358,6 @@ export const workerProxies = [
   "https://misty-surf-ee67.cabbage10.workers.dev/",
   "https://purple-dust-6060.cabbage12.workers.dev/",
   "https://winter-sky-d6cf.eggplant5.workers.dev/",
-  //
   "https://zxcstream.berkas44.workers.dev/",
   "https://zxcstream.berkas43.workers.dev/",
   "https://zxcstream.berkas42.workers.dev/",
@@ -391,7 +402,6 @@ export const workerProxies = [
   "https://zxcstream.berkas3.workers.dev/",
   "https://zxcstream.berkas2.workers.dev/",
   "https://zxcstream.berkas1.workers.dev/",
-  //
   "https://tight-glitter-3cac.berkas04.workers.dev/",
   "https://tiny-meadow-5f2b.berkas03.workers.dev/",
   "https://rapid-forest-0c46.berkas02.workers.dev/",
@@ -414,7 +424,6 @@ export const workerProxies = [
   "https://zxcstream.berkas47.workers.dev/",
   "https://zxcstream.berkas46.workers.dev/",
   "https://zxcstream.berkas45.workers.dev/",
-  //
   "https://snowy-brook-8333.berkas016.workers.dev/",
   "https://withered-wind-d29d.berkas015.workers.dev/",
   "https://dry-sea-54e2.berkas014.workers.dev/",
@@ -427,7 +436,6 @@ export const workerProxies = [
   "https://royal-boat-ed13.berkas07.workers.dev/",
   "https://bitter-disk-bffb.berkas06.workers.dev/",
   "https://rough-waterfall-90f0.berkas05.workers.dev/",
-  //
   "https://late-meadow-f5cf.icarus042.workers.dev/",
   "https://icy-frost-2f13.icarus053.workers.dev/",
   "https://yellow-truth-b7cf.icarus057.workers.dev/",
@@ -445,7 +453,6 @@ export const workerProxies = [
   "https://wild-frost-90b0.icarus035.workers.dev/",
   "https://frosty-term-80f0.icarus036.workers.dev/",
   "https://misty-wildflower-f895.icarus034.workers.dev/",
-  //
   "https://shy-rice-3f7d.gmail1.workers.dev/",
   "https://tiny-night-3f17.gmail3.workers.dev/",
   "https://damp-resonance-edc1.facebook1.workers.dev/",
@@ -453,17 +460,14 @@ export const workerProxies = [
   "https://dry-morning-c50d.facebook3.workers.dev/",
   "https://flat-resonance-2702.facebook4.workers.dev/",
   "https://aged-thunder-925d.facebook5.workers.dev/",
-
   "https://throbbing-thunder-2359.facebook6.workers.dev/",
   "https://quiet-heart-aaca.facebook7.workers.dev/",
   "https://fancy-math-b578.facebook8.workers.dev/",
   "https://square-fog-9d75.facebook9.workers.dev/",
-
   "https://steep-fog-c825.facebook10.workers.dev/",
   "https://crimson-sky-185f.facebook11.workers.dev/",
   "https://winter-wind-3b69.facebook12.workers.dev/",
   "https://hidden-breeze-2e88.facebook13.workers.dev/",
-
   "https://holy-snowflake-2fb4.orion0001.workers.dev/",
   "https://hidden-moon-0989.orion0002.workers.dev/",
   "https://throbbing-pine-dceb.orion0003.workers.dev/",
@@ -474,40 +478,32 @@ export const workerProxies = [
   "https://wispy-sea-c35e.orion008.workers.dev/",
   "https://morning-paper-2c32.orion009.workers.dev/",
   "https://dry-rain-6c61.orion0010.workers.dev/",
-
   "https://late-firefly-ca73.orion0011.workers.dev/",
   "https://sparkling-bush-c28f.orion0012.workers.dev/",
   "https://billowing-glitter-4e38.orion0013.workers.dev/",
   "https://snowy-grass-18ac.orion0014.workers.dev/",
-
   "https://billowing-hat-4025.orion0015.workers.dev/",
   "https://curly-glitter-b0c4.orion0016.workers.dev/",
   "https://restless-hill-ae23.orion0017.workers.dev/",
   "https://dark-wave-57fc.orion0018.workers.dev/",
-
   "https://morning-voice-8620.orion0019.workers.dev/",
   "https://cold-hat-5c06.orion0020.workers.dev/",
   "https://green-resonance-ba27.orion001.workers.dev/",
   "https://plain-tooth-a5ef.orion002.workers.dev/",
-
   "https://morning-mountain-b270.orion003.workers.dev/",
   "https://lively-rice-79f8.orion004.workers.dev/",
   "https://young-poetry-2f1e.orion005.workers.dev/",
   "https://broken-fire-37fb.orion006.workers.dev/",
-
   "https://plain-waterfall-fe4e.facebook14.workers.dev/",
   "https://tight-king-45e5.facebook15.workers.dev/",
-
   "https://throbbing-dream-bb83.test62-63e.workers.dev/",
   "https://small-hall-439b.test83-291.workers.dev/",
   "https://rough-bonus-f4e3.test82-ac2.workers.dev/",
   "https://quiet-sun-4390.test80-1f4.workers.dev/",
-
   "https://curly-sea-0553.test79-29a.workers.dev/",
   "https://mute-bonus-b2b6.test78-564.workers.dev/",
   "https://fragrant-silence-a7d1.test77-a68.workers.dev/",
   "https://weathered-king-9f51.test76-4e9.workers.dev/",
-
   "https://delicate-dream-a0ac.test75-da4.workers.dev/",
   "https://twilight-mode-af23.test74-635.workers.dev/",
   "https://sweet-feather-58ef.test73-bfb.workers.dev/",
@@ -518,18 +514,14 @@ export const workerProxies = [
   "https://restless-brook-d944.test67-989.workers.dev/",
   "https://long-dew-a85b.test84-c55.workers.dev/",
   "https://muddy-sky-afea.test92-0aa.workers.dev/",
-
   "https://jolly-bread-cd55.orion0007.workers.dev/",
   "https://nameless-paper-1bf8.orion0008.workers.dev/",
   "https://super-hat-bcbd.orion0009.workers.dev/",
   "https://old-fog-35b0.orion00010.workers.dev/",
-
-  ///////////////////////////////////////////////////
   "https://dry-moon-e266.test66-8cc.workers.dev/",
   "https://fragrant-rice-8998.test65-8de.workers.dev/",
   "https://restless-resonance-a8a8.test63-bfc.workers.dev/",
   "https://nameless-tooth-8cbb.test64-0d5.workers.dev/",
-
   "https://spring-darkness-8beb.test61-86c.workers.dev/",
   "https://odd-river-ed9f.test29-be6.workers.dev/",
   "https://soft-shadow-1443.expired8.workers.dev/",
@@ -538,7 +530,6 @@ export const workerProxies = [
   "https://cool-wave-a9c1.expired7.workers.dev/",
   "https://shrill-smoke-e6eb.test60-598.workers.dev/",
   "https://twilight-resonance-eb4d.test28-f24.workers.dev/",
-  //
   "https://red-pine-791c.x1-344.workers.dev/",
   "https://wandering-salad-49a3.x2-a53.workers.dev/",
   "https://patient-star-ecad.x3-63f.workers.dev/",
