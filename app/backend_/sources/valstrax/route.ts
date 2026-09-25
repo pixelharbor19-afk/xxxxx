@@ -237,7 +237,7 @@ export async function GET(req: NextRequest) {
     } else {
       // Fetch fresh stream
       const workerUrl = new URL(
-        "https://backup.vidstuck.xyz/backend/database/vidlink",
+        "https://embed.vidstuck.xyz/backend/database/vidlink",
       );
 
       workerUrl.searchParams.set("tmdbId", tmdbId);
@@ -350,7 +350,7 @@ export async function GET(req: NextRequest) {
 
       const link = {
         type: stream.type,
-        link: `https://vidstuck.xyz/backend/database/andromeda?url=${url}&header=${header}`,
+        link: `https://embed.vidstuck.xyz/backend/database/andromeda?url=${url}&header=${header}`,
         resolution: Number(stream.playbackMetadata?.resolutions?.[0]) || 0,
       };
 

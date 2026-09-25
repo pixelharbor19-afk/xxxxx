@@ -8,8 +8,8 @@ import { encryptUrl } from "@/lib/aes-encryptor";
 import { isValidReferer } from "@/lib/allowed-referers";
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 
-const domain = "https://vidstuck.xyz";
-const holly = "https://vidstuck.xyz/backend/database/holly";
+const domain = "https://embed.vidstuck.xyz";
+const holly = `${domain}/backend/database/holly`;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_HOLLY_SUPABASE_URL_HOLLY!,
