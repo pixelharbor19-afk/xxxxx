@@ -445,7 +445,7 @@ export const workerProxies = [
   "https://old-smoke-c852.icarus043.workers.dev/",
   "https://autumn-sky-7829.icarus041.workers.dev/",
   "https://super-tree-8f2e.icarus040.workers.dev/",
-  "https://steep-sky-b7c6.icarus039.icarus039.workers.dev/",
+  "https://steep-sky-b7c6.icarus039.workers.dev/",
   "https://patient-base-d281.icarus038.workers.dev/",
   "https://small-bonus-631a.icarus044.workers.dev/",
   "https://tight-fog-810b.icarus046.workers.dev/",
@@ -542,6 +542,19 @@ export const workerProxies = [
   "https://royal-truth-abbc.x10-cc4.workers.dev/",
   "https://fragrant-glade-7a12.x11-c94.workers.dev/",
   "https://orange-lake-78e9.x12-67f.workers.dev/",
+
+  "https://falling-dew-f002.sopas1.workers.dev/",
+  "https://young-feather-7e65.sopas2.workers.dev/",
+  "https://wispy-feather-560e.sopas3.workers.dev/",
+  "https://rough-sound-d564.sopas4.workers.dev/",
+  "https://white-mouse-161a.sopas5.workers.dev/",
+  "https://nameless-forest-a1c1.sopas6.workers.dev/",
+  "https://dark-cloud-5de3.sopas7.workers.dev/",
+  "https://shy-unit-5ba4.sopas8.workers.dev/",
+  "https://throbbing-sky-65ee.sopas9.workers.dev/",
+  "https://flat-field-aff9.sopas10.workers.dev/",
+  "https://wild-wind-9d7c.sopas11.workers.dev/",
+  "https://restless-violet-efb1.sopas12.workers.dev/",
 
   // "https://billowing-rain-7239.test27-15e.workers.dev/",
 ];
