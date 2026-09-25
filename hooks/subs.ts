@@ -34,7 +34,7 @@ export default function useSubtitle({
     refetchOnReconnect: false,
 
     queryFn: async () => {
-      const { data: token } = await axios.post("/backend/ololmo", {
+      const { data: token } = await axios.post("/backend_/bugokkaba", {
         [FIELD_MAP.id]: tmdbId,
         [FIELD_MAP.mediaType]: media_type,
         [FIELD_MAP.path]: "subtitle_",
