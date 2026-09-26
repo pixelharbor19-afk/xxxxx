@@ -61,7 +61,7 @@ export default function useSubtitle({
       }
 
       const { data } = await axios.get(
-        `https://embed.vidstuck.xyz/backend/subtitle?${search.toString()}`,
+        `https://backup.vidstuck.xyz/backend/subtitle?${search.toString()}`,
       );
 
       return data.captions ?? [];
