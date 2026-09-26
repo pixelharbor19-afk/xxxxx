@@ -226,7 +226,10 @@ export async function GET(req: NextRequest) {
       .gt("expires_at", new Date().toISOString())
       .maybeSingle();
 
+    let cacheStatus = "CACHE MISS";
+
     if (cached) {
+      cacheStatus = "CACHE HIT";
       // logRequest(req, "VALSTRAX", 200, "CACHE HIT");
 
       stream = {
@@ -295,15 +298,15 @@ export async function GET(req: NextRequest) {
             playlist: stream.playlist,
             cookie: stream.playlistHeaders?.Cookie ?? null,
             created_at: new Date().toISOString(),
-            expires_at: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString(),
+            expires_at: new Date(
+              Date.now() + 24 * 60 * 60 * 1000,
+            ).toISOString(),
           },
           {
             onConflict: "tmdb_id,media_type,season,episode",
           },
         );
       }
-
-      logRequest(req, "VALSTRAX", 200, "CACHE MISS");
     }
 
     const links = [];
@@ -360,13 +363,14 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    logRequest(req, "VALSTRAX", 200, !!cached ? "CACHE HIT OK" : "OK");
+    logRequest(req, "VALSTRAX", 200, cacheStatus);
 
     return NextResponse.json({
       success: true,
       links,
       subtitles: [],
       server: path,
+      meow: cacheStatus === "CACHE HIT",
     });
   } catch (err) {
     console.error("API Error:", err);
