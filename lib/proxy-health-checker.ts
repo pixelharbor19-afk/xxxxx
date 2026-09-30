@@ -555,6 +555,7 @@ export const workerProxies = [
   "https://flat-field-aff9.sopas10.workers.dev/",
   "https://wild-wind-9d7c.sopas11.workers.dev/",
   "https://restless-violet-efb1.sopas12.workers.dev/",
+
   //
   "https://curly-base-3c17.1-0df.workers.dev/",
   "https://lucky-rice-2646.2-17d.workers.dev/",
@@ -578,6 +579,7 @@ export const workerProxies = [
   "https://icy-dream-87f7.17-3d6.workers.dev/",
   "https://patient-glade-d200.18-ca3.workers.dev/",
   "https://purple-forest-bce6.19-7c1.workers.dev/",
+
   // "https://billowing-rain-7239.test27-15e.workers.dev/",
 ];
 
@@ -673,6 +675,8 @@ export async function workerProxyHealth(proxies: string[]) {
           err?.cause?.code || err?.code || err?.name || "failed"
         } | ${err?.cause?.message || err?.message || ""}`,
       );
+
+      return null;
     }
   }
 
