@@ -579,6 +579,18 @@ export const workerProxies = [
   "https://icy-dream-87f7.17-3d6.workers.dev/",
   "https://patient-glade-d200.18-ca3.workers.dev/",
   "https://purple-forest-bce6.19-7c1.workers.dev/",
+  "https://wispy-lake-bc90.20-036.workers.dev/",
+  "https://round-flower-a1b3.21-752.workers.dev/",
+  "https://shy-snow-71df.22-87e.workers.dev/",
+  "https://soft-brook-9bd0.23-f9c.workers.dev/",
+  "https://fragrant-scene-eda6.24-4d4.workers.dev/",
+  "https://long-rice-995a.25-8d3.workers.dev/",
+  "https://sweet-firefly-414c.26-65e.workers.dev/",
+  "https://lingering-mode-7ff3.27-af0.workers.dev/",
+  "https://cold-math-ec34.28-428.workers.dev/",
+  "https://yellow-queen-95a0.29-b78.workers.dev/",
+  "https://blue-dust-9b78.30-1fa.workers.dev/",
+  "https://aged-bar-e6b2.31-d5e.workers.dev/",
 
   // "https://billowing-rain-7239.test27-15e.workers.dev/",
 ];
