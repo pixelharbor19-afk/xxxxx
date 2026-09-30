@@ -165,7 +165,7 @@ export async function GET(req: NextRequest) {
         return {
           type: "hls" as const,
           link: encryptLink(
-            `${shuffledProxy}a?u=${encodeURIComponent(
+            `https://vidstuck.xyz/a?u=${encodeURIComponent(
               encrypted,
             )}&h=${encodeURIComponent(headers)}`,
           ),
