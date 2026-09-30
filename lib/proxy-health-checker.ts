@@ -555,7 +555,29 @@ export const workerProxies = [
   "https://flat-field-aff9.sopas10.workers.dev/",
   "https://wild-wind-9d7c.sopas11.workers.dev/",
   "https://restless-violet-efb1.sopas12.workers.dev/",
-
+  //
+  "https://curly-base-3c17.1-0df.workers.dev/",
+  "https://lucky-rice-2646.2-17d.workers.dev/",
+  "https://billowing-bar-2858.3-316.workers.dev/",
+  "https://icy-queen-7268.4-c0e.workers.dev/",
+  //
+  "https://aged-forest-3efc.5-3bf.workers.dev/",
+  "https://rough-limit-afda.6-493.workers.dev/",
+  "https://black-grass-e585.7-ee2.workers.dev/",
+  "https://ancient-bread-284b.8-dea.workers.dev/",
+  //
+  "https://falling-bar-0032.9-c22.workers.dev/",
+  "https://super-forest-7404.10-812.workers.dev/",
+  "https://frosty-bird-be22.11-d3a.workers.dev/",
+  "https://falling-king-3e3c.12-7b0.workers.dev/",
+  "https://broad-grass-f7f5.13-67b.workers.dev/",
+  "https://empty-breeze-0b93.14-688.workers.dev/",
+  "https://divine-block-89e3.15-a46.workers.dev/",
+  //
+  "https://ancient-flower-8e95.16-638.workers.dev/",
+  "https://icy-dream-87f7.17-3d6.workers.dev/",
+  "https://patient-glade-d200.18-ca3.workers.dev/",
+  "https://purple-forest-bce6.19-7c1.workers.dev/",
   // "https://billowing-rain-7239.test27-15e.workers.dev/",
 ];
 
