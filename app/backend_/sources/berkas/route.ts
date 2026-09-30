@@ -4,6 +4,7 @@ import { isValidReferer } from "@/lib/allowed-referers";
 import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { FIELD_MAP } from "@/lib/params";
 import { createClient } from "@supabase/supabase-js";
+import { encryptUrl } from "@/lib/aes-encryptor";
 import { encryptLink } from "@/lib/source-link-enc-dec";
 import { workerProxies, workerProxyHealth } from "@/lib/proxy-health-checker";
 import { logRequest } from "@/lib/log-request";
@@ -132,11 +133,26 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    const shuffledProxy = await workerProxyHealth(workerProxies);
+
+    if (!shuffledProxy) {
+      logRequest(req, "BERKAS", 502, "No proxy available");
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "No proxy available",
+          server: path,
+        },
+        { status: 502 },
+      );
+    }
+
     const links = await Promise.all(
       streamUrls.map(async (url) => {
-        const encrypted = encode(url);
+        const encrypted = await encryptUrl(url);
 
-        const headers = encode(
+        const headers = await encryptUrl(
           JSON.stringify({
             Origin: "https://nextgencloudfabric.com",
             Referer: "https://nextgencloudfabric.com/",
@@ -149,7 +165,7 @@ export async function GET(req: NextRequest) {
         return {
           type: "hls" as const,
           link: encryptLink(
-            `https://vidstuck.xyz/a?u=${encodeURIComponent(
+            `${shuffledProxy}a?u=${encodeURIComponent(
               encrypted,
             )}&h=${encodeURIComponent(headers)}`,
           ),
@@ -173,11 +189,4 @@ export async function GET(req: NextRequest) {
       { status: 500 },
     );
   }
-}
-function encode(value: string) {
-  return Buffer.from(value, "utf8")
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
 }
