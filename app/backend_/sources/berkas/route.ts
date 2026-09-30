@@ -132,21 +132,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const shuffledProxy = await workerProxyHealth(workerProxies);
-
-    if (!shuffledProxy) {
-      logRequest(req, "BERKAS", 502, "No proxy available");
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: "No proxy available",
-          server: path,
-        },
-        { status: 502 },
-      );
-    }
-
     const links = await Promise.all(
       streamUrls.map(async (url) => {
         const encrypted = encode(url);
