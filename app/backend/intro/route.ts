@@ -1,3 +1,4 @@
+import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
@@ -31,7 +32,7 @@ export async function GET(req: Request) {
 
   // 2. Fetch upstream
   try {
-    const res = await fetch(
+    const res = await fetchWithTimeout(
       `https://api.introdb.app/segments?imdb_id=${imdbId}&season=${season}&episode=${episode}&segment_type=intro`,
       {
         headers: {
@@ -40,6 +41,7 @@ export async function GET(req: Request) {
           Origin: "https://introdb.app",
         },
       },
+      8000,
     );
 
     const data = await res.json();

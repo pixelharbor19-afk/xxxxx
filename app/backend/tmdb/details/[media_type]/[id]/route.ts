@@ -1,3 +1,4 @@
+import { fetchWithTimeout } from "@/lib/fetch-timeout";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
@@ -108,7 +109,7 @@ export async function GET(
   // 2. Fetch fresh from TMDB
   const url = `https://api.themoviedb.org/3/${media_type}/${id}?api_key=47a1a7df542d3d483227f758a7317dff&language=${encodeURIComponent(language)}&append_to_response=videos,credits,images,external_ids&include_image_language=${langCode},en,null`;
 
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetchWithTimeout(url, { cache: "no-store" }, 8000);
 
   if (res.status === 404) {
     return NextResponse.json({ error: "Media not found" }, { status: 404 });

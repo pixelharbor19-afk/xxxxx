@@ -7,6 +7,7 @@ import { FIELD_MAP } from "@/lib/params";
 import { logRequest } from "@/lib/log-request";
 import { encryptUrl } from "@/lib/aes-encryptor";
 import { workerProxies, workerProxyHealth } from "@/lib/proxy-health-checker";
+import { fetchWithTimeout } from "@/lib/fetch-timeout";
 
 const supabase = createClient(
   process.env.SUPABASE_URL_MOVIEBOX_WEB2!,
@@ -103,11 +104,12 @@ export async function GET(req: NextRequest) {
         searchParams.set("latestDate", latestDate);
       }
 
-      const searchRes = await fetch(
-        `https://embed.vidstuck.xyz/backend/database/search-moviebox?${searchParams.toString()}`,
+      const searchRes = await fetchWithTimeout(
+        `https://vidstuck.xyz/backend/database/search-moviebox?${searchParams.toString()}`,
         {
           cache: "no-store",
         },
+        8000,
       );
 
       if (!searchRes.ok) {
@@ -264,11 +266,12 @@ export async function GET(req: NextRequest) {
 
     params.set("streamSignType", "1");
 
-    const res = await fetch(
-      `https://embed.vidstuck.xyz/backend/database/moviebox?${params.toString()}`,
+    const res = await fetchWithTimeout(
+      `https://vidstuck.xyz/backend/database/moviebox?${params.toString()}`,
       {
         cache: "no-store",
       },
+      8000,
     );
 
     if (!res.ok) {
