@@ -673,7 +673,7 @@ export async function workerProxyHealth(proxies: string[]) {
         10000,
       );
 
-      console.log(`[PROXY] ${proxy} → ${res.status} | ${Date.now() - start}ms`);
+      // console.log(`[PROXY] ${proxy} → ${res.status} | ${Date.now() - start}ms`);
 
       if (res.status === 429) {
         await blacklistWorker(proxy);
