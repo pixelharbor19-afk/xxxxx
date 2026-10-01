@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { AudioTrackTypes, QualityLevel } from "../useVideoPlayer";
 import { SubtitleSettingsModal } from "./subtitle-settings";
-import { DubTypes, QualityTrack } from "@/hooks/gago";
+import { DubTypes, QualityTrack } from "@/hooks/gagu";
 import { cn } from "@/lib/utils";
 
 type ActiveItem = {
