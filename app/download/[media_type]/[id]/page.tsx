@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useTmdbDetails } from "@/hooks/fetch-details";
-import useSource from "@/hooks/gaguka";
+import useSource from "@/hooks/whattheactualfuckbro";
 import { cn } from "@/lib/utils";
 import { Ring } from "ldrs/react";
 import "ldrs/react/Ring.css";
